@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#030c20">
+  <meta name="description" content="Register for a Highfield Egypt professional training program.">
+  <title>Program Registration | Highfield Egypt</title>
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="grid-bg"></div><div class="mouse-glow"></div>
+<header>
+  <div class="nav shell">
+    <a class="brand" href="index.html">Highfield <span>Egypt</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a><a href="about.html">About Us</a><a class="active" href="programs.html">Programs</a>
+      <a href="accreditations.html">Accreditations</a><a href="council.html">Scientific Council</a>
+      <a href="verification.html">Verification</a><a href="#contact">Contact Us</a>
+    </nav>
+    <a class="nav-cta" href="verification.html">⌕ Verify Certificate</a>
+    <button class="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="registration-hero shell reveal">
+    <a id="backToProgram" class="back-link" href="programs.html">← Back to Program</a>
+    <span class="eyebrow">Unified Registration Form</span>
+    <h1>Register for <span id="registrationProgram">a Program</span></h1>
+    <p>Complete your information accurately. The Highfield Egypt registration team will contact you to confirm availability and complete the reservation process.</p>
+    <div class="registration-summary">
+      <div><small>Next Intake</small><strong data-intake-month>August 2026</strong></div>
+      <div><small>Delivery</small><strong>Online & On-site</strong></div>
+    </div>
+  </section>
+
+  <section class="section registration-section">
+    <div class="shell registration-layout">
+      <form id="registrationForm" class="glass registration-form" novalidate>
+        <input type="hidden" name="programId" id="programId">
+        <input type="hidden" name="programName" id="programName">
+        <input type="hidden" name="intakeMonth" id="intakeMonth">
+
+        <div class="form-heading">
+          <span class="section-kicker">Applicant Information</span>
+          <h2>Registration Details</h2>
+          <p>Fields marked with * are required.</p>
+        </div>
+
+        <div class="form-grid">
+          <label class="span-2"><span>Full Name *</span><input name="fullName" required minlength="3" autocomplete="name" placeholder="As written on your official ID"></label>
+          <label><span>Mobile Number *</span><input name="mobileNumber" required inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX"></label>
+          <label><span>WhatsApp Number *</span><input name="whatsappNumber" required inputmode="tel" placeholder="01XXXXXXXXX"></label>
+          <label class="span-2"><span>Email Address *</span><input name="email" type="email" required autocomplete="email" placeholder="name@example.com"></label>
+          <label><span>National ID Number *</span><input name="nationalId" required inputmode="numeric" minlength="14" maxlength="14" pattern="[0-9]{14}" placeholder="14 digits"></label>
+          <label><span>Professional License Number</span><input name="licenseNumber" placeholder="Optional"></label>
+          <label><span>Workplace *</span><input name="workplace" required placeholder="Hospital, clinic, university, or organization"></label>
+          <label><span>Academic Degree *</span><input name="academicDegree" required placeholder="Bachelor, Master, Doctorate, etc."></label>
+          <label><span>Specialty *</span><input name="specialty" required placeholder="Your professional specialty"></label>
+          <label><span>Governorate *</span>
+            <select name="governorate" required>
+              <option value="">Select Governorate</option>
+              <option>Cairo</option><option>Giza</option><option>Alexandria</option><option>Qalyubia</option>
+              <option>Dakahlia</option><option>Sharqia</option><option>Gharbia</option><option>Monufia</option>
+              <option>Beheira</option><option>Kafr El Sheikh</option><option>Damietta</option><option>Port Said</option>
+              <option>Ismailia</option><option>Suez</option><option>Fayoum</option><option>Beni Suef</option>
+              <option>Minya</option><option>Assiut</option><option>Sohag</option><option>Qena</option>
+              <option>Luxor</option><option>Aswan</option><option>Red Sea</option><option>New Valley</option>
+              <option>Matrouh</option><option>North Sinai</option><option>South Sinai</option><option>Outside Egypt</option>
+            </select>
+          </label>
+          <label class="span-2"><span>Preferred Attendance Mode *</span>
+            <select name="attendanceMode" required>
+              <option value="">Choose attendance mode</option><option>On-site</option><option>Online</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="consent-row">
+          <input type="checkbox" name="consent" required>
+          <span>I confirm that the information provided is accurate and consent to its use for registration, communication, attendance records, and certification purposes.</span>
+        </label>
+
+        <button class="btn submit-button" type="submit"><span>Submit Registration</span></button>
+        <div id="formStatus" class="form-status" aria-live="polite"></div>
+      </form>
+
+      <aside class="registration-side">
+        <div class="glass registration-help">
+          <span class="section-kicker">Need Assistance?</span>
+          <h3>Registration Support</h3>
+          <p>For questions about the program, intake, required documents, or registration steps, contact our team through WhatsApp.</p>
+          <a id="registrationWhatsapp" class="btn secondary full" target="_blank" rel="noopener">Contact via WhatsApp</a>
+          <strong>01101669115</strong>
+        </div>
+        <div class="privacy-note glass">
+          <h3>Data Privacy</h3>
+          <p>Your information is collected only for registration, communication, attendance documentation, and certificate preparation. Access should be restricted to authorized Highfield Egypt personnel.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="shell">
+    <div class="footer-grid">
+      <div><div class="brand">Highfield <span>Egypt</span></div><p>Empowering healthcare professionals through accredited training and quality education aligned with Egyptian standards.</p></div>
+      <div><h4>Quick Links</h4><a href="about.html">About Us</a><br><a href="programs.html">Programs</a><br><a href="council.html">Scientific Council</a><br><a href="verification.html">Verification</a></div>
+      <div><h4>Resources</h4><a href="accreditations.html">Accreditations</a><br><a href="programs.html">Training Programs</a><br><a href="verification.html">Certificate Records</a></div>
+      <div><h4>Contact Us</h4><p>Villa 8801, Al Thawra Street, Mokattam, Cairo, Egypt<br>02 2842 5555 | 02 2843 5555<br>WhatsApp: 01101669115</p></div>
+    </div>
+    <div class="copyright">© 2026 Highfield Egypt. All rights reserved.</div>
+  </div>
+</footer>
+<script src="js/config.js"></script>
+<script src="js/site.js"></script>
+<script src="js/programs.js"></script>
+<script src="js/registration.js"></script>
+</body>
+</html>

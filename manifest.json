@@ -1,0 +1,9 @@
+{
+  "name": "Highfield Egypt Certificate Verification",
+  "short_name": "Highfield Verify",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#061a3d",
+  "theme_color": "#061a3d",
+  "icons": []
+}

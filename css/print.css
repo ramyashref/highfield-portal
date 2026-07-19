@@ -1,0 +1,12 @@
+
+@media print{
+  @page{size:A4 landscape;margin:0}
+  body{background:#fff}
+  .ambient-grid,.site-header,.hero,.info-strip,.site-footer,.side-column,.success-banner,.action-bar,.loading-overlay,.preview-modal{display:none!important}
+  .shell{width:100%}
+  .result-area{padding:0}
+  .result-grid{display:block}
+  .verification-column{border:0;box-shadow:none;border-radius:0}
+  .certificate-panel{padding:0}
+  .certificate-shell{border:0;border-radius:0;box-shadow:none}
+}

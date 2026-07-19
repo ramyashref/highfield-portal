@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Official Highfield Egypt certificate verification system.">
+  <meta name="theme-color" content="#061a3d">
+  <meta property="og:title" content="Highfield Egypt Certificate Verification">
+  <meta property="og:description" content="Verify certificates issued by Highfield Egypt.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/certificate-template.png">
+  <title>Certificate Verification | Highfield Egypt</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/verification.css">
+  <link rel="stylesheet" href="css/verification-mobile.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+  <div class="ambient-grid" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand-lockup wordmark-lockup" href="index.html" aria-label="Highfield Egypt home">
+        <span class="wordmark">
+          <strong>HIGHFIELD</strong>
+          <small>EGYPT</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="programs.html">Our Programs</a>
+        <a href="accreditations.html">Accreditations</a>
+        <a href="council.html">Scientific Council</a>
+        <a class="active" href="verification.html">Verification</a>
+      </nav>
+
+      <button class="lang-button" type="button" aria-label="Language">
+        <span>🌐</span> EN
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="verify" class="hero shell">
+      <div class="hero-copy">
+        <span class="hero-kicker">Official Highfield Egypt Verification Portal</span>
+        <h1>Verify a Highfield Egypt Certificate</h1>
+        <p>Enter the certificate number exactly as printed on the certificate to check the official record.</p>
+      </div>
+
+      <form id="verificationForm" class="search-card" novalidate>
+        <label for="certificateInput">Certificate Number</label>
+        <div class="search-row">
+          <div class="input-shell">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+              <circle cx="9" cy="10" r="2"></circle>
+              <path d="M6.5 16c.8-1.8 4.2-1.8 5 0"></path>
+              <path d="M15 9h3M15 13h3"></path>
+            </svg>
+            <input id="certificateInput" type="text" placeholder="Example: HF-2026-0001" autocomplete="off">
+          </div>
+          <button id="verifyButton" class="primary-button" type="submit">
+            <span>Verify Certificate</span>
+          </button>
+        </div>
+        <p class="search-hint">Searches are checked against the official Highfield Egypt database.</p>
+      </form>
+    </section>
+
+    <section id="resultArea" class="shell result-area" aria-live="polite"></section>
+
+    <section id="about" class="info-strip shell">
+      <article>
+        <span class="info-icon">✓</span>
+        <div>
+          <h2>Official Records</h2>
+          <p>Results are retrieved from the Highfield Egypt certificate database.</p>
+        </div>
+      </article>
+      <article>
+        <span class="info-icon">⌁</span>
+        <div>
+          <h2>Secure Verification</h2>
+          <p>Each certificate can be verified using its unique number or QR code.</p>
+        </div>
+      </article>
+      <article id="programs">
+        <span class="info-icon">◫</span>
+        <div>
+          <h2>Professional Programs</h2>
+          <p>Explore upcoming Highfield Egypt training programs and workshops.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer id="contact" class="site-footer">
+    <div class="footer-inner">
+      <span>Highfield Egypt — Official Certificate Verification System</span>
+      <span>Secure • Reliable • Trusted</span>
+      <span>Villa 8801, Al Thawra Street, Mokattam, Cairo, Egypt</span>
+      <span>02 2842 5555 | 02 2843 5555</span>
+    </div>
+  </footer>
+
+  <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+    <div class="loading-panel">
+      <div class="loader-brand">
+        <span class="wordmark loader-wordmark">
+          <strong>HIGHFIELD</strong>
+          <small>EGYPT</small>
+        </span>
+      </div>
+      <div class="loader-orbit"><span>✓</span></div>
+      <h2>Verifying Certificate</h2>
+      <p>Please wait while we check this certificate against the official database.</p>
+      <div class="progress-track"><span></span></div>
+      <div class="loading-steps">
+        <span>Connecting</span>
+        <span>Checking Record</span>
+        <span>Finalizing</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="previewModal" class="preview-modal" aria-hidden="true">
+    <div class="preview-dialog">
+      <div class="preview-toolbar">
+        <strong>Certificate Preview</strong>
+        <div>
+          <button id="zoomOutButton" type="button" aria-label="Zoom out">−</button>
+          <button id="resetZoomButton" type="button" aria-label="Reset zoom">100%</button>
+          <button id="zoomInButton" type="button" aria-label="Zoom in">+</button>
+          <button id="closeModalButton" type="button" aria-label="Close preview">×</button>
+        </div>
+      </div>
+      <div id="modalCanvas" class="modal-canvas"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="pdfRenderTarget" class="pdf-render-target" aria-hidden="true"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/certificate.js"></script>
+  <script src="js/qr.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#030c20">
+  <meta name="description" content="Explore Highfield Egypt healthcare training programs available online and on-site.">
+  <title>Programs | Highfield Egypt</title>
+  <link rel="icon" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="grid-bg"></div><div class="mouse-glow"></div>
+<header>
+  <div class="nav shell">
+    <a class="brand" href="index.html">Highfield <span>Egypt</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a><a href="about.html">About Us</a><a class="active" href="programs.html">Programs</a>
+      <a href="accreditations.html">Accreditations</a><a href="council.html">Scientific Council</a>
+      <a href="verification.html">Verification</a><a href="#contact">Contact Us</a>
+    </nav>
+    <a class="nav-cta" href="verification.html">⌕ Verify Certificate</a>
+    <button class="menu-btn" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero shell reveal">
+    <span class="eyebrow">134 Professional Training Programs</span>
+    <h1>Explore Our Programs</h1>
+    <p>Discover professional healthcare training opportunities delivered both online and on-site. Every program has a dedicated page with an overview, learning outcomes, target audience, and unified registration form.</p>
+    <div class="intake-banner">
+      <span>Next Intake</span>
+      <strong data-intake-month>August 2026</strong>
+      <small>Automatically updated on the 25th of every month</small>
+    </div>
+  </section>
+
+  <section class="section programs-section">
+    <div class="shell">
+      <div class="program-toolbar reveal">
+        <label class="search-field">
+          <span>Search</span>
+          <input id="programSearch" autocomplete="off" placeholder="Program name, specialty, or target audience">
+        </label>
+        <label>
+          <span>Specialty</span>
+          <select id="specialtyFilter"><option value="">All Specialties</option></select>
+        </label>
+        <label>
+          <span>Delivery</span>
+          <select id="deliveryFilter"><option value="">Online & On-site</option></select>
+        </label>
+      </div>
+      <div class="results-line"><strong id="programCount">134</strong> programs available</div>
+      <div id="programCards" class="program-card-grid reveal"></div>
+      <div id="noPrograms" class="empty-state" hidden>No programs match your search.</div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="shell">
+    <div class="footer-grid">
+      <div><div class="brand">Highfield <span>Egypt</span></div><p>Empowering healthcare professionals through accredited training and quality education aligned with Egyptian standards.</p></div>
+      <div><h4>Quick Links</h4><a href="about.html">About Us</a><br><a href="programs.html">Programs</a><br><a href="council.html">Scientific Council</a><br><a href="verification.html">Verification</a></div>
+      <div><h4>Resources</h4><a href="accreditations.html">Accreditations</a><br><a href="programs.html">Training Programs</a><br><a href="verification.html">Certificate Records</a></div>
+      <div><h4>Contact Us</h4><p>Villa 8801, Al Thawra Street, Mokattam, Cairo, Egypt<br>02 2842 5555 | 02 2843 5555<br>WhatsApp: 01101669115</p></div>
+    </div>
+    <div class="copyright">© 2026 Highfield Egypt. All rights reserved.</div>
+  </div>
+</footer>
+<script src="js/config.js"></script>
+<script src="js/site.js"></script>
+<script src="js/programs.js"></script>
+<script src="js/program-catalog.js"></script>
+</body>
+</html>
