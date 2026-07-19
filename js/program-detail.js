@@ -91,6 +91,16 @@
 
   document.getElementById("pageTitle").textContent = `${title} | Highfield Egypt`;
   document.getElementById("metaDescription").content = buildSummary();
+    const pageUrl = `${location.origin}${location.pathname}?id=${programId}`;
+
+  document.getElementById("canonicalUrl").href = pageUrl;
+
+  document.getElementById("ogTitle").content = `${title} | Highfield Egypt`;
+  document.getElementById("ogDescription").content = buildSummary();
+  document.getElementById("ogUrl").content = pageUrl;
+
+  document.getElementById("twitterTitle").content = `${title} | Highfield Egypt`;
+  document.getElementById("twitterDescription").content = buildSummary();
   document.getElementById("programCategory").textContent = category;
   document.getElementById("programTitle").textContent = title;
   document.getElementById("programSummary").textContent = buildSummary();
