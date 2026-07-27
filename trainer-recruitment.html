@@ -338,10 +338,56 @@
     toggleOtherField(primaryExpertise, otherExpertiseWrap, otherExpertise);
   });
 
-  document.getElementById('trainerApplicationForm').addEventListener('submit', function (event) {
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxUIA4bII_J_7BmAJJAr8yze1zTXwBhb5fsWEl41XeCiptuSAOuSzXvKIUVRYgXEG6KiQ/exec';
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
+  const MAX_TOTAL_UPLOAD_SIZE = 20 * 1024 * 1024;
+
+  function fileToPayload(file) {
+    return new Promise(function (resolve, reject) {
+      if (!file) {
+        resolve(null);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const result = String(reader.result || '');
+        resolve({
+          name: file.name,
+          mimeType: file.type || 'application/octet-stream',
+          base64: result.split(',')[1] || ''
+        });
+      };
+      reader.onerror = function () {
+        reject(new Error('Unable to read the selected file: ' + file.name));
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function validateUploadSizes(files) {
+    let totalSize = 0;
+
+    files.forEach(function (file) {
+      if (!file) return;
+      if (file.size > MAX_FILE_SIZE) {
+        throw new Error(file.name + ' is larger than the 10 MB file limit.');
+      }
+      totalSize += file.size;
+    });
+
+    if (totalSize > MAX_TOTAL_UPLOAD_SIZE) {
+      throw new Error('The total size of all uploaded documents must not exceed 20 MB.');
+    }
+  }
+
+  document.getElementById('trainerApplicationForm').addEventListener('submit', async function (event) {
     event.preventDefault();
+
     const form = event.currentTarget;
     const status = document.getElementById('trainerFormStatus');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const submitText = submitButton.querySelector('span');
 
     if (!form.checkValidity()) {
       form.reportValidity();
@@ -350,8 +396,83 @@
       return;
     }
 
-    status.className = 'form-status success';
-    status.textContent = 'The form design is working correctly. Online submission will be activated in the next step.';
+    const cvFile = form.elements.cvFile.files[0] || null;
+    const nationalIdFile = form.elements.nationalIdFile.files[0] || null;
+    const licenseCardFile = form.elements.licenseCardFile.files[0] || null;
+    const degreeFile = form.elements.degreeFile.files[0] || null;
+    const additionalFiles = Array.from(form.elements.additionalCertificates.files || []);
+    const allFiles = [cvFile, nationalIdFile, licenseCardFile, degreeFile].concat(additionalFiles);
+
+    try {
+      validateUploadSizes(allFiles);
+
+      submitButton.disabled = true;
+      submitButton.setAttribute('aria-busy', 'true');
+      submitText.textContent = 'Submitting Application...';
+      status.className = 'form-status';
+      status.textContent = 'Please wait while your information and documents are uploaded.';
+
+      const payload = {
+        fullName: form.elements.fullName.value.trim(),
+        mobileNumber: form.elements.mobileNumber.value.trim(),
+        whatsappNumber: form.elements.whatsappNumber.value.trim(),
+        email: form.elements.email.value.trim(),
+        professionalField: form.elements.professionalField.value,
+        otherProfessionalField: form.elements.otherProfessionalField.value.trim(),
+        primaryExpertise: form.elements.primaryExpertise.value,
+        otherExpertise: form.elements.otherExpertise.value.trim(),
+        academicDegree: form.elements.academicDegree.value,
+        faculty: form.elements.faculty.value.trim(),
+        university: form.elements.university.value.trim(),
+        licenseNumber: form.elements.licenseNumber.value.trim(),
+        currentPosition: form.elements.currentPosition.value.trim(),
+        workplace: form.elements.workplace.value.trim(),
+        professionalExperience: form.elements.professionalExperience.value,
+        trainingExperience: form.elements.trainingExperience.value,
+        ehcAccreditation: form.elements.ehcAccreditation.value,
+        totStatus: form.elements.totStatus.value,
+        professionalBio: form.elements.professionalBio.value.trim(),
+        cvFile: await fileToPayload(cvFile),
+        nationalIdFile: await fileToPayload(nationalIdFile),
+        licenseCardFile: await fileToPayload(licenseCardFile),
+        degreeFile: await fileToPayload(degreeFile),
+        additionalCertificates: await Promise.all(additionalFiles.map(fileToPayload))
+      };
+
+      const response = await fetch(WEB_APP_URL, {
+        method: 'POST',
+        redirect: 'follow',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('The application service returned an error. Please try again.');
+      }
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.message || 'The application could not be submitted.');
+      }
+
+      status.className = 'form-status success';
+      status.innerHTML = 'Your application has been submitted successfully.<br><strong>Application ID: ' + result.applicationId + '</strong><br>Please save this number for future reference.';
+      form.reset();
+      toggleOtherField(professionalField, otherProfessionalFieldWrap, otherProfessionalField);
+      toggleOtherField(primaryExpertise, otherExpertiseWrap, otherExpertise);
+      status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (error) {
+      console.error(error);
+      status.className = 'form-status error';
+      status.textContent = error.message || 'An unexpected error occurred. Please try again.';
+    } finally {
+      submitButton.disabled = false;
+      submitButton.removeAttribute('aria-busy');
+      submitText.textContent = 'Submit Trainer Application';
+    }
   });
 </script>
 </body>
