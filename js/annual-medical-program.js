@@ -1,39 +1,115 @@
+
 (() => {
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwwNqM8XNOB5sEtlgiM-5ivyQvrLCd5O2SE1b0iawto7eVSfSIkmD5k0KCZAWPjGIfKvw/exec';
+
   const form = document.getElementById('annualRegistrationForm');
   const status = document.getElementById('annualFormStatus');
+
+  if (!form || !status) {
+    console.error('Annual registration form or status element was not found.');
+    return;
+  }
+
   const button = form.querySelector('button[type="submit"]');
+  const buttonText = button?.querySelector('span');
   const menu = document.querySelector('.annual-menu');
   const links = document.querySelector('.annual-links');
-  menu?.addEventListener('click', () => { const open = links.classList.toggle('open'); menu.setAttribute('aria-expanded', String(open)); });
-  links?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { links.classList.remove('open'); menu?.setAttribute('aria-expanded','false'); }));
-  const setStatus = (type, message) => { status.className = `annual-form-status ${type}`; status.textContent = message; };
+
+  menu?.addEventListener('click', () => {
+    if (!links) return;
+    const open = links.classList.toggle('open');
+    menu.setAttribute('aria-expanded', String(open));
+  });
+
+  links?.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      menu?.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const setStatus = (type, message) => {
+    status.className = `annual-form-status ${type}`;
+    status.textContent = message;
+  };
+
   form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); setStatus('error','Please complete all required fields correctly. / برجاء استكمال الحقول الإلزامية بصورة صحيحة.'); return; }
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      setStatus(
+        'error',
+        'Please complete all required fields correctly. / برجاء استكمال الحقول الإلزامية بصورة صحيحة.'
+      );
+      return;
+    }
+
     const fd = new FormData(form);
     const payload = Object.fromEntries(fd.entries());
+
     payload.programName = 'Highfield Annual Medical Program';
     payload.programYear = '2027';
-    payload.fullName = payload.englishName;
+    payload.fullName = payload.englishName || '';
     payload.nationalId = payload.nationalIdOrPassport || '';
     payload.submittedAt = new Date().toISOString();
-    payload.sourcePage = location.href;
+    payload.sourcePage = window.location.href;
     payload.consent = fd.has('consent');
-    button.disabled = true; button.querySelector('span').textContent = 'Submitting...';
-    setStatus('loading','Sending your registration request... / جارٍ إرسال طلب التسجيل.');
-    const config = window.HIGHFIELD_CONFIG || {};
+
+    if (!payload.consent) {
+      setStatus(
+        'error',
+        'Please confirm your information before submitting. / برجاء تأكيد صحة البيانات قبل الإرسال.'
+      );
+      return;
+    }
+
+    if (button) button.disabled = true;
+    if (buttonText) buttonText.textContent = 'Submitting...';
+
+    setStatus(
+      'loading',
+      'Sending your registration request... / جارٍ إرسال طلب التسجيل.'
+    );
+
     try {
-      if (!config.registrationApiUrl) throw new Error('Registration endpoint is not configured');
-      const response = await fetch(config.registrationApiUrl, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || result.success === false) throw new Error(result.message || 'Submission failed');
-      setStatus('success','Your registration request has been sent successfully. The Highfield team will contact you. / تم إرسال طلب التسجيل بنجاح، وسيتواصل معك فريق هايفيلد.');
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success !== true) {
+        throw new Error(result.message || 'Registration was not accepted.');
+      }
+
+      setStatus(
+        'success',
+        'Your registration request has been sent successfully. The Highfield team will contact you. / تم إرسال طلب التسجيل بنجاح، وسيتواصل معك فريق هايفيلد.'
+      );
+
       form.reset();
+
     } catch (error) {
-      console.error(error);
-      setStatus('error','Online submission was not confirmed. Please contact Highfield on WhatsApp: 01101669115. / لم نتمكن من تأكيد الإرسال إلكترونيًا؛ يُرجى التواصل مع هايفيلد عبر واتساب 01101669115.');
+      console.error('Annual program registration error:', error);
+
+      setStatus(
+        'error',
+        'Online submission could not be confirmed. Please contact Highfield on WhatsApp: 01101669115. / لم نتمكن من تأكيد الإرسال إلكترونيًا؛ يُرجى التواصل مع هايفيلد عبر واتساب 01101669115.'
+      );
+
     } finally {
-      button.disabled = false; button.querySelector('span').textContent = 'Submit Registration';
+      if (button) button.disabled = false;
+      if (buttonText) buttonText.textContent = 'Submit Registration';
     }
   });
 })();
