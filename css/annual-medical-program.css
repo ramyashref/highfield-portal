@@ -48,3 +48,81 @@ html{scroll-behavior:smooth;scroll-padding-top:105px}.annual-page{background:#ff
 .annual-hero .hero-copy{max-width:900px}
 .annual-about .about-copy>p{max-width:850px}
 .annual-about .about-package-note{max-width:850px}
+
+
+/* HIGHFIELD SCHOLARS — balanced image-free hero layout */
+.annual-hero{grid-template-columns:minmax(0,1.04fr) minmax(340px,.96fr);column-gap:clamp(34px,5vw,76px);align-items:center;padding-top:58px}
+.annual-hero .hero-copy{max-width:680px;padding:18px 0 28px}
+.annual-hero h1{font-size:clamp(44px,5.3vw,76px);line-height:.99;margin:23px 0 22px;letter-spacing:-3px}
+.annual-hero .hero-lead{max-width:600px;font-size:clamp(18px,1.65vw,23px)}
+.annual-hero .annual-intro{max-width:600px;font-size:13px}
+.annual-deadline{max-width:460px}
+.scholars-roadmap{position:relative;isolation:isolate;overflow:hidden;align-self:stretch;min-height:490px;padding:30px 30px 23px;border:1px solid #e2e9f3;border-radius:24px;background:radial-gradient(circle at 92% 7%,rgba(201,155,67,.18),transparent 26%),linear-gradient(145deg,#fbfcff 0%,#f0f6ff 58%,#fffaf0 100%);box-shadow:0 20px 55px rgba(16,50,84,.09);display:flex;flex-direction:column;justify-content:center}
+.scholars-roadmap:before,.scholars-roadmap:after{content:"";position:absolute;z-index:-1;border:1px solid rgba(201,155,67,.28);border-radius:50%;pointer-events:none}
+.scholars-roadmap:before{width:290px;height:290px;right:-140px;top:-145px;box-shadow:0 0 0 18px rgba(201,155,67,.035),0 0 0 38px rgba(201,155,67,.025)}
+.scholars-roadmap:after{width:210px;height:210px;left:-155px;bottom:-130px;border-color:rgba(40,120,220,.14)}
+.roadmap-topline{display:flex;align-items:center;justify-content:space-between;color:#a77b2d;font-size:9px;font-weight:800;letter-spacing:2px}
+.roadmap-orbit{width:43px;height:43px;display:grid;place-items:center;border:1px solid #d9bd79;border-radius:50%;box-shadow:inset 0 0 0 5px rgba(201,155,67,.08);font-size:19px;letter-spacing:0;color:var(--annual-navy);font-weight:800}
+.scholars-roadmap h2{margin:20px 0 9px;color:var(--annual-navy);font-size:clamp(25px,2.5vw,35px);line-height:1.14;letter-spacing:-1.2px}
+.scholars-roadmap h2 span{color:var(--annual-blue)}
+.scholars-roadmap>p{max-width:390px;margin:0;color:var(--annual-muted);font-size:11px;line-height:1.8}
+.roadmap-track{position:relative;display:grid;gap:0;margin:22px 0 17px}
+.roadmap-track:before{content:"";position:absolute;top:19px;bottom:19px;left:17px;width:1px;background:linear-gradient(var(--annual-gold),#cddcf1)}
+.roadmap-quarter{position:relative;display:grid;grid-template-columns:36px minmax(0,1fr);column-gap:11px;row-gap:2px;padding:9px 0}
+.roadmap-dot{grid-row:span 2;z-index:1;width:35px;height:35px;display:grid;place-items:center;border:1px solid #e2cc98;border-radius:50%;background:#fffdf8;color:#a77b2d;font-size:10px;font-weight:800}
+.roadmap-quarter>div{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.roadmap-quarter strong{color:var(--annual-navy);font-size:9px;letter-spacing:.7px}
+.roadmap-quarter small{flex-shrink:0;color:#a77b2d;font-size:8px;font-weight:800;letter-spacing:.8px}
+.roadmap-quarter i{grid-column:2;font-size:9px;line-height:1.5;color:var(--annual-muted);font-style:normal}
+.roadmap-foot{display:flex;flex-wrap:wrap;gap:7px;padding-top:14px;border-top:1px solid rgba(205,218,236,.8)}
+.roadmap-foot span{padding:7px 9px;border:1px solid #e1e9f4;border-radius:999px;background:rgba(255,255,255,.78);color:#25456e;font-size:8px;font-weight:800;letter-spacing:.7px}
+.annual-hero .annual-stats{grid-column:1/-1;margin-top:0}
+@media(max-width:1050px){.annual-hero{grid-template-columns:minmax(0,1fr) minmax(300px,.9fr);gap:28px}.scholars-roadmap{padding:24px;min-height:460px}.annual-hero h1{font-size:clamp(42px,5.1vw,62px)}}
+@media(max-width:760px){.annual-hero{grid-template-columns:1fr;gap:14px;padding-top:35px}.annual-hero .hero-copy{padding:8px 0 12px}.annual-hero h1{font-size:clamp(43px,11vw,64px);letter-spacing:-2px}.scholars-roadmap{min-height:unset;padding:24px 21px;margin:0 0 10px}.scholars-roadmap h2{font-size:29px}.roadmap-track{margin:17px 0 14px}.annual-hero .annual-stats{grid-template-columns:1fr 1fr}.annual-hero .stat-item{padding:12px 9px}.annual-hero .stat-item:nth-child(odd){border-right:1px solid var(--annual-line)}.annual-hero .stat-item:nth-child(-n+2){border-bottom:1px solid var(--annual-line)}}
+
+/* HIGHFIELD SCHOLARS — redesigned editorial hero and visual monthly cards */
+.scholars-hero{grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);column-gap:38px;row-gap:24px;padding-top:38px;align-items:center}
+.scholars-hero-copy{padding:18px 0 30px;max-width:550px}
+.scholars-hero .annual-hero h1{margin-top:18px}
+.scholars-hero .annual-intro{max-width:540px}
+.scholars-hero-photo{position:relative;grid-column:2;grid-row:1;min-height:455px;height:clamp(420px,42vw,560px);border-radius:24px 8px 24px 8px;overflow:hidden;background:linear-gradient(90deg,rgba(255,255,255,.86),rgba(255,255,255,.03) 64%),linear-gradient(0deg,rgba(8,36,79,.15),transparent 55%),url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=1400&q=85') center 35%/cover no-repeat;box-shadow:0 22px 60px rgba(18,55,100,.12)}
+.scholars-hero-photo:before{content:"";position:absolute;inset:0;border:1px solid rgba(201,155,67,.35);border-radius:inherit;pointer-events:none}
+.scholars-hero-photo:after{content:"";position:absolute;width:360px;height:360px;left:-185px;bottom:-220px;border:2px solid rgba(201,155,67,.9);border-radius:50%;box-shadow:0 0 0 18px rgba(255,255,255,.18),0 0 0 38px rgba(255,255,255,.12)}
+.scholars-photo-message{position:absolute;z-index:2;left:11%;top:35%;display:grid;gap:8px;color:var(--annual-navy);font-size:clamp(12px,1.25vw,16px);font-weight:700;letter-spacing:3px}
+.scholars-photo-message i{display:block;width:52px;height:2px;margin-top:10px;background:var(--annual-gold)}
+.scholars-hero-rule{width:58px;height:4px;margin:22px 0 18px;background:linear-gradient(90deg,var(--annual-gold),#f1dfb5);border-radius:3px}
+.scholars-hero-cta{display:inline-flex;align-items:center;gap:24px;padding:12px 18px;border-radius:999px;background:var(--annual-navy);color:#fff;font-size:12px;font-weight:700;box-shadow:0 10px 24px rgba(9,40,88,.15)}
+.scholars-hero-cta:hover{background:var(--annual-blue);transform:translateY(-2px)}
+.scholars-hero-cta span{font-size:18px}
+.scholars-hero .annual-stats{margin-top:-3px;position:relative;z-index:3}
+.scholars-hero .stat-item{padding:9px 18px}
+.scholars-hero .stat-item strong{font-size:clamp(24px,2.5vw,34px);line-height:1.1}
+.scholars-hero .stat-item .stat-label{display:block;text-transform:none;letter-spacing:0;font-size:12px!important;color:var(--annual-navy)!important}
+.scholars-hero .stat-cert strong{text-transform:capitalize}
+.annual-highlights{margin-top:8px}
+.annual-calendar{padding-top:22px}
+.months-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.month-card{position:relative;overflow:hidden;border-radius:15px;border:1px solid #dce8f7;box-shadow:0 10px 28px rgba(18,55,100,.06);transition:transform .25s ease,box-shadow .25s ease}
+.month-card:hover{transform:translateY(-5px);box-shadow:0 18px 38px rgba(18,55,100,.13)}
+.month-heading{position:relative;min-height:100px;align-items:flex-start;padding:15px 14px;background:linear-gradient(90deg,#f6f9ff 0%,rgba(246,249,255,.92) 54%,rgba(246,249,255,.18) 100%);isolation:isolate}
+.month-heading:after{content:"";position:absolute;z-index:-1;right:0;top:0;width:58%;height:100%;background-position:center;background-size:cover;opacity:.9;mask-image:linear-gradient(90deg,transparent,#000 50%);}
+.month-card:nth-child(1) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(2) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(3) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(4) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(5) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(6) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(7) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(8) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(9) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(10) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(11) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=500&q=75')}
+.month-card:nth-child(12) .month-heading:after{background-image:url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=500&q=75')}
+.month-en{font-size:17px!important;color:var(--annual-navy)}
+.month-total{box-shadow:0 4px 12px rgba(9,40,88,.12)}
+.month-card table{font-size:11px}
+.month-card tbody tr{transition:background .2s ease}
+.month-card tbody tr:hover{background:#f4f8ff}
+@media(max-width:1050px){.scholars-hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:22px}.scholars-hero-photo{min-height:390px;height:42vw}.months-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.scholars-hero{grid-template-columns:1fr;padding-top:25px;gap:18px}.scholars-hero-copy{grid-column:1;grid-row:1;padding:5px 0 0}.scholars-hero-photo{grid-column:1;grid-row:2;height:330px;min-height:330px}.scholars-photo-message{left:8%;top:29%;font-size:12px;letter-spacing:2px}.scholars-hero .annual-stats{grid-row:3}.scholars-hero .annual-stats{grid-template-columns:1fr 1fr}.months-grid{grid-template-columns:1fr}.month-heading{min-height:90px}.month-card table{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.month-card,.scholars-hero-cta{transition:none}}
