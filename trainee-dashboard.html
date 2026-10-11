@@ -1,1 +1,89 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>لوحة المتدرب | HIGHFIELD SCHOLARS 2027</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/portal.css"></head><body data-page="trainee"><header class="top"><strong>HIGHFIELD SCHOLARS 2027</strong><button id="logout" class="secondary">تسجيل الخروج</button></header><main class="wrap"><h1>لوحة المتدرب</h1><p>أهلًا <strong id="traineeName">...</strong></p><p id="traineeEmail"></p><section class="grid"><article class="tile"><small>حالة الاشتراك</small><strong id="subscriptionStatus">—</strong></article><article class="tile"><small>حالة الحساب</small><strong id="accountStatus">—</strong></article><article class="tile"><small>قيمة الاشتراك</small><strong id="totalFee">—</strong></article><article class="tile"><small>المدفوع المعتمد</small><strong id="totalPaid">—</strong></article><article class="tile"><small>المتبقي</small><strong id="balance">—</strong></article></section><section class="panel"><h2>إرسال إثبات دفع</h2><form id="paymentForm"><label>المبلغ بالجنيه<input id="amount" type="number" min="1" step="0.01" required></label><label>طريقة الدفع<select id="method"><option>InstaPay / محفظة</option><option>تحويل بنكي</option></select></label><label>إثبات الدفع (JPG / PNG / PDF، حتى 5MB)<input id="proof" type="file" accept=".jpg,.jpeg,.png,.pdf" required></label><button type="submit">إرسال للمراجعة</button></form></section><section class="panel"><h2>سجل الدفعات</h2><ul id="payments"></ul></section><section class="panel"><h2>تقدم البرامج التدريبية</h2><p>سيظهر هنا تقدم البرامج بعد إدخال خطة البرامج وحالات الحضور والاجتياز.</p><ul id="progress"></ul></section><p id="status" class="status"></p></main><script src="js/firebase-config.js"></script><script type="module" src="js/portal.js"></script></body></html>
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة المتدرب | HIGHFIELD SCHOLARS 2027</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portal.css">
+</head>
+
+<body data-page="trainee">
+  <header class="top">
+    <strong>HIGHFIELD SCHOLARS 2027</strong>
+    <button id="logout" class="secondary">تسجيل الخروج</button>
+  </header>
+
+  <main class="wrap">
+    <h1>لوحة المتدرب</h1>
+    <p>أهلًا <strong id="traineeName">...</strong></p>
+    <p id="traineeEmail"></p>
+
+    <section class="grid">
+      <article class="tile">
+        <small>حالة الاشتراك</small>
+        <strong id="subscriptionStatus">—</strong>
+      </article>
+      <article class="tile">
+        <small>حالة الحساب</small>
+        <strong id="accountStatus">—</strong>
+      </article>
+      <article class="tile">
+        <small>قيمة الاشتراك</small>
+        <strong id="totalFee">—</strong>
+      </article>
+      <article class="tile">
+        <small>المدفوع المعتمد</small>
+        <strong id="totalPaid">—</strong>
+      </article>
+      <article class="tile">
+        <small>المتبقي</small>
+        <strong id="balance">—</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>إرسال إثبات دفع</h2>
+      <form id="paymentForm">
+        <label>
+          المبلغ بالجنيه
+          <input id="amount" type="number" min="1" step="0.01" required>
+        </label>
+
+        <label>
+          طريقة الدفع
+          <select id="method">
+            <option>InstaPay / محفظة</option>
+            <option>تحويل بنكي</option>
+          </select>
+        </label>
+
+        <label>
+          إثبات الدفع (JPG / PNG / PDF، حتى 5MB)
+          <input id="proof" type="file" accept=".jpg,.jpeg,.png,.pdf" required>
+        </label>
+
+        <button type="submit">إرسال للمراجعة</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>سجل الدفعات</h2>
+      <ul id="payments"></ul>
+    </section>
+
+    <section class="panel">
+      <h2>تقدم البرامج التدريبية</h2>
+      <p>سيظهر هنا تقدم البرامج بعد إدخال خطة البرامج وحالات الحضور والاجتياز.</p>
+      <ul id="progress"></ul>
+    </section>
+
+    <p id="status" class="status"></p>
+  </main>
+
+  <script src="firebase-config.js"></script>
+  <script type="module" src="portal.js"></script>
+</body>
+</html>
