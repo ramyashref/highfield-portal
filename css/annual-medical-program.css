@@ -132,3 +132,28 @@ body.annual-page{margin:0;background:#fff;color:var(--text);font-family:Poppins,
 @media(max-width:720px){.annual-page .shell{width:calc(100% - 30px)}.annual-nav{min-height:60px}.annual-menu{display:block}.annual-links{display:none;position:absolute;top:60px;left:0;right:0;padding:16px 20px;background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow);flex-direction:column;align-items:stretch;gap:15px}.annual-links.is-open{display:flex}.annual-hero{grid-template-columns:1fr;padding-top:20px;gap:0}.hero-copy{padding:25px 0 22px}.hero-copy h1{font-size:clamp(42px,11vw,58px)}.hero-image{grid-row:2;min-height:250px;margin-bottom:18px}.stats-panel{grid-row:3;grid-template-columns:repeat(2,minmax(0,1fr));padding:10px;margin-bottom:22px}.stat{min-height:70px;padding:8px}.stat:nth-child(odd){border-right:1px solid var(--line)}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.highlights{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:30px}.highlight{min-height:80px;padding:10px 5px}.highlight:nth-child(2){border-right:0}.highlight:nth-child(-n+2){border-bottom:1px solid var(--line)}.section-heading{display:block}.section-heading>p{margin-top:8px}.months-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.month-card{min-height:225px;padding-inline:10px}.month-heading{margin-inline:-10px;padding-inline:10px}.month-en{font-size:15px}.schedule-top{align-items:stretch;flex-direction:column;padding:16px}.schedule-tools{align-items:stretch;flex-direction:column}.search-box input{width:100%}.button-small{white-space:normal}.table-footer{align-items:flex-start;flex-direction:column}.registration-columns{grid-template-columns:1fr;padding:16px;gap:18px}.footer-inner{padding:15px 0;flex-wrap:wrap}.footer-inner p{order:3;width:100%;margin:0}}
 @media(max-width:420px){.months-grid{grid-template-columns:1fr}.month-card{min-height:0}.form-grid{grid-template-columns:1fr}.full-width{grid-column:1}.hero-actions{align-items:stretch}.hero-actions .button{font-size:10px;padding-inline:12px}.stat-word{font-size:16px!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* Fix mobile tap styling for program table */
+.schedule-table tbody tr,
+.schedule-table tbody tr td {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.schedule-table tbody tr:active,
+.schedule-table tbody tr:focus,
+.schedule-table tbody tr:focus-within {
+  background: #f8fbff !important;
+}
+
+.schedule-table tbody tr:active td,
+.schedule-table tbody tr:focus td,
+.schedule-table tbody tr:focus-within td {
+  color: #355374 !important;
+}
+
+.schedule-table tbody tr:active td[lang="ar"],
+.schedule-table tbody tr:focus td[lang="ar"],
+.schedule-table tbody tr:focus-within td[lang="ar"] {
+  color: #355374 !important;
+}
+
