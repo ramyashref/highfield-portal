@@ -53,7 +53,7 @@
     }
     const fd = new FormData(form);
     const payload = Object.fromEntries(fd.entries());
-    payload.programName = 'Highfield Annual Medical Program';
+    payload.programName = 'HIGHFIELD SCHOLARS';
     payload.programYear = '2027';
     payload.fullName = payload.englishName || '';
     payload.nationalId = payload.nationalIdOrPassport || '';
