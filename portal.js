@@ -1,21 +1,544 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
-const app=initializeApp(window.HIGHFIELD_FIREBASE_CONFIG),auth=getAuth(app),db=getFirestore(app),storage=getStorage(app);
-const $=id=>document.getElementById(id),adminEmail="info@highfieldeg.com",isAdmin=u=>(u?.email||"").toLowerCase()===adminEmail;
-const status=(m,err=false)=>{let e=$("status");if(e){e.textContent=m;e.className=err?"status error":"status"}};
-const go=url=>location.href=url, money=n=>`${Number(n||0).toLocaleString("en-US")} EGP`;
-const profileRef=u=>doc(db,"trainees",u.uid);
-async function ensureProfile(u){const r=profileRef(u),s=await getDoc(r);if(!s.exists())await setDoc(r,{uid:u.uid,email:u.email||"",displayName:u.displayName||"",subscriptionStatus:"pending",accountStatus:"pending",createdAt:serverTimestamp()});}
-async function profile(u){const s=await getDoc(profileRef(u));return s.exists()?s.data():null}
-function authErr(e){return ({"auth/invalid-credential":"بيانات الدخول غير صحيحة.","auth/too-many-requests":"محاولات كثيرة، جرّب لاحقًا.","auth/popup-closed-by-user":"تم إغلاق نافذة Google."})[e.code]||"حصلت مشكلة في الدخول. راجع الإعدادات وحاول مرة أخرى."}
-async function google(){const r=await signInWithPopup(auth,new GoogleAuthProvider());await ensureProfile(r.user);go(isAdmin(r.user)?"admin-dashboard.html":"trainee-dashboard.html")}
-async function login(){try{const r=await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);if(isAdmin(r.user))return go("admin-dashboard.html");const p=await profile(r.user);if(p?.accountStatus!=="active"||p?.subscriptionStatus!=="approved"){await signOut(auth);return status("الحساب معلّق لحين اعتماد الاشتراك من الإدارة.",true)}go("trainee-dashboard.html")}catch(e){status(authErr(e),true)}}
-async function signup(){try{if($("password").value.length<8)return status("كلمة المرور لازم تكون 8 أحرف على الأقل.",true);const r=await createUserWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);await ensureProfile(r.user);await signOut(auth);status("تم إنشاء الحساب. يلزم اعتماد الإدارة قبل الدخول.")}catch(e){status(authErr(e),true)}}
-async function reset(){try{if(!$("email").value.trim())return status("اكتب البريد أولًا.",true);await sendPasswordResetEmail(auth,$("email").value.trim());status("لو البريد مسجل، ستصلك رسالة استعادة كلمة المرور.")}catch(e){status(authErr(e),true)}}
-async function loadTrainee(u){const p=await profile(u);if(p?.accountStatus!=="active"||p?.subscriptionStatus!=="approved"){await signOut(auth);return status("الحساب لم يُعتمد بعد. تواصل مع Highfield.")} $("traineeName").textContent=p.displayName||u.email;$("traineeEmail").textContent=u.email;$("subscriptionStatus").textContent=p.subscriptionStatus;$("accountStatus").textContent=p.accountStatus;$("totalFee").textContent=money(p.totalFee);$("totalPaid").textContent=money(p.totalPaid);$("balance").textContent=money(Math.max(0,Number(p.totalFee||0)-Number(p.totalPaid||0)));const ps=await getDocs(query(collection(db,"paymentSubmissions"),where("uid","==",u.uid)));ps.forEach(s=>{const d=s.data(),li=document.createElement("li");li.textContent=`${money(d.amount)} — ${d.status}`;$("payments").append(li)});const prog=await getDocs(query(collection(db,"trainingProgress"),where("uid","==",u.uid)));prog.forEach(s=>{const d=s.data(),li=document.createElement("li");li.textContent=`${d.programName||"برنامج"} — ${d.status||"لم يبدأ"}`;$("progress").append(li)})}
-async function submitPayment(){const u=auth.currentUser,file=$("proof").files[0],amount=Number($("amount").value);if(!u||!(amount>0)||!file)return status("أدخل المبلغ واختر إثبات الدفع.",true);if(file.size>5*1024*1024||!["image/jpeg","image/png","application/pdf"].includes(file.type))return status("الملف لازم يكون JPG أو PNG أو PDF وأقل من 5MB.",true);try{const path=`payment-proofs/${u.uid}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`,up=await uploadBytes(ref(storage,path),file,{contentType:file.type}),url=await getDownloadURL(up.ref);await addDoc(collection(db,"paymentSubmissions"),{uid:u.uid,amount,proofPath:path,proofUrl:url,method:$("method").value,status:"pending",createdAt:serverTimestamp()});status("تم إرسال الإثبات للمراجعة. لن يتغير الرصيد إلا بعد اعتماد الإدارة.");$("paymentForm").reset()}catch(e){status("تعذر الرفع. تأكد من تفعيل Storage ونشر قواعده.",true)}}
-async function adminLoad(){const ts=await getDocs(collection(db,"trainees"));$("trainees").innerHTML="";ts.forEach(s=>{const d=s.data(),tr=document.createElement("tr");[d.email,d.displayName,d.subscriptionStatus,d.accountStatus,money(d.totalFee),money(d.totalPaid)].forEach(v=>{const td=document.createElement("td");td.textContent=v||"";tr.append(td)});const td=document.createElement("td"),b=document.createElement("button");b.textContent="اعتماد وتفعيل";b.onclick=async()=>{const fee=Number(prompt("قيمة الاشتراك بالجنيه؟","0"));if(!(fee>=0))return;try{await setDoc(doc(db,"trainees",s.id),{subscriptionStatus:"approved",accountStatus:"active",totalFee:fee,totalPaid:Number(d.totalPaid||0),approvedAt:serverTimestamp()},{merge:true});status("تم الاعتماد.");adminLoad()}catch(e){status("تعذر الاعتماد. راجع قواعد Firestore.",true)}};td.append(b);tr.append(td);$("trainees").append(tr)});const ps=await getDocs(query(collection(db,"paymentSubmissions"),where("status","==","pending")));$("pendingPayments").innerHTML="";ps.forEach(s=>{const d=s.data(),tr=document.createElement("tr");[d.uid,money(d.amount),d.method,d.status].forEach(v=>{const td=document.createElement("td");td.textContent=v||"";tr.append(td)});const td=document.createElement("td"),a=document.createElement("a");a.href=d.proofUrl;a.target="_blank";a.rel="noopener";a.textContent="فتح الإثبات";const b=document.createElement("button");b.textContent="اعتماد الدفعة";b.onclick=async()=>{try{await setDoc(doc(db,"paymentSubmissions",s.id),{status:"approved",reviewedAt:serverTimestamp()},{merge:true});const trf=doc(db,"trainees",d.uid),snap=await getDoc(trf),p=snap.data();await setDoc(trf,{totalPaid:Number(p.totalPaid||0)+Number(d.amount||0)},{merge:true});status("تم اعتماد الدفعة وتحديث الرصيد.");adminLoad()}catch(e){status("تعذر اعتماد الدفعة. راجع القواعد.",true)}};td.append(a,b);tr.append(td);$("pendingPayments").append(tr)})}
-onAuthStateChanged(auth,async u=>{const page=document.body.dataset.page;if(page==="login"&&u)return go(isAdmin(u)?"admin-dashboard.html":"trainee-dashboard.html");if(page==="trainee"){if(!u)return go("trainee-login.html");try{await loadTrainee(u)}catch(e){status("تعذر تحميل الحساب. تحقق من القواعد.",true)}}if(page==="admin"){if(!u)return go("trainee-login.html");if(!isAdmin(u))return go("trainee-login.html");try{await adminLoad()}catch(e){status("تعذر تحميل الإدارة. تحقق من القواعد.",true)}}});
-$("googleLogin")?.addEventListener("click",()=>google().catch(e=>status(authErr(e),true)));$("emailLogin")?.addEventListener("click",login);$("signup")?.addEventListener("click",signup);$("resetPassword")?.addEventListener("click",reset);$("logout")?.addEventListener("click",async()=>{await signOut(auth);go("trainee-login.html")});$("paymentForm")?.addEventListener("submit",e=>{e.preventDefault();submitPayment()});
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+
+const app = initializeApp(window.HIGHFIELD_FIREBASE_CONFIG);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+const $ = id => document.getElementById(id);
+const adminEmail = "info@highfieldeg.com";
+
+const isAdmin = user =>
+  (user?.email || "").toLowerCase() === adminEmail;
+
+const status = (message, error = false) => {
+  const element = $("status");
+  if (!element) return;
+
+  element.textContent = message;
+  element.className = error ? "status error" : "status";
+};
+
+const go = url => {
+  location.href = url;
+};
+
+const money = value =>
+  `${Number(value || 0).toLocaleString("en-US")} EGP`;
+
+const profileRef = user => doc(db, "trainees", user.uid);
+
+async function ensureProfile(user) {
+  const reference = profileRef(user);
+  const snapshot = await getDoc(reference);
+
+  if (!snapshot.exists()) {
+    await setDoc(reference, {
+      uid: user.uid,
+      email: user.email || "",
+      displayName: user.displayName || "",
+      subscriptionStatus: "pending",
+      accountStatus: "pending",
+      createdAt: serverTimestamp()
+    });
+  }
+}
+
+async function profile(user) {
+  const snapshot = await getDoc(profileRef(user));
+  return snapshot.exists() ? snapshot.data() : null;
+}
+
+function authErr(error) {
+  const messages = {
+    "auth/invalid-credential": "بيانات الدخول غير صحيحة.",
+    "auth/too-many-requests": "محاولات كثيرة، جرّب لاحقًا.",
+    "auth/popup-closed-by-user": "تم إغلاق نافذة Google.",
+    "auth/email-already-in-use": "البريد الإلكتروني مسجل بالفعل.",
+    "auth/weak-password": "كلمة المرور ضعيفة.",
+    "auth/operation-not-allowed": "طريقة تسجيل الدخول غير مفعّلة."
+  };
+
+  return messages[error.code] ||
+    `حصلت مشكلة: ${error.code || error.message || "خطأ غير معروف"}`;
+}
+
+async function google() {
+  const result = await signInWithPopup(
+    auth,
+    new GoogleAuthProvider()
+  );
+
+  await ensureProfile(result.user);
+
+  go(
+    isAdmin(result.user)
+      ? "admin-dashboard.html"
+      : "trainee-dashboard.html"
+  );
+}
+
+async function login() {
+  try {
+    const result = await signInWithEmailAndPassword(
+      auth,
+      $("email").value.trim(),
+      $("password").value
+    );
+
+    if (isAdmin(result.user)) {
+      go("admin-dashboard.html");
+      return;
+    }
+
+    const data = await profile(result.user);
+
+    if (
+      data?.accountStatus !== "active" ||
+      data?.subscriptionStatus !== "approved"
+    ) {
+      await signOut(auth);
+      status("الحساب معلّق لحين اعتماد الاشتراك من الإدارة.", true);
+      return;
+    }
+
+    go("trainee-dashboard.html");
+  } catch (error) {
+    status(authErr(error), true);
+  }
+}
+
+async function signup() {
+  try {
+    if ($("password").value.length < 8) {
+      status("كلمة المرور لازم تكون 8 أحرف على الأقل.", true);
+      return;
+    }
+
+    const result = await createUserWithEmailAndPassword(
+      auth,
+      $("email").value.trim(),
+      $("password").value
+    );
+
+    await ensureProfile(result.user);
+    await signOut(auth);
+
+    status("تم إنشاء الحساب. يلزم اعتماد الإدارة قبل الدخول.");
+  } catch (error) {
+    status(authErr(error), true);
+  }
+}
+
+async function reset() {
+  try {
+    const email = $("email").value.trim();
+
+    if (!email) {
+      status("اكتب البريد الإلكتروني أولًا.", true);
+      return;
+    }
+
+    await sendPasswordResetEmail(auth, email);
+    status("لو البريد مسجل، ستصلك رسالة استعادة كلمة المرور.");
+  } catch (error) {
+    status(authErr(error), true);
+  }
+}
+
+async function loadTrainee(user) {
+  const data = await profile(user);
+
+  if (
+    data?.accountStatus !== "active" ||
+    data?.subscriptionStatus !== "approved"
+  ) {
+    await signOut(auth);
+    go("trainee-login.html");
+    return;
+  }
+
+  $("traineeName").textContent =
+    data.displayName || user.email || "";
+
+  $("traineeEmail").textContent = user.email || "";
+  $("subscriptionStatus").textContent =
+    data.subscriptionStatus || "—";
+
+  $("accountStatus").textContent =
+    data.accountStatus || "—";
+
+  $("totalFee").textContent = money(data.totalFee);
+  $("totalPaid").textContent = money(data.totalPaid);
+
+  $("balance").textContent = money(
+    Math.max(
+      0,
+      Number(data.totalFee || 0) -
+      Number(data.totalPaid || 0)
+    )
+  );
+
+  const payments = await getDocs(
+    query(
+      collection(db, "paymentSubmissions"),
+      where("uid", "==", user.uid)
+    )
+  );
+
+  $("payments").replaceChildren();
+
+  payments.forEach(snapshot => {
+    const payment = snapshot.data();
+    const item = document.createElement("li");
+
+    item.textContent =
+      `${money(payment.amount)} — ${payment.status}`;
+
+    $("payments").append(item);
+  });
+
+  const progress = await getDocs(
+    query(
+      collection(db, "trainingProgress"),
+      where("uid", "==", user.uid)
+    )
+  );
+
+  $("progress").replaceChildren();
+
+  progress.forEach(snapshot => {
+    const itemData = snapshot.data();
+    const item = document.createElement("li");
+
+    item.textContent =
+      `${itemData.programName || "برنامج"} — ${itemData.status || "لم يبدأ"}`;
+
+    $("progress").append(item);
+  });
+}
+
+async function submitPayment() {
+  const user = auth.currentUser;
+  const file = $("proof").files[0];
+  const amount = Number($("amount").value);
+
+  if (!user || !(amount > 0) || !file) {
+    status("أدخل المبلغ واختر إثبات الدفع.", true);
+    return;
+  }
+
+  if (
+    file.size > 5 * 1024 * 1024 ||
+    !["image/jpeg", "image/png", "application/pdf"].includes(file.type)
+  ) {
+    status("الملف لازم يكون JPG أو PNG أو PDF وأقل من 5MB.", true);
+    return;
+  }
+
+  try {
+    const safeName = file.name.replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_"
+    );
+
+    const path =
+      `payment-proofs/${user.uid}/${Date.now()}-${safeName}`;
+
+    const uploaded = await uploadBytes(
+      ref(storage, path),
+      file,
+      { contentType: file.type }
+    );
+
+    const url = await getDownloadURL(uploaded.ref);
+
+    await addDoc(collection(db, "paymentSubmissions"), {
+      uid: user.uid,
+      amount,
+      proofPath: path,
+      proofUrl: url,
+      method: $("method").value,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    status("تم إرسال الإثبات للمراجعة. لن يتغير الرصيد إلا بعد اعتماد الإدارة.");
+    $("paymentForm").reset();
+  } catch (error) {
+    console.error("Payment submission error:", error);
+    status(
+      `تعذر إرسال الإثبات: ${error.code || error.message || "خطأ غير معروف"}`,
+      true
+    );
+  }
+}
+
+async function adminLoad() {
+  const traineesSnapshot = await getDocs(
+    collection(db, "trainees")
+  );
+
+  $("trainees").replaceChildren();
+
+  traineesSnapshot.forEach(snapshot => {
+    const trainee = snapshot.data();
+    const row = document.createElement("tr");
+
+    [
+      trainee.email,
+      trainee.displayName,
+      trainee.subscriptionStatus,
+      trainee.accountStatus,
+      money(trainee.totalFee),
+      money(trainee.totalPaid)
+    ].forEach(value => {
+      const cell = document.createElement("td");
+      cell.textContent = value ?? "";
+      row.append(cell);
+    });
+
+    const actionCell = document.createElement("td");
+    const approveButton = document.createElement("button");
+
+    approveButton.textContent = "اعتماد وتفعيل";
+
+    approveButton.onclick = async () => {
+      const fee = Number(
+        prompt("قيمة الاشتراك بالجنيه؟", "0")
+      );
+
+      if (!Number.isFinite(fee) || fee < 0) {
+        status("أدخل قيمة اشتراك صحيحة.", true);
+        return;
+      }
+
+      approveButton.disabled = true;
+
+      try {
+        await setDoc(
+          doc(db, "trainees", snapshot.id),
+          {
+            subscriptionStatus: "approved",
+            accountStatus: "active",
+            totalFee: fee,
+            totalPaid: Number(trainee.totalPaid || 0),
+            approvedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        status("تم اعتماد المتدرب وتفعيل حسابه.");
+        await adminLoad();
+      } catch (error) {
+        console.error("Approve trainee error:", error);
+        status(
+          `تعذر الاعتماد: ${error.code || error.message || "خطأ غير معروف"}`,
+          true
+        );
+        approveButton.disabled = false;
+      }
+    };
+
+    actionCell.append(approveButton);
+    row.append(actionCell);
+    $("trainees").append(row);
+  });
+
+  const pendingSnapshot = await getDocs(
+    query(
+      collection(db, "paymentSubmissions"),
+      where("status", "==", "pending")
+    )
+  );
+
+  $("pendingPayments").replaceChildren();
+
+  pendingSnapshot.forEach(snapshot => {
+    const payment = snapshot.data();
+    const row = document.createElement("tr");
+
+    [
+      payment.uid,
+      money(payment.amount),
+      payment.method,
+      payment.status
+    ].forEach(value => {
+      const cell = document.createElement("td");
+      cell.textContent = value ?? "";
+      row.append(cell);
+    });
+
+    const actionCell = document.createElement("td");
+    const proofLink = document.createElement("a");
+
+    proofLink.href = payment.proofUrl || "#";
+    proofLink.target = "_blank";
+    proofLink.rel = "noopener";
+    proofLink.textContent = "فتح الإثبات";
+
+    actionCell.append(proofLink);
+
+    const approveButton = document.createElement("button");
+    approveButton.textContent = "اعتماد الدفعة";
+
+    approveButton.onclick = async () => {
+      approveButton.disabled = true;
+
+      try {
+        const traineeReference = doc(
+          db,
+          "trainees",
+          payment.uid
+        );
+
+        const traineeSnapshot = await getDoc(
+          traineeReference
+        );
+
+        if (!traineeSnapshot.exists()) {
+          throw new Error("ملف المتدرب غير موجود.");
+        }
+
+        const trainee = traineeSnapshot.data();
+
+        await setDoc(
+          doc(db, "paymentSubmissions", snapshot.id),
+          {
+            status: "approved",
+            reviewedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        await setDoc(
+          traineeReference,
+          {
+            totalPaid:
+              Number(trainee.totalPaid || 0) +
+              Number(payment.amount || 0)
+          },
+          { merge: true }
+        );
+
+        status("تم اعتماد الدفعة وتحديث الرصيد.");
+        await adminLoad();
+      } catch (error) {
+        console.error("Approve payment error:", error);
+        status(
+          `تعذر اعتماد الدفعة: ${error.code || error.message || "خطأ غير معروف"}`,
+          true
+        );
+        approveButton.disabled = false;
+      }
+    };
+
+    actionCell.append(approveButton);
+    row.append(actionCell);
+    $("pendingPayments").append(row);
+  });
+}
+
+onAuthStateChanged(auth, async user => {
+  const page = document.body.dataset.page;
+
+  if (page === "login" && user) {
+    go(
+      isAdmin(user)
+        ? "admin-dashboard.html"
+        : "trainee-dashboard.html"
+    );
+    return;
+  }
+
+  if (page === "trainee") {
+    if (!user) {
+      go("trainee-login.html");
+      return;
+    }
+
+    try {
+      await loadTrainee(user);
+    } catch (error) {
+      console.error("Trainee load error:", error);
+      status(
+        `تعذر تحميل الحساب: ${error.code || error.message || "خطأ غير معروف"}`,
+        true
+      );
+    }
+  }
+
+  if (page === "admin") {
+    if (!user) {
+      go("trainee-login.html");
+      return;
+    }
+
+    if (!isAdmin(user)) {
+      go("trainee-login.html");
+      return;
+    }
+
+    try {
+      await adminLoad();
+    } catch (error) {
+      console.error("Admin load error:", error);
+      status(
+        `خطأ الإدارة: ${error.code || error.message || "خطأ غير معروف"}`,
+        true
+      );
+    }
+  }
+});
+
+$("googleLogin")?.addEventListener("click", () => {
+  google().catch(error => status(authErr(error), true));
+});
+
+$("emailLogin")?.addEventListener("click", login);
+$("signup")?.addEventListener("click", signup);
+$("resetPassword")?.addEventListener("click", reset);
+
+$("logout")?.addEventListener("click", async () => {
+  await signOut(auth);
+  go("trainee-login.html");
+});
+
+$("paymentForm")?.addEventListener("submit", event => {
+  event.preventDefault();
+  submitPayment();
+});
