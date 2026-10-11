@@ -157,3 +157,70 @@ body.annual-page{margin:0;background:#fff;color:var(--text);font-family:Poppins,
   color: #355374 !important;
 }
 
+/* HIGHFIELD SCHOLARS 2027 — Improved text contrast */
+/* Scoped to this page only */
+
+.annual-page {
+  color: #183b63;
+}
+
+/* Form labels and headings */
+.annual-page .annual-form label,
+.annual-page .annual-form label span,
+.annual-page .form-title h3,
+.annual-page .form-title p {
+  color: #24476e !important;
+}
+
+/* Input text */
+.annual-page .annual-form input:not([type="checkbox"]),
+.annual-page .annual-form select,
+.annual-page .annual-form textarea {
+  color: #183b63 !important;
+  -webkit-text-fill-color: #183b63;
+  border-color: #c5d5e8 !important;
+  background-color: #fff !important;
+}
+
+/* Placeholder text */
+.annual-page .annual-form input::placeholder,
+.annual-page .annual-form textarea::placeholder {
+  color: #788ba3 !important;
+  -webkit-text-fill-color: #788ba3;
+  opacity: 1 !important;
+}
+
+/* Clear focus state */
+.annual-page .annual-form input:focus,
+.annual-page .annual-form select:focus,
+.annual-page .annual-form textarea:focus {
+  border-color: #4387d5 !important;
+  outline: 2px solid rgba(67, 135, 213, 0.15);
+  outline-offset: 1px;
+}
+
+/* Descriptive text */
+.annual-page .registration-copy p,
+.annual-page .registration-notes p,
+.annual-page .privacy-note {
+  color: #526b89 !important;
+}
+
+/* Schedule table: prevent text from fading on click */
+.annual-page .schedule-table tbody tr,
+.annual-page .schedule-table tbody tr:hover,
+.annual-page .schedule-table tbody tr:active {
+  background-color: #fff !important;
+}
+
+.annual-page .schedule-table tbody td,
+.annual-page .schedule-table tbody tr:hover td,
+.annual-page .schedule-table tbody tr:active td {
+  color: #294969 !important;
+  -webkit-text-fill-color: #294969 !important;
+}
+
+.annual-page .schedule-table tbody tr {
+  -webkit-tap-highlight-color: transparent;
+}
+
