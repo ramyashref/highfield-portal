@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  sendEmailVerification,
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -121,6 +122,18 @@ async function login() {
     );
 
     if (isAdmin(result.user)) {
+      await result.user.reload();
+
+      if (!result.user.emailVerified) {
+        await sendEmailVerification(result.user);
+        await signOut(auth);
+        status(
+          "تم إرسال رسالة تحقق إلى بريد الإدارة. افتح الرسالة واضغط رابط التحقق ثم سجّل الدخول مجددًا.",
+          true
+        );
+        return;
+      }
+
       go("admin-dashboard.html");
       return;
     }
@@ -138,6 +151,7 @@ async function login() {
 
     go("trainee-dashboard.html");
   } catch (error) {
+    console.error("Login error:", error);
     status(authErr(error), true);
   }
 }
