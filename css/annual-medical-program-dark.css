@@ -139,3 +139,167 @@ body.annual-page{background:radial-gradient(ellipse at 50% 0%,#0a2b51 0,#031329 
  .annual-form label:has(input[type=checkbox]),.annual-form .form-consent{grid-column:1}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.annual-page *{transition:none!important;animation:none!important}}
+
+
+
+/* FINAL LAYOUT NORMALIZATION — consistent rhythm and card geometry */
+.annual-page{
+  --hf-content-width:1200px;
+  --hf-space-1:6px;--hf-space-2:10px;--hf-space-3:16px;--hf-space-4:24px;--hf-space-5:36px;
+}
+.annual-page .shell{width:min(var(--hf-content-width),calc(100% - 48px))!important}
+.annual-header .annual-nav{width:min(var(--hf-content-width),calc(100% - 48px))!important;margin-inline:auto!important}
+.annual-hero{
+  min-height:0!important;
+  padding-top:42px!important;
+  display:grid!important;
+  grid-template-columns:minmax(0, .92fr) minmax(0, 1.08fr)!important;
+  column-gap:34px!important;
+  align-items:center!important;
+}
+.scholars-hero-photo{
+  top:0!important;bottom:0!important;right:0!important;left:46%!important;width:54%!important;
+  border-radius:0 0 0 18px!important;
+  background-position:center!important;
+  opacity:.86!important;
+}
+.scholars-hero-copy{
+  max-width:100%!important;
+  padding:20px 0 30px!important;
+}
+.scholars-hero h1{
+  font-size:clamp(44px,4.5vw,66px)!important;
+  line-height:.98!important;
+  letter-spacing:-1.9px!important;
+  margin:15px 0 16px!important;
+}
+.hero-lead{max-width:500px!important;font-size:clamp(16px,1.55vw,21px)!important;line-height:1.38!important}
+.annual-intro{max-width:500px!important;font-size:11px!important;line-height:1.7!important}
+.scholars-hero-actions{gap:10px!important;margin-top:0!important}
+.scholars-hero-cta,.scholars-secondary-cta{min-height:42px!important;padding:12px 16px!important}
+.annual-stats{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  min-height:96px!important;
+  padding:14px 10px!important;
+  margin:0 0 20px!important;
+}
+.annual-stats .stat-item{
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:40px minmax(0,1fr)!important;
+  align-content:center!important;
+  align-items:center!important;
+  gap:10px!important;
+  padding:7px 14px!important;
+}
+.annual-stats .stat-icon{width:40px!important;height:40px!important;flex-basis:40px!important}
+.annual-stats .stat-item strong{font-size:24px!important;line-height:1.05!important;white-space:nowrap}
+.annual-stats .stat-item>div{min-width:0}
+.annual-stats .stat-item>div>span,.annual-stats .stat-label{font-size:11px!important;line-height:1.35!important}
+.annual-stats .stat-item small{font-size:9px!important;line-height:1.45!important}
+.annual-highlights{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:0!important;
+  margin:0 0 38px!important;
+  align-items:stretch!important;
+}
+.annual-highlights .highlight-item{
+  min-width:0!important;
+  min-height:72px!important;
+  grid-template-columns:38px minmax(0,1fr)!important;
+  align-content:start!important;
+  padding:12px 14px!important;
+  column-gap:10px!important;
+}
+.annual-highlights .highlight-icon{width:36px!important;height:36px!important}
+.annual-highlights .highlight-item h3{font-size:11px!important;line-height:1.35!important}
+.annual-highlights .highlight-item p{font-size:9px!important;line-height:1.55!important}
+.annual-calendar{padding:0 0 34px!important}
+.annual-section-heading{
+  align-items:end!important;
+  margin:0 0 18px!important;
+}
+.annual-section-heading h2{font-size:clamp(24px,2.6vw,32px)!important;line-height:1.18!important}
+.annual-section-heading p{max-width:340px!important;font-size:11px!important;line-height:1.6!important}
+.month-jump{gap:7px!important;margin:0 0 14px!important}
+.month-jump a{min-width:36px!important;text-align:center!important;padding:7px 9px!important}
+.months-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  gap:12px!important;
+}
+.month-card{
+  display:flex!important;flex-direction:column!important;
+  min-width:0!important;min-height:245px!important;
+  padding:0 13px 12px!important;
+  border-radius:10px!important;
+}
+.month-card .month-heading{
+  min-height:58px!important;
+  margin:0 -13px 10px!important;
+  padding:12px 13px 10px!important;
+  background:rgba(1,12,28,.62)!important;
+  border-bottom:1px solid rgba(62,142,220,.18)!important;
+  align-items:center!important;
+}
+.month-card .month-en{font-size:17px!important;line-height:1.15!important}
+.month-card .month-ar{font-size:10px!important;line-height:1.4!important}
+.month-card .month-total{font-size:9px!important;padding:5px 8px!important;flex-shrink:0}
+.month-card table{table-layout:fixed!important;width:100%!important}
+.month-card tbody{display:block!important}
+.month-card tbody tr{display:block!important;margin:0 0 8px!important}
+.month-card tbody td{padding:0!important}
+.month-card tbody td strong{font-size:10px!important;line-height:1.4!important}
+.month-card .arabic-program,.month-card td.days span{font-size:9px!important;line-height:1.45!important}
+.month-card:after{margin-top:auto!important;padding-top:0!important;flex-shrink:0}
+.annual-registration{padding:28px 0 46px!important}
+.registration-columns{
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)!important;
+  align-items:start!important;gap:28px!important;padding:26px!important;
+}
+.annual-form{align-content:start!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.annual-form label{min-width:0!important;line-height:1.45!important}
+.annual-form input:not([type=checkbox]),.annual-form select,.annual-form textarea{min-width:0!important}
+@media(max-width:980px){
+ .annual-hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;column-gap:22px!important}
+ .scholars-hero h1{font-size:clamp(42px,5.8vw,58px)!important}
+ .annual-stats .stat-item{padding-inline:8px!important;gap:8px!important}
+ .annual-stats .stat-icon{width:34px!important;height:34px!important}
+ .annual-stats .stat-item{grid-template-columns:34px minmax(0,1fr)!important}
+ .annual-stats .stat-item strong{font-size:21px!important}
+ .annual-highlights .highlight-item{padding-inline:9px!important;grid-template-columns:32px minmax(0,1fr)!important;gap:8px!important}
+ .annual-highlights .highlight-icon{width:31px!important;height:31px!important}
+ .months-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:720px){
+ .annual-page .shell,.annual-header .annual-nav{width:calc(100% - 30px)!important}
+ .annual-hero{grid-template-columns:1fr!important;padding-top:24px!important}
+ .scholars-hero-photo{left:0!important;width:100%!important;opacity:.32!important;border-radius:0!important}
+ .scholars-hero-copy{padding:28px 0 26px!important;max-width:570px!important}
+ .scholars-hero h1{font-size:clamp(42px,11vw,58px)!important}
+ .annual-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;min-height:0!important;gap:0!important}
+ .annual-stats .stat-item{min-height:72px!important;padding:9px!important}
+ .annual-stats .stat-item:nth-child(odd){border-right:1px solid rgba(95,159,225,.25)!important}
+ .annual-stats .stat-item:nth-child(-n+2){border-bottom:1px solid rgba(95,159,225,.2)!important}
+ .annual-highlights{grid-template-columns:repeat(2,minmax(0,1fr))!important;margin-bottom:28px!important}
+ .annual-highlights .highlight-item{min-height:78px!important}
+ .annual-highlights .highlight-item:nth-child(2){border-right:0!important}
+ .annual-highlights .highlight-item:nth-child(-n+2){border-bottom:1px solid rgba(34,136,226,.25)!important}
+ .annual-section-heading{display:block!important}
+ .annual-section-heading p{margin-top:8px!important}
+ .months-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .month-card{min-height:230px!important;padding:0 10px 10px!important}
+ .month-card .month-heading{margin-inline:-10px!important;padding-inline:10px!important;min-height:54px!important}
+ .month-card .month-en{font-size:15px!important}
+ .month-card .month-total{font-size:8px!important;padding:4px 6px!important}
+ .registration-columns{grid-template-columns:1fr!important;padding:16px!important;gap:18px!important}
+}
+@media(max-width:420px){
+ .months-grid{grid-template-columns:1fr!important}
+ .month-card{min-height:0!important}
+ .month-card tbody tr{margin-bottom:9px!important}
+ .annual-highlights .highlight-item{padding:10px 5px!important}
+ .scholars-hero-actions{align-items:stretch!important}
+ .scholars-hero-cta,.scholars-secondary-cta{font-size:10px!important;padding:11px 12px!important}
+}
