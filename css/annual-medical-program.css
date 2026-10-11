@@ -32,7 +32,7 @@ body.annual-page{margin:0;background:#fff;color:var(--text);font-family:Poppins,
 .button-primary{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 7px 18px #1478ed20}
 .button-primary:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
 .button-secondary{background:#fff;border-color:#c7d9f2;color:var(--navy)}
-.hero-image{position:relative;min-height:390px;align-self:stretch;border-radius:16px;overflow:hidden;background:#eaf2fb url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1500&q=85") center/cover no-repeat}
+.hero-image{position:relative;min-height:390px;align-self:stretch;border-radius:16px;overflow:hidden;background:#eaf2fb url("../assets/highfield-scholars-hero.png") center/cover no-repeat}
 .hero-image:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.38),transparent 44%),linear-gradient(0deg,rgba(8,34,69,.35),transparent 35%)}
 .image-caption{position:absolute;bottom:17px;left:17px;display:flex;align-items:center;gap:8px;border:1px solid #ffffff80;border-radius:30px;padding:9px 12px;background:#ffffffdf;color:var(--navy);font-size:8px;font-weight:700;letter-spacing:1px}
 .caption-dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
