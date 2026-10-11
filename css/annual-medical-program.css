@@ -38,3 +38,8 @@ html{scroll-behavior:smooth;scroll-padding-top:105px}.annual-page{background:#ff
 @media(max-width:1050px){.specialty-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:760px){.about-visual-panel{min-height:260px;padding:28px 24px}.specialty-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.specialty-card{min-height:145px}.annual-deadline{margin-top:19px}}
 @media(max-width:400px){.specialty-grid{grid-template-columns:1fr}.specialty-card{min-height:unset}}
+
+/* HIGHFIELD SCHOLARS branding update */
+.scholars-brand-panel h3 { letter-spacing: -.035em; }
+.scholar-brand-panel h3 span,
+.scholars-brand-panel h3 span { color: var(--annual-blue, #2468b4); }
