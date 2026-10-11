@@ -134,61 +134,56 @@ body.annual-page{margin:0;background:#fff;color:var(--text);font-family:Poppins,
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
 
-
-/* ===== HIGHFIELD SCHOLARS: higher-contrast registration styling ===== */
-.annual-registration {
-  background:
-    radial-gradient(ellipse at 0% 100%, rgba(20, 120, 237, .055), transparent 36%),
-    linear-gradient(115deg, #f7faff 0%, #ffffff 48%, #f1f7ff 100%);
-  padding-top: 18px;
+/* HOTFIX 2026-10-11: force readable contrast in the annual registration form */
+body.annual-page #registration .registration-copy h2,
+body.annual-page #registration .registration-copy h3,
+body.annual-page #registration .form-title h3 {
+  color: #092653 !important;
 }
-.registration-columns {
-  border-color: #d6e4f4;
-  background: linear-gradient(135deg, #f7faff 0%, #ffffff 48%, #f4f8ff 100%);
-  box-shadow: 0 16px 38px rgba(11, 40, 85, .07);
+body.annual-page #registration .registration-copy > p,
+body.annual-page #registration .registration-notes p,
+body.annual-page #registration .form-title p {
+  color: #425b7c !important;
 }
-.registration-copy h2, .registration-copy h3 { color: #092653; }
-.registration-copy > p, .registration-notes p { color: #536b8b; }
-.registration-notes strong { color: #0b2855; }
-.annual-form {
-  border-color: #d0e0f3;
-  background: rgba(255, 255, 255, .97);
-  box-shadow: 0 8px 24px rgba(11, 40, 85, .045);
+body.annual-page #registration .form-grid label,
+body.annual-page #registration .form-grid label > span {
+  color: #18385f !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
 }
-.form-title h3 { color: #092653; font-size: 18px; font-weight: 800; }
-.form-title p, .form-grid small { color: #647b99; }
-.form-grid label { color: #12345e; font-size: 11px; font-weight: 700; }
-.form-grid b, .consent b { color: #d92d20; }
-.form-grid input, .form-grid select {
-  border: 1px solid #c5d7ec;
-  background: #f7faff;
-  color: #17385f;
-  min-height: 43px;
-  font-size: 12px;
-  box-shadow: inset 0 1px 2px rgba(11, 40, 85, .025);
+body.annual-page #registration .form-grid label small {
+  color: #526b8b !important;
+  opacity: 1 !important;
 }
-.form-grid input::placeholder { color: #7185a1; opacity: 1; }
-.form-grid input:focus, .form-grid select:focus {
-  border-color: #1677e8;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(20, 120, 237, .13);
+body.annual-page #registration .form-grid input,
+body.annual-page #registration .form-grid select {
+  color: #18385f !important;
+  background-color: #f5f9ff !important;
+  border: 1px solid #b7cce5 !important;
+  opacity: 1 !important;
 }
-.consent { color: #334f73; font-size: 11px; }
-.consent input { width: 17px; height: 17px; accent-color: #0968d7; }
-.submit-button {
-  min-height: 48px;
-  border-radius: 9px;
-  background: linear-gradient(100deg, #0755b5 0%, #0878ed 100%);
-  border-color: #0968d7;
-  box-shadow: 0 8px 18px rgba(9, 104, 215, .18);
-  font-size: 12px;
+body.annual-page #registration .form-grid input::placeholder {
+  color: #657c99 !important;
+  opacity: 1 !important;
 }
-.submit-button:hover { background: linear-gradient(100deg, #064796 0%, #075fc4 100%); }
-.form-status { color: #536b8b; }
-.form-status.success { color: #137547; }
-.form-status.error { color: #b42318; }
-@media (max-width: 720px) {
-  .annual-registration { padding-top: 8px; }
-  .registration-columns { background: #f7faff; }
-  .annual-form { padding: 16px; }
+body.annual-page #registration .consent {
+  color: #334d70 !important;
+  opacity: 1 !important;
+}
+body.annual-page #registration .annual-form {
+  background: #ffffff !important;
+  border-color: #cbdcf0 !important;
+}
+body.annual-page #registration .registration-columns {
+  background: linear-gradient(120deg, #f3f7fd 0%, #ffffff 55%, #eef5ff 100%) !important;
+  border-color: #cbdcf0 !important;
+}
+body.annual-page #registration .submit-button {
+  background: #086be0 !important;
+  border-color: #086be0 !important;
+  color: #ffffff !important;
+}
+body.annual-page #registration .submit-button span {
+  color: #ffffff !important;
+  opacity: 1 !important;
 }
