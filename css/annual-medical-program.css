@@ -12,3 +12,29 @@ html{scroll-behavior:smooth;scroll-padding-top:105px}.annual-page{background:#ff
 @media(max-width:400px){.annual-page .shell{width:90vw}.hero-visual{height:285px}.hero-image-caption strong{font-size:17px}.about-gallery{grid-template-columns:1fr .72fr;gap:8px}.about-main-image{height:245px}.about-small-stack img{height:118px}.specialty-grid{grid-template-columns:1fr}.specialty-card{min-height:unset}.stat-item{gap:7px}.stat-icon{width:33px;height:33px;flex-basis:33px;font-size:17px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.annual-page *{animation:none!important;transition:none!important}}
 @media print{.annual-header,.annual-registration,.annual-footer,.annual-final-cta,.hero-actions,.month-jump{display:none}.annual-page{background:white}.annual-hero{padding:20px 0}.months-grid{grid-template-columns:repeat(3,1fr);gap:10px}.month-card{box-shadow:none;break-inside:avoid}.annual-calendar{padding:0}.reveal{opacity:1;transform:none}}
+
+/* Annual program content refinements */
+.annual-deadline{display:grid;gap:6px;max-width:430px;margin-top:24px;padding:17px 20px;border:1px solid #ead7a8;border-left:3px solid var(--annual-gold);border-radius:12px;background:linear-gradient(110deg,#fffaf0,#fff);box-shadow:0 10px 26px rgba(20,55,100,.055)}
+.deadline-label{font-size:9px;letter-spacing:1.8px;font-weight:800;color:#a77b2d}
+.annual-deadline strong{font-family:Poppins,sans-serif;font-size:clamp(15px,1.5vw,19px);line-height:1.4;color:var(--annual-navy)}
+.annual-deadline small{font-size:10px;color:var(--annual-muted)}
+.stat-item .stat-label{font-family:Poppins,sans-serif;font-size:10px!important;letter-spacing:1.15px;font-weight:800!important;color:#a77b2d!important}
+.stat-cert strong{font-family:Poppins,sans-serif;font-size:14px!important;letter-spacing:.25px!important;line-height:1.3}
+.about-package-note{display:grid;gap:6px;margin-top:23px;padding:17px 19px;border-radius:12px;border:1px solid #e7edf6;background:#f8faff}
+.about-package-note span{font-size:9px;letter-spacing:1.8px;font-weight:800;color:#ad812f}
+.about-package-note strong{font-size:12px;color:var(--annual-navy);line-height:1.6}
+.about-package-note small{font-size:10px;color:var(--annual-muted);line-height:1.6}
+.about-visual-panel{position:relative;overflow:hidden;min-height:300px;padding:38px 36px;border:1px solid #e4eaf3;border-radius:22px;background:radial-gradient(circle at 85% 15%,rgba(201,155,67,.13),transparent 27%),linear-gradient(135deg,#fbfcff,#f1f6ff 62%,#fffaf0);box-shadow:var(--annual-shadow);display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.about-visual-panel:after{content:"";position:absolute;width:230px;height:230px;right:-90px;bottom:-115px;border:1px solid rgba(201,155,67,.35);border-radius:50%;box-shadow:0 0 0 18px rgba(201,155,67,.04),0 0 0 38px rgba(201,155,67,.025)}
+.about-visual-emblem{width:58px;height:58px;border:1px solid #d8b86a;border-radius:50%;display:grid;place-items:center;color:var(--annual-navy);font-family:Poppins,sans-serif;font-size:29px;font-weight:800;margin-bottom:25px;box-shadow:inset 0 0 0 5px rgba(201,155,67,.09)}
+.about-visual-emblem span{position:absolute;margin-top:85px;font-size:7px;letter-spacing:1.4px;font-weight:800;white-space:nowrap;color:#9c772f}
+.about-visual-panel h3{position:relative;z-index:1;margin:10px 0 12px;color:var(--annual-navy);font-size:clamp(22px,2.5vw,31px);line-height:1.2;letter-spacing:-.8px}
+.about-visual-panel p{position:relative;z-index:1;max-width:410px;font-size:12px;line-height:1.8;color:var(--annual-muted)}
+.about-visual-rule{height:2px;width:64px;margin:13px 0;background:linear-gradient(90deg,var(--annual-gold),transparent)}
+.about-visual-panel>small{font-size:8px;letter-spacing:1.7px;font-weight:800;color:#71839c}
+.specialty-card em{position:absolute;right:15px;top:21px;font-size:8px;font-style:normal;font-weight:800;letter-spacing:1px;color:#a77b2d;text-transform:uppercase}
+.specialty-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.specialty-card{padding-top:20px;min-height:150px}
+@media(max-width:1050px){.specialty-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.about-visual-panel{min-height:260px;padding:28px 24px}.specialty-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.specialty-card{min-height:145px}.annual-deadline{margin-top:19px}}
+@media(max-width:400px){.specialty-grid{grid-template-columns:1fr}.specialty-card{min-height:unset}}
