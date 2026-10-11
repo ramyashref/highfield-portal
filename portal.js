@@ -36,7 +36,7 @@ import {
 
 const app = initializeApp(window.HIGHFIELD_FIREBASE_CONFIG);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getFirestore(app, "highfield-scholars-2027");
 const storage = getStorage(app);
 
 const $ = id => document.getElementById(id);
