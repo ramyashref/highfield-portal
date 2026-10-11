@@ -1,177 +1,48 @@
-
 (() => {
-  'use strict';
+"use strict";
+const MONTHS = [{"month": "January", "monthAr": "يناير", "programs": [{"name": "BLS - Basic Life Support", "nameAr": "دعم الحياة الأساسي", "days": 2, "type": "Practical"}, {"name": "ECG - Electrocardiography", "nameAr": "تخطيط القلب الكهربائي", "days": 3, "type": "Practical"}, {"name": "Hypertension Management", "nameAr": "إدارة ارتفاع ضغط الدم", "days": 1, "type": "Theoretical + Practical"}]}, {"month": "February", "monthAr": "فبراير", "programs": [{"name": "Infection Prevention & Control", "nameAr": "مكافحة العدوى", "days": 2, "type": "Theoretical + Practical"}, {"name": "Airway Management", "nameAr": "إدارة مجرى الهواء", "days": 2, "type": "Practical"}, {"name": "Emergency Medicine Essentials", "nameAr": "أساسيات طب الطوارئ", "days": 3, "type": "Theoretical + Practical"}]}, {"month": "March", "monthAr": "مارس", "programs": [{"name": "Mechanical Ventilation", "nameAr": "التهوية الميكانيكية", "days": 3, "type": "Practical"}, {"name": "ICU Essentials", "nameAr": "أساسيات العناية المركزة", "days": 3, "type": "Theoretical + Practical"}]}, {"month": "April", "monthAr": "أبريل", "programs": [{"name": "Musculoskeletal Ultrasound", "nameAr": "الموجات فوق الصوتية للجهاز العضلي الهيكلي", "days": 3, "type": "Practical"}, {"name": "Doppler Ultrasound in Clinical Practice", "nameAr": "الدوبلر في الممارسة الإكلينيكية", "days": 2, "type": "Practical"}]}, {"month": "May", "monthAr": "مايو", "programs": [{"name": "Therapeutic Nutrition", "nameAr": "التغذية العلاجية", "days": 3, "type": "Theoretical + Practical"}, {"name": "Obesity Management", "nameAr": "علاج السمنة", "days": 2, "type": "Theoretical + Practical"}, {"name": "Nutrition in Chronic Diseases", "nameAr": "التغذية في الأمراض المزمنة", "days": 2, "type": "Theoretical + Practical"}]}, {"month": "June", "monthAr": "يونيو", "programs": [{"name": "Obstetric Emergencies", "nameAr": "طوارئ النساء والتوليد", "days": 2, "type": "Practical"}, {"name": "Basic Obstetric Ultrasound", "nameAr": "أساسيات سونار النساء والتوليد", "days": 3, "type": "Practical"}, {"name": "CTG Interpretation", "nameAr": "قراءة تخطيط قلب الجنين", "days": 2, "type": "Practical"}]}, {"month": "July", "monthAr": "يوليو", "programs": [{"name": "Healthcare Quality Management", "nameAr": "إدارة جودة الرعاية الصحية", "days": 3, "type": "Theoretical + Practical"}, {"name": "Diabetes Mellitus Management", "nameAr": "إدارة مرض السكري", "days": 2, "type": "Theoretical + Practical"}]}, {"month": "August", "monthAr": "أغسطس", "programs": [{"name": "Dermatology Essentials", "nameAr": "أساسيات الأمراض الجلدية", "days": 2, "type": "Theoretical + Practical"}, {"name": "Aesthetic Medicine Safety", "nameAr": "سلامة الطب التجميلي", "days": 2, "type": "Theoretical + Practical"}, {"name": "Botulinum Toxin & Dermal Fillers", "nameAr": "البوتولينوم والفيلر", "days": 2, "type": "Practical"}]}, {"month": "September", "monthAr": "سبتمبر", "programs": [{"name": "Neonatal Resuscitation", "nameAr": "إنعاش حديثي الولادة", "days": 2, "type": "Practical"}, {"name": "Pediatric Emergency Essentials", "nameAr": "أساسيات طوارئ الأطفال", "days": 2, "type": "Practical"}, {"name": "Simulation-Based Medical Training", "nameAr": "التدريب الطبي القائم على المحاكاة", "days": 2, "type": "Practical"}]}, {"month": "October", "monthAr": "أكتوبر", "programs": [{"name": "Healthcare Project Management", "nameAr": "إدارة المشروعات الصحية", "days": 2, "type": "Theoretical + Practical"}, {"name": "Training of Trainers (TOT)", "nameAr": "إعداد المدربين", "days": 3, "type": "Theoretical + Practical"}, {"name": "Clinical Pharmacology & Rational Drug Use", "nameAr": "علم الأدوية السريري والاستخدام الرشيد", "days": 2, "type": "Theoretical + Practical"}]}, {"month": "November", "monthAr": "نوفمبر", "programs": [{"name": "AI in Healthcare", "nameAr": "الذكاء الاصطناعي في الرعاية الصحية", "days": 2, "type": "Theoretical + Practical"}, {"name": "Medical Research & Evidence-Based Practice", "nameAr": "البحث الطبي والممارسة المبنية على الدليل", "days": 2, "type": "Theoretical + Practical"}, {"name": "Medical Marketing & Personal Branding", "nameAr": "التسويق الطبي وبناء العلامة الشخصية", "days": 2, "type": "Theoretical + Practical"}]}, {"month": "December", "monthAr": "ديسمبر", "programs": [{"name": "Gynecological Ultrasound", "nameAr": "سونار أمراض النساء", "days": 3, "type": "Practical"}, {"name": "Female Aesthetic Medicine", "nameAr": "التجميل الطبي النسائي", "days": 2, "type": "Practical"}, {"name": "Women's Intimate Health", "nameAr": "صحة المرأة والاضطرابات الحميمة", "days": 2, "type": "Theoretical + Practical"}]}];
+const all = MONTHS.flatMap((m,mi)=>m.programs.map(p=>({...p,month:m.month,monthAr:m.monthAr,monthIndex:mi})));
+const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let filtered=[...all], page=1; const size=10;
+function renderCalendar(){
+ $("monthJump").innerHTML=MONTHS.map((m,i)=>`<a href="#month-${i+1}">${m.month.slice(0,3).toUpperCase()}</a>`).join("");
+ $("monthsGrid").innerHTML=MONTHS.map((m,i)=>{
+ const days=m.programs.reduce((a,p)=>a+p.days,0);
+ return `<article class="month-card" id="month-${i+1}"><header class="month-heading"><div><span class="month-en">${esc(m.month)}</span><span class="month-ar" lang="ar" dir="rtl">${esc(m.monthAr)}</span></div><span class="month-total">${days} days</span></header><div class="month-programs">${m.programs.map(p=>`<div class="month-program"><strong>${esc(p.name)}</strong><span class="arabic-program" lang="ar" dir="rtl">${esc(p.nameAr)}</span><span class="program-days">${p.days} ${p.days===1?"day":"days"}</span></div>`).join("")}</div></article>`
+ }).join("");
+}
+function renderTable(){
+ const start=(page-1)*size, rows=filtered.slice(start,start+size);
+ $("scheduleBody").innerHTML=rows.map((p,i)=>`<tr><td>${start+i+1}</td><td>${esc(p.month)}<br><span lang="ar" dir="rtl">${esc(p.monthAr)}</span></td><td>${esc(p.name)}</td><td lang="ar" dir="rtl">${esc(p.nameAr)}</td><td>${p.days} ${p.days===1?"Day":"Days"}</td><td>${esc(p.type)}</td></tr>`).join("");
+ const pages=Math.max(1,Math.ceil(filtered.length/size));
+ $("scheduleCount").textContent=filtered.length?`Showing ${start+1}–${Math.min(start+size,filtered.length)} of ${filtered.length} programs / عرض البرامج`:"No programs found / لم يتم العثور على برامج";
+ const nav=$("pagination"); nav.innerHTML="";
+ const add=(label,to,disabled=false,current=false)=>{const b=document.createElement("button");b.type="button";b.textContent=label;b.disabled=disabled;if(current)b.setAttribute("aria-current","page");b.onclick=()=>{page=to;renderTable()};nav.appendChild(b)};
+ add("‹",Math.max(1,page-1),page===1);for(let i=1;i<=pages;i++)add(String(i),i,false,i===page);add("›",Math.min(pages,page+1),page===pages);
+}
+$("programSearch").addEventListener("input",e=>{const q=e.target.value.trim().toLocaleLowerCase();filtered=all.filter(p=>[p.name,p.nameAr,p.month,p.monthAr,p.type].some(v=>v.toLocaleLowerCase().includes(q)));page=1;renderTable()});
+$("downloadSchedule").addEventListener("click",()=>{const rows=[["Month","Month (AR)","Program (EN)","Program (AR)","Duration (days)","Type"],...all.map(p=>[p.month,p.monthAr,p.name,p.nameAr,p.days,p.type])];const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="HIGHFIELD-SCHOLARS-2027-Program-Plan.csv";a.click();URL.revokeObjectURL(url)});
+const menu=$("annualLinks"), menuBtn=document.querySelector(".annual-menu");
+menuBtn.addEventListener("click",()=>{const open=menu.classList.toggle("is-open");menuBtn.setAttribute("aria-expanded",String(open))});
+menu.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{menu.classList.remove("is-open");menuBtn.setAttribute("aria-expanded","false")}));
+renderCalendar();renderTable();
 
-  const form = document.getElementById('annualRegistrationForm');
-  const status = document.getElementById('annualFormStatus');
-  const button = form?.querySelector('button[type="submit"]');
-  const buttonText = button?.querySelector('span');
-  const menu = document.querySelector('.annual-menu');
-  const links = document.querySelector('.annual-links');
-
-  const ENDPOINT =
-    'https://script.google.com/macros/s/AKfycbwwNqM8XNOB5sEtlgiM-5ivyQvrLCd5O2SE1b0iawto7eVSfSIkmD5k0KCZAWPjGIfKvw/exec';
-
-  // Mobile navigation
-  menu?.addEventListener('click', () => {
-    if (!links) return;
-
-    const isOpen = links.classList.toggle('open');
-    menu.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  links?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      links.classList.remove('open');
-      menu?.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  // Reveal animations with reduced-motion support
-  const revealItems = document.querySelectorAll('.reveal');
-
-  if (
-    'IntersectionObserver' in window &&
-    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  ) {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    revealItems.forEach(item => observer.observe(item));
-  } else {
-    revealItems.forEach(item => item.classList.add('is-visible'));
-  }
-
-  if (!form || !status) {
-    console.error(
-      'HIGHFIELD SCHOLARS: registration form or status element not found.'
-    );
-    return;
-  }
-
-  let isSubmitting = false;
-
-  function setStatus(type, message) {
-    status.className = `annual-form-status ${type}`;
-    status.textContent = message;
-    status.setAttribute('role', type === 'error' ? 'alert' : 'status');
-    status.setAttribute('aria-live', 'polite');
-  }
-
-  function setButtonState(isLoading) {
-    if (button) {
-      button.disabled = isLoading;
-      button.setAttribute('aria-busy', String(isLoading));
-    }
-
-    if (buttonText) {
-      buttonText.textContent = isLoading
-        ? 'Submitting...'
-        : 'Submit Registration';
-    }
-  }
-
-  form.addEventListener('submit', async event => {
-    event.preventDefault();
-
-    // Prevent duplicate submissions
-    if (isSubmitting) return;
-
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      setStatus(
-        'error',
-        'Please complete all required fields correctly. / برجاء استكمال الحقول الإلزامية بصورة صحيحة.'
-      );
-      return;
-    }
-
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
-
-    // Registration metadata
-    payload.programName = 'HIGHFIELD SCHOLARS';
-    payload.programYear = '2027';
-    payload.fullName = payload.englishName || '';
-    payload.nationalId = payload.nationalIdOrPassport || '';
-    payload.submittedAt = new Date().toISOString();
-    payload.sourcePage = window.location.href;
-    payload.consent = formData.has('consent');
-
-    if (!payload.consent) {
-      setStatus(
-        'error',
-        'Please confirm your information before submitting. / برجاء تأكيد صحة البيانات قبل الإرسال.'
-      );
-      return;
-    }
-
-    isSubmitting = true;
-    setButtonState(true);
-
-    setStatus(
-      'loading',
-      'Sending your registration request... / جارٍ إرسال طلب التسجيل.'
-    );
-
-    try {
-      const response = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
-        },
-        body: JSON.stringify(payload),
-        redirect: 'follow'
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-      }
-
-      let result;
-
-      try {
-        result = await response.json();
-      } catch {
-        throw new Error('The server response was not valid JSON.');
-      }
-
-      if (!result || result.success !== true) {
-        throw new Error(
-          result?.message || 'The registration was not accepted.'
-        );
-      }
-
-      setStatus(
-        'success',
-        'Your registration request has been sent successfully. The Highfield team will contact you. / تم إرسال طلب التسجيل بنجاح، وسيتواصل معك فريق هايفيلد.'
-      );
-
-      form.reset();
-
-    } catch (error) {
-      console.error(
-        'HIGHFIELD SCHOLARS registration error:',
-        error
-      );
-
-      setStatus(
-        'error',
-        'Online submission could not be confirmed. Please contact Highfield on WhatsApp: 01101669115. / لم نتمكن من تأكيد الإرسال إلكترونيًا؛ يُرجى التواصل مع هايفيلد عبر واتساب 01101669115.'
-      );
-
-    } finally {
-      isSubmitting = false;
-      setButtonState(false);
-    }
-  });
+const form=$("annualRegistrationForm"), status=$("annualFormStatus"), submit=form.querySelector('[type="submit"]');
+const endpoint="https://script.google.com/macros/s/AKfycbwwNqM8XNOB5sEtlgiM-5ivyQvrLCd5O2SE1b0iawto7eVSfSIkmD5k0KCZAWPjGIfKvw/exec";
+let sending=false;
+function message(text,kind=""){status.textContent=text;status.className=("form-status "+kind).trim()}
+form.addEventListener("submit",async e=>{
+ e.preventDefault();if(sending)return;
+ if(!form.reportValidity()){message("Please complete all required fields and confirm consent. / برجاء استكمال البيانات المطلوبة.","error");return}
+ const fd=new FormData(form), payload=Object.fromEntries(fd.entries());
+ payload.programName="HIGHFIELD SCHOLARS";payload.programYear="2027";payload.fullName=String(payload.englishName||"").trim();payload.nationalId=String(payload.nationalIdOrPassport||"").trim();payload.submittedAt=new Date().toISOString();payload.sourcePage=location.href;payload.consent=fd.has("consent");
+ sending=true;submit.disabled=true;submit.setAttribute("aria-busy","true");message("Submitting registration… / جارٍ إرسال التسجيل…");
+ try{
+  const res=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+  const text=await res.text();let result;try{result=JSON.parse(text)}catch{throw new Error("Unreadable server response")}
+  if(!res.ok||result.success!==true)throw new Error(result.message||"Registration failed");
+  message("Registration submitted successfully. The Highfield team will contact you. / تم إرسال التسجيل بنجاح، وسيتواصل معك فريق هايفيلد.","success");form.reset();
+ }catch(err){console.error(err);message("We couldn't confirm your registration. Please try again or contact Highfield Egypt on WhatsApp 01101669115. / تعذر تأكيد التسجيل، برجاء المحاولة أو التواصل عبر واتساب 01101669115.","error")}
+ finally{sending=false;submit.disabled=false;submit.removeAttribute("aria-busy")}
+});
 })();
