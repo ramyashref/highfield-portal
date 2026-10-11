@@ -187,3 +187,17 @@ body.annual-page #registration .submit-button span {
   color: #ffffff !important;
   opacity: 1 !important;
 }
+
+/* Fix schedule table readability on mobile tap */
+body.annual-page .schedule-table tbody tr:hover,
+body.annual-page .schedule-table tbody tr:active,
+body.annual-page .schedule-table tbody tr:focus-within {
+  background: #eaf2ff !important;
+}
+
+body.annual-page .schedule-table tbody tr:hover td,
+body.annual-page .schedule-table tbody tr:active td,
+body.annual-page .schedule-table tbody tr:focus-within td {
+  color: #18385f !important;
+}
+
