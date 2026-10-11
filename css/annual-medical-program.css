@@ -133,94 +133,62 @@ body.annual-page{margin:0;background:#fff;color:var(--text);font-family:Poppins,
 @media(max-width:420px){.months-grid{grid-template-columns:1fr}.month-card{min-height:0}.form-grid{grid-template-columns:1fr}.full-width{grid-column:1}.hero-actions{align-items:stretch}.hero-actions .button{font-size:10px;padding-inline:12px}.stat-word{font-size:16px!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
-/* Fix mobile tap styling for program table */
-.schedule-table tbody tr,
-.schedule-table tbody tr td {
-  -webkit-tap-highlight-color: transparent;
+
+
+/* ===== HIGHFIELD SCHOLARS: higher-contrast registration styling ===== */
+.annual-registration {
+  background:
+    radial-gradient(ellipse at 0% 100%, rgba(20, 120, 237, .055), transparent 36%),
+    linear-gradient(115deg, #f7faff 0%, #ffffff 48%, #f1f7ff 100%);
+  padding-top: 18px;
 }
-
-.schedule-table tbody tr:active,
-.schedule-table tbody tr:focus,
-.schedule-table tbody tr:focus-within {
-  background: #f8fbff !important;
+.registration-columns {
+  border-color: #d6e4f4;
+  background: linear-gradient(135deg, #f7faff 0%, #ffffff 48%, #f4f8ff 100%);
+  box-shadow: 0 16px 38px rgba(11, 40, 85, .07);
 }
-
-.schedule-table tbody tr:active td,
-.schedule-table tbody tr:focus td,
-.schedule-table tbody tr:focus-within td {
-  color: #355374 !important;
+.registration-copy h2, .registration-copy h3 { color: #092653; }
+.registration-copy > p, .registration-notes p { color: #536b8b; }
+.registration-notes strong { color: #0b2855; }
+.annual-form {
+  border-color: #d0e0f3;
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 8px 24px rgba(11, 40, 85, .045);
 }
-
-.schedule-table tbody tr:active td[lang="ar"],
-.schedule-table tbody tr:focus td[lang="ar"],
-.schedule-table tbody tr:focus-within td[lang="ar"] {
-  color: #355374 !important;
+.form-title h3 { color: #092653; font-size: 18px; font-weight: 800; }
+.form-title p, .form-grid small { color: #647b99; }
+.form-grid label { color: #12345e; font-size: 11px; font-weight: 700; }
+.form-grid b, .consent b { color: #d92d20; }
+.form-grid input, .form-grid select {
+  border: 1px solid #c5d7ec;
+  background: #f7faff;
+  color: #17385f;
+  min-height: 43px;
+  font-size: 12px;
+  box-shadow: inset 0 1px 2px rgba(11, 40, 85, .025);
 }
-
-/* HIGHFIELD SCHOLARS 2027 — Improved text contrast */
-/* Scoped to this page only */
-
-.annual-page {
-  color: #183b63;
+.form-grid input::placeholder { color: #7185a1; opacity: 1; }
+.form-grid input:focus, .form-grid select:focus {
+  border-color: #1677e8;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(20, 120, 237, .13);
 }
-
-/* Form labels and headings */
-.annual-page .annual-form label,
-.annual-page .annual-form label span,
-.annual-page .form-title h3,
-.annual-page .form-title p {
-  color: #24476e !important;
+.consent { color: #334f73; font-size: 11px; }
+.consent input { width: 17px; height: 17px; accent-color: #0968d7; }
+.submit-button {
+  min-height: 48px;
+  border-radius: 9px;
+  background: linear-gradient(100deg, #0755b5 0%, #0878ed 100%);
+  border-color: #0968d7;
+  box-shadow: 0 8px 18px rgba(9, 104, 215, .18);
+  font-size: 12px;
 }
-
-/* Input text */
-.annual-page .annual-form input:not([type="checkbox"]),
-.annual-page .annual-form select,
-.annual-page .annual-form textarea {
-  color: #183b63 !important;
-  -webkit-text-fill-color: #183b63;
-  border-color: #c5d5e8 !important;
-  background-color: #fff !important;
+.submit-button:hover { background: linear-gradient(100deg, #064796 0%, #075fc4 100%); }
+.form-status { color: #536b8b; }
+.form-status.success { color: #137547; }
+.form-status.error { color: #b42318; }
+@media (max-width: 720px) {
+  .annual-registration { padding-top: 8px; }
+  .registration-columns { background: #f7faff; }
+  .annual-form { padding: 16px; }
 }
-
-/* Placeholder text */
-.annual-page .annual-form input::placeholder,
-.annual-page .annual-form textarea::placeholder {
-  color: #788ba3 !important;
-  -webkit-text-fill-color: #788ba3;
-  opacity: 1 !important;
-}
-
-/* Clear focus state */
-.annual-page .annual-form input:focus,
-.annual-page .annual-form select:focus,
-.annual-page .annual-form textarea:focus {
-  border-color: #4387d5 !important;
-  outline: 2px solid rgba(67, 135, 213, 0.15);
-  outline-offset: 1px;
-}
-
-/* Descriptive text */
-.annual-page .registration-copy p,
-.annual-page .registration-notes p,
-.annual-page .privacy-note {
-  color: #526b89 !important;
-}
-
-/* Schedule table: prevent text from fading on click */
-.annual-page .schedule-table tbody tr,
-.annual-page .schedule-table tbody tr:hover,
-.annual-page .schedule-table tbody tr:active {
-  background-color: #fff !important;
-}
-
-.annual-page .schedule-table tbody td,
-.annual-page .schedule-table tbody tr:hover td,
-.annual-page .schedule-table tbody tr:active td {
-  color: #294969 !important;
-  -webkit-text-fill-color: #294969 !important;
-}
-
-.annual-page .schedule-table tbody tr {
-  -webkit-tap-highlight-color: transparent;
-}
-
