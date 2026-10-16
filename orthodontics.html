@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#030c20">
   <title>Basic &amp; Advanced Orthodontic Professional Program | Highfield Egypt</title>
-  <meta name="description" content="Explore the Basic and Advanced Orthodontic Professional Program at Princess Fatima Academy for Professional Medical Education, Ministry of Health and Population, with a detailed downloadable timetable.">
+  <meta name="description" content="Explore the six-week Basic and Advanced Orthodontic Professional Program for dentists at Highfield Egypt, supervised by Prof. Dr. Sayed Hafez.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://highfieldeg.com/orthodontics.html">
   <link rel="icon" href="assets/favicon.svg">
@@ -15,28 +15,144 @@
   <link rel="stylesheet" href="css/site.css">
   <link rel="stylesheet" href="css/orthodontics.css">
 
-<style>
-/* Orthodontics update: visual week cards, venue, certificate and downloadable timetable */
-.ortho-venue-card{display:flex;gap:16px;align-items:flex-start;margin:24px 0;padding:22px 24px;border:1px solid rgba(215,173,98,.45);border-radius:16px;background:linear-gradient(135deg,#f8fafc,#fff);box-shadow:0 12px 32px rgba(8,27,53,.06)}
-.ortho-venue-card .venue-icon{flex:0 0 48px;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:#081b35;color:#f0d39b;font-size:23px}
-.ortho-venue-card strong{display:block;color:#081b35;font-size:16px;margin-bottom:5px}
-.ortho-venue-card p{margin:0;color:#526174;line-height:1.7}
-.ortho-download-panel{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;padding:24px;border-radius:18px;background:#081b35;color:#fff;margin:26px 0}
-.ortho-download-panel h3{margin:0 0 6px;color:#fff}
-.ortho-download-panel p{margin:0;color:#dbe4ef;font-size:14px}
-.ortho-download-panel .download-btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:8px;background:#d7ad62;color:#081b35;font-weight:800;white-space:nowrap}
-.ortho-cert-panel{margin:26px 0;padding:26px;border:1px solid #dbe3ed;border-radius:18px;background:#f7f9fc}
-.ortho-cert-panel h3{margin:0 0 10px;color:#081b35}
-.ortho-cert-panel p{margin:0;color:#42536a;line-height:1.8}
-.ortho-week-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:26px 0}
-.ortho-week-card{overflow:hidden;border:1px solid #e2e8f0;border-radius:16px;background:#fff;box-shadow:0 12px 28px rgba(8,27,53,.06)}
-.ortho-week-art{height:142px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#081b35,#1d4775);color:#f0d39b}
-.ortho-week-art:before,.ortho-week-art:after{content:"";position:absolute;border:1px solid rgba(240,211,155,.35);border-radius:50%;width:180px;height:180px}
-.ortho-week-art:before{left:-50px;top:30px}.ortho-week-art:after{right:-50px;top:-90px}
-.ortho-week-art svg{width:76px;height:76px;position:relative;z-index:1;stroke:currentColor;fill:none;stroke-width:1.6}
-.ortho-week-copy{padding:18px}.ortho-week-copy span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#98702d;font-weight:800}.ortho-week-copy h3{font-size:17px;line-height:1.4;margin:7px 0;color:#081b35}.ortho-week-copy p{font-size:13px;color:#64748b;line-height:1.65;margin:0}
-@media(max-width:850px){.ortho-week-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.ortho-week-grid{grid-template-columns:1fr}.ortho-venue-card{padding:17px}.ortho-download-panel{padding:20px}.ortho-download-panel .download-btn{width:100%}}
+<style id="orthodontics-layout-fix">
+/* FIX: scope layout and typography to the orthodontics page, overriding portal-wide defaults */
+html{scroll-behavior:smooth;scroll-padding-top:95px}
+body{font-family:Poppins,Arial,sans-serif!important;background:#fff!important;color:#10213a!important;overflow-x:hidden!important;line-height:1.65}
+body .grid-bg,body .mouse-glow{display:none!important}
+body header{position:sticky!important;top:0;z-index:100!important;background:rgba(3,12,32,.88)!important;backdrop-filter:blur(16px)!important;border-bottom:1px solid rgba(97,160,255,.22)!important}
+body header .nav{width:min(1180px,92vw)!important;height:78px!important;margin:auto!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important}
+body header .brand{font-size:25px!important;font-weight:700!important;letter-spacing:-1px!important;color:#f7fbff!important}
+body header .brand span{font-weight:300!important;color:#f7fbff!important}
+body header .nav-links{display:flex!important;align-items:center!important;gap:30px!important}
+body header .nav-links a{font-size:14px!important;color:#dce8fa!important}
+body header .nav-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:13px 18px!important;border:1px solid rgba(96,163,255,.42)!important;border-radius:12px!important;background:#061737!important;color:white!important;font-size:12px!important;font-weight:700!important}
+body .ortho-hero{position:relative!important;min-height:640px!important;display:flex!important;align-items:center!important;overflow:hidden!important;background:#081b35!important;color:#fff!important}
+body .ortho-hero-image{position:absolute!important;inset:0!important;display:block!important;background-image:url('../assets/orthodontics-hero.jpg')!important;background-size:cover!important;background-position:center 43%!important;opacity:.68!important}
+body .ortho-hero-shade{position:absolute!important;inset:0!important;display:block!important;background:linear-gradient(90deg,rgba(5,20,41,.97) 0%,rgba(5,20,41,.86) 45%,rgba(5,20,41,.18) 100%),linear-gradient(0deg,rgba(5,20,41,.3),transparent 55%)!important}
+body .ortho-hero-content{position:relative!important;z-index:2!important;width:min(1180px,92vw)!important;margin:0 auto!important;padding:84px 0!important}
+body .ortho-eyebrow{display:inline-block!important;color:#f0d39b!important;font-size:11px!important;font-weight:700!important;letter-spacing:.16em!important;margin:0 0 22px!important}
+body .ortho-hero h1{max-width:800px!important;color:#fff!important;font-size:clamp(38px,5vw,66px)!important;line-height:1.12!important;letter-spacing:-.04em!important;margin:0 0 22px!important}
+body .ortho-hero h1 em{color:#f0d39b!important;font-style:normal!important}
+body .ortho-hero-content>p{max-width:710px!important;color:#e5edf7!important;font-size:16px!important;line-height:1.8!important;margin:0 0 25px!important}
+body .ortho-hero-actions{display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important}
+body .ortho-hero-actions .btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:50px!important;padding:14px 22px!important;border-radius:8px!important;background:#d7ad62!important;color:#081b35!important;font-size:13px!important;font-weight:800!important;border:1px solid #d7ad62!important;white-space:nowrap!important}
+body .ortho-hero-actions .btn.secondary{background:rgba(8,27,53,.25)!important;color:#fff!important;border-color:rgba(255,255,255,.75)!important}
+body .ortho-hero-tags{display:flex!important;gap:9px!important;flex-wrap:wrap!important;margin-top:24px!important}
+body .ortho-hero-tags span{display:inline-flex!important;padding:8px 12px!important;border:1px solid rgba(255,255,255,.4)!important;border-radius:4px!important;font-size:11px!important;color:#f5f7fb!important}
+body .ortho-venue-card{display:flex!important;gap:16px!important;align-items:flex-start!important;margin:24px 0!important;padding:22px 24px!important;border:1px solid rgba(215,173,98,.45)!important;border-radius:16px!important;background:linear-gradient(135deg,#f8fafc,#fff)!important;box-shadow:0 12px 32px rgba(8,27,53,.06)!important}
+body .ortho-venue-card .venue-icon{flex:0 0 48px!important;width:48px!important;height:48px!important;border-radius:12px!important;display:grid!important;place-items:center!important;background:#081b35!important;color:#f0d39b!important;font-size:23px!important}
+body .ortho-venue-card strong{display:block!important;color:#081b35!important;font-size:16px!important;margin:0 0 5px!important}
+body .ortho-venue-card p{margin:0!important;color:#526174!important;line-height:1.7!important}
+body .ortho-overview{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;padding:30px 0!important;margin:0 auto!important;width:min(1180px,92vw)!important}
+body .ortho-stat{display:flex!important;flex-direction:column!important;gap:7px!important;padding:12px 20px!important;border-right:1px solid #e1e7ef!important}
+body .ortho-stat:first-child{padding-left:0!important}body .ortho-stat:last-child{border-right:0!important}
+body .ortho-stat strong{font-size:clamp(18px,2vw,28px)!important;line-height:1.25!important;color:#081b35!important;font-weight:800!important}
+body .ortho-stat span{font-size:12px!important;line-height:1.55!important;color:#64748b!important}
+body .ortho-section,body .section{position:relative!important;z-index:1}
+body .ortho-section .shell,body .ortho-curriculum .shell,body .ortho-register-section .shell,body .ortho-final-cta .shell,body .ortho-supervisor .shell{width:min(1180px,92vw)!important;margin:0 auto!important}
+body .ortho-section,body .ortho-curriculum,body .ortho-supervisor,body .ortho-register-section,body .ortho-final-cta{padding:78px 0!important}
+body .ortho-kicker{display:block!important;color:#9a742d!important;font-size:11px!important;font-weight:800!important;letter-spacing:.15em!important;text-transform:uppercase!important;margin-bottom:15px!important}
+body .ortho-about-grid{display:grid!important;grid-template-columns:1.05fr .95fr!important;gap:56px!important;align-items:start!important}
+body .ortho-about-grid h2,body .ortho-section-head h2{font-size:clamp(30px,3.8vw,46px)!important;line-height:1.2!important;color:#081b35!important;margin:0 0 16px!important}
+body .ortho-muted{color:#64748b!important;line-height:1.85!important}
+body .ortho-about-grid p{font-size:14px!important;line-height:1.9!important}
+body .ortho-panel{padding:26px!important;border:1px solid #e3e9f1!important;border-radius:14px!important;background:#f8fafc!important}
+body .ortho-path{display:grid!important;grid-template-columns:42px 1fr!important;gap:14px!important;padding:16px 0!important;border-top:1px solid #e0e7ef!important}
+body .ortho-path>b{color:#b68b3e!important;font-weight:800!important}
+body .ortho-path strong,body .ortho-path span{display:block!important}
+body .ortho-path strong{color:#081b35!important;margin-bottom:4px!important}
+body .ortho-path span{font-size:12px!important;color:#64748b!important;line-height:1.6!important}
+body #weekly-highlights{padding:78px 0!important}
+body #weekly-highlights>.ortho-section-head{width:min(1180px,92vw)!important;margin:0 auto 32px!important}
+body .ortho-week-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important;margin:26px auto!important;width:min(1180px,92vw)!important}
+body .ortho-week-card{display:block!important;overflow:hidden!important;border:1px solid #e2e8f0!important;border-radius:16px!important;background:#fff!important;box-shadow:0 12px 28px rgba(8,27,53,.06)!important}
+body .ortho-week-art{height:142px!important;display:grid!important;place-items:center!important;position:relative!important;overflow:hidden!important;background:linear-gradient(135deg,#081b35,#1d4775)!important;color:#f0d39b!important}
+body .ortho-week-art svg{width:76px!important;height:76px!important;position:relative!important;z-index:1!important;stroke:currentColor!important;fill:none!important;stroke-width:1.6!important}
+body .ortho-week-copy{padding:18px!important}
+body .ortho-week-copy span{display:block!important;font-size:11px!important;letter-spacing:.12em!important;text-transform:uppercase!important;color:#98702d!important;font-weight:800!important}
+body .ortho-week-copy h3{font-size:17px!important;line-height:1.4!important;margin:7px 0!important;color:#081b35!important}
+body .ortho-week-copy p{font-size:13px!important;color:#64748b!important;line-height:1.65!important;margin:0!important}
+body .ortho-curriculum{background:#f6f8fb!important}
+body .ortho-section-head{margin:0 0 32px!important}
+body .ortho-section-head p{max-width:760px!important;font-size:14px!important;line-height:1.8!important;margin:0!important}
+body .ortho-module{background:#fff!important;border:1px solid #e0e6ef!important;border-radius:10px!important;margin:0 0 12px!important;overflow:hidden!important}
+body .ortho-module summary{display:grid!important;grid-template-columns:42px 1fr 20px!important;gap:14px!important;align-items:center!important;padding:20px!important;cursor:pointer!important;list-style:none!important;color:#081b35!important;font-weight:700!important}
+body .ortho-module summary::-webkit-details-marker{display:none!important}
+body .ortho-module-num{color:#b68b3e!important;font-size:12px!important;font-weight:800!important}
+body .ortho-module summary small{display:block!important;margin-top:4px!important;font-size:12px!important;color:#64748b!important;font-weight:400!important}
+body .ortho-module summary i{font-style:normal!important;font-size:22px!important;color:#b68b3e!important}
+body .ortho-module-body{padding:0 24px 22px 76px!important;color:#526174!important;font-size:13px!important;line-height:1.9!important}
+body .ortho-module-body ul{margin:0!important;padding-left:18px!important}
+body .ortho-supervisor{background:#081b35!important;color:#fff!important}
+body .ortho-supervisor-grid{display:grid!important;grid-template-columns:.7fr 1.3fr!important;gap:60px!important;align-items:center!important}
+body .ortho-supervisor-monogram{min-height:220px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:14px!important;border:1px solid rgba(215,173,98,.65)!important;color:#f0d39b!important;text-align:center!important}
+body .ortho-supervisor-monogram strong{font-size:28px!important;color:#fff!important}
+body .ortho-supervisor-monogram span,body .ortho-supervisor-monogram small{font-size:10px!important;letter-spacing:.14em!important}
+body .ortho-supervisor h2{color:#fff!important;font-size:clamp(28px,3.4vw,42px)!important;margin:0 0 10px!important}
+body .ortho-supervisor-title{color:#e0e8f2!important}
+body .ortho-supervisor .ortho-muted{color:#c5d1df!important}
+body .ortho-schedule-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+body .ortho-schedule-grid article{padding:22px!important;border:1px solid #e1e7ef!important;background:#fff!important;border-radius:10px!important}
+body .ortho-schedule-grid small{color:#a77b31!important;font-weight:800!important;letter-spacing:.12em!important}
+body .ortho-schedule-grid h3{font-size:18px!important;color:#081b35!important;margin:10px 0!important}
+body .ortho-schedule-grid p,body .ortho-small-note{font-size:12px!important;color:#64748b!important;line-height:1.7!important}
+body .ortho-register-section{background:#f7f9fc!important}
+body .ortho-registration-layout{display:grid!important;grid-template-columns:.8fr 1.2fr!important;gap:28px!important}
+body .ortho-registration-info,body .ortho-form-shell{padding:26px!important;border-radius:12px!important;border:1px solid #e1e7ef!important;background:#fff!important}
+body .ortho-registration-info h3,body .ortho-form-placeholder h3{color:#081b35!important}
+body .ortho-registration-info p,body .ortho-form-placeholder p{color:#64748b!important;line-height:1.8!important;font-size:13px!important}
+body .ortho-whatsapp-link{display:inline-flex!important;background:#1fae62!important;color:#fff!important;padding:13px 16px!important;border-radius:8px!important;font-size:12px!important;font-weight:800!important}
+body .ortho-form-placeholder{min-height:220px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important}
+body .ortho-text-link{color:#9a742d!important;font-weight:800!important;font-size:13px!important}
+body .ortho-final-cta{background:#10294a!important}
+body .ortho-final-cta-inner{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:28px!important}
+body .ortho-final-cta h2{color:#fff!important;margin:0 0 12px!important}
+body .ortho-final-cta p{color:#d0d9e5!important}
+body #schedule-download{width:min(1180px,92vw)!important;margin:0 auto!important;padding:50px 0!important}
+body .ortho-download-panel{display:flex!important;flex-wrap:wrap!important;gap:18px!important;align-items:center!important;justify-content:space-between!important;padding:24px!important;border-radius:18px!important;background:#081b35!important;color:#fff!important;margin:26px 0!important}
+body .ortho-download-panel h3{margin:0 0 6px!important;color:#fff!important}
+body .ortho-download-panel p{margin:0!important;color:#dbe4ef!important;font-size:14px!important}
+body .ortho-download-panel .download-btn{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:13px 18px!important;border-radius:8px!important;background:#d7ad62!important;color:#081b35!important;font-weight:800!important;white-space:nowrap!important}
+body .ortho-cert-panel{margin:26px 0!important;padding:26px!important;border:1px solid #dbe3ed!important;border-radius:18px!important;background:#f7f9fc!important}
+body .ortho-cert-panel h3{margin:0 0 10px!important;color:#081b35!important}
+body .ortho-cert-panel p{margin:0!important;color:#42536a!important;line-height:1.8!important}
+body footer.footer{display:block!important;background:#06162b!important;color:#c2cbd8!important;padding:35px 0!important}
+body .footer-grid{width:min(1180px,92vw)!important;margin:auto!important;display:grid!important;grid-template-columns:1.4fr 1fr 1fr 1fr!important;gap:26px!important}
+body .footer-grid p,body .footer-grid a{font-size:12px!important;line-height:1.9!important;color:#c2cbd8!important}
+body .footer-grid h4{color:#fff!important}
+body .copyright{text-align:center!important;border-top:1px solid rgba(255,255,255,.12)!important;margin:25px auto 0!important;padding-top:18px!important;width:min(1180px,92vw)!important;font-size:10px!important;color:#9eacbe!important}
+body .ortho-floating-wa{position:fixed!important;right:20px!important;bottom:18px!important;z-index:120!important;background:#1fae62!important;color:#fff!important;border-radius:999px!important;padding:12px 16px!important;font-weight:800!important;font-size:12px!important;box-shadow:0 10px 30px rgba(0,0,0,.2)!important}
+@media(max-width:900px){
+body header .nav-links{display:none!important}
+body .ortho-about-grid,body .ortho-supervisor-grid,body .ortho-registration-layout{grid-template-columns:1fr!important;gap:28px!important}
+body .ortho-week-grid,body .ortho-schedule-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body .ortho-overview{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body .ortho-stat:nth-child(2){border-right:0!important}
+body .ortho-stat{border-bottom:1px solid #e1e7ef!important}
+body .ortho-stat:nth-child(n+3){border-bottom:0!important}
+}
+@media(max-width:600px){
+body header .nav{height:70px!important}
+body header .brand{font-size:18px!important}
+body header .nav-cta{padding:10px 12px!important;font-size:10px!important}
+body .ortho-hero{min-height:650px!important}
+body .ortho-hero-content{padding:62px 0!important}
+body .ortho-hero h1{font-size:clamp(34px,9vw,48px)!important}
+body .ortho-hero-content>p{font-size:14px!important}
+body .ortho-week-grid,body .ortho-schedule-grid{grid-template-columns:1fr!important}
+body .ortho-overview{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body .ortho-stat{padding:14px 10px!important}
+body .ortho-stat:first-child{padding-left:10px!important}
+body .ortho-module summary{padding:16px!important;grid-template-columns:32px 1fr 18px!important}
+body .ortho-module-body{padding:0 18px 20px 48px!important}
+body .ortho-final-cta-inner{align-items:flex-start!important;flex-direction:column!important}
+body .footer-grid{grid-template-columns:1fr 1fr!important}
+body .ortho-venue-card{margin:18px 0!important;padding:17px!important}
+body .ortho-venue-card strong{font-size:14px!important}
+body .ortho-venue-card p{font-size:13px!important}
+body .ortho-download-panel .download-btn{width:100%!important}
+}
 </style>
 
 </head>
@@ -71,19 +187,11 @@
     </div>
   </section>
 
-<section class="shell">
-  <div class="ortho-venue-card">
-    <div class="venue-icon" aria-hidden="true">⌖</div>
-    <div><strong>Program Venue</strong><p>Princess Fatima Academy for Professional Medical Education<br>Ministry of Health and Population</p></div>
-  </div>
-</section>
-
-
   <section class="ortho-overview shell">
     <div class="ortho-stat"><strong>6 Weeks</strong><span>Program duration</span></div>
     <div class="ortho-stat"><strong>For Dentists</strong><span>Target audience</span></div>
     <div class="ortho-stat"><strong>Clinical Focus</strong><span>Practical and case-based learning</span></div>
-    <div class="ortho-stat"><strong>29 Oct – 4 Dec</strong><span>Training period · 2026</span></div>
+    <div class="ortho-stat"><strong>29 Oct – 4 Dec</strong><span>Proposed training period · 2026</span></div>
   </section>
 
   <section class="section ortho-section" id="about">
@@ -103,24 +211,7 @@
     </div>
   </section>
 
-  
-<section class="section shell" id="weekly-highlights">
-  <div class="ortho-section-head">
-    <span class="ortho-kicker">Weekly Highlights</span>
-    <h2>Six weeks of focused orthodontic learning</h2>
-    <p class="ortho-muted">Illustrated topic highlights to help trainees preview the main learning themes. The full day-by-day timetable is available below as a downloadable PDF.</p>
-  </div>
-  <div class="ortho-week-grid">
-    <article class="ortho-week-card"><div class="ortho-week-art" role="img" aria-label="Orthodontic diagnosis and records illustration"><svg viewBox="0 0 80 80"><path d="M18 16h44v50H18zM27 28h26M27 37h26M27 46h18"/><circle cx="53" cy="54" r="10"/><path d="M60 61l8 8"/></svg></div><div class="ortho-week-copy"><span>Week 01</span><h3>Diagnosis &amp; Records</h3><p>Malocclusion classification, orthodontic diagnosis, photography and cephalometric analysis.</p></div></article>
-    <article class="ortho-week-card"><div class="ortho-week-art" role="img" aria-label="Orthodontic instruments and appliances illustration"><svg viewBox="0 0 80 80"><path d="M18 20l44 40M25 14l-8 8 44 44 8-8zM19 58l9-9M51 28l9-9M16 64l9-9"/></svg></div><div class="ortho-week-copy"><span>Week 02</span><h3>Appliances &amp; Biomechanics</h3><p>Instruments, materials, tooth movement, space management and appliance demonstrations.</p></div></article>
-    <article class="ortho-week-card"><div class="ortho-week-art" role="img" aria-label="Orthodontic brackets and aligners illustration"><svg viewBox="0 0 80 80"><path d="M15 24q25-14 50 0v30q-25 15-50 0z"/><path d="M15 34h50M15 44h50"/><rect x="23" y="28" width="9" height="12" rx="2"/><rect x="36" y="28" width="9" height="12" rx="2"/><rect x="49" y="28" width="9" height="12" rx="2"/></svg></div><div class="ortho-week-copy"><span>Week 03</span><h3>Bonding &amp; Miniscrews</h3><p>Bonding techniques, anchorage, miniscrew principles and practical insertion training.</p></div></article>
-    <article class="ortho-week-card"><div class="ortho-week-art" role="img" aria-label="Orthodontic case analysis illustration"><svg viewBox="0 0 80 80"><path d="M14 18h52v48H14zM23 29h34M23 39h24M23 49h28"/><circle cx="54" cy="53" r="9"/><path d="M60 60l8 8"/></svg></div><div class="ortho-week-copy"><span>Week 04</span><h3>Case Planning &amp; Camouflage</h3><p>Malocclusion management, skeletal cases, impacted teeth and case-based workshops.</p></div></article>
-    <article class="ortho-week-card"><div class="ortho-week-art" role="img" aria-label="Clinical appliance planning illustration"><svg viewBox="0 0 80 80"><path d="M14 20h52v42H14zM22 30h36M22 40h36M22 50h20"/><path d="M48 49l6 6 12-14"/></svg></div><div class="ortho-week-copy"><span>Week 05</span><h3>Clinical Appliances &amp; Case Review</h3><p>Clinical appliance setups, treatment demonstrations and structured case discussions.</p></div></article>
-    <article class="ortho-week-card"><div class="ortho-week-art" role="img" aria-label="Orthodontic wire bending illustration"><svg viewBox="0 0 80 80"><path d="M12 20h18v18h20V20h18M12 60h18V42h20v18h18"/><circle cx="30" cy="38" r="3"/><circle cx="50" cy="42" r="3"/></svg></div><div class="ortho-week-copy"><span>Week 06</span><h3>Wire Bending, Finishing &amp; Retention</h3><p>Wire bends, elastics, torque, finishing challenges, retention and retreatment concepts.</p></div></article>
-  </div>
-</section>
-
-<section class="section ortho-curriculum" id="curriculum">
+  <section class="section ortho-curriculum" id="curriculum">
     <div class="shell">
       <div class="ortho-section-head">
         <span class="ortho-kicker">Scientific Curriculum</span>
@@ -218,18 +309,6 @@
   <section class="section ortho-final-cta">
     <div class="shell ortho-final-cta-inner"><div><span class="ortho-kicker">Highfield Egypt</span><h2>Advance your orthodontic practice.</h2><p class="ortho-muted">Contact our team to confirm program details and the upcoming intake.</p></div><a class="btn" href="#registration">Register Interest ↑</a></div>
   </section>
-
-<section class="section shell" id="schedule-download">
-  <div class="ortho-download-panel">
-    <div><h3>Download the Detailed Training Schedule</h3><p>Day-by-day topics, time slots, session types and breaks in PDF format.</p></div>
-    <a class="download-btn" href="assets/Highfield_Orthodontics_Detailed_Schedule_UPDATED.pdf" download>Download Schedule PDF ↓</a>
-  </div>
-  <div class="ortho-cert-panel">
-    <h3>Certificate &amp; Professional Development Points</h3>
-    <p>Upon fulfilling the program requirements and successfully completing the program, trainees receive a certificate from Princess Fatima Academy for Professional Medical Education – Ministry of Health and Population. The program is accredited by the Egyptian Health Council for <strong>20 Continuing Professional Development (CPD) points</strong>, which may be used toward professional license renewal, subject to applicable requirements.</p>
-  </div>
-</section>
-
 </main>
 
 <footer class="footer" id="contact">
