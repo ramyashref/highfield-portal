@@ -1,16 +1,17 @@
-# NEW HORIZON — Conference Website
+# NEW HORIZON website
 
-A responsive, English-language conference landing page with the supplied MP4 as a full-bleed hero video and Poppins typography.
+Static website for the NEW HORIZON International Pediatric Surgery Conference.
 
-## Files
-- `index.html` — page structure and copy
-- `assets/css/style.css` — responsive visual design
-- `assets/js/main.js` — mobile navigation and video behavior
-- `assets/video/hero.mp4` — supplied hero video
+## Pages
+- `index.html` — homepage
+- `register.html` — on-site registration interface (front-end only until a submission endpoint is connected)
+- `speakers.html` — speakers/faculty
+- `sponsors.html` — sponsorship and partners
+- `workshops.html` — four dedicated workshops
+- `strategic-day.html` — strategic day at the Grand Egyptian Museum
 
-## Publish under Highfield
-Upload the contents of this folder into a `new-horizon` folder in the website repository. Keep the directory structure intact. The landing page will then be available at `/new-horizon/` if the hosting/domain is configured to serve that path.
+## Publish
+Upload the complete folder while preserving the directory structure. Keep `assets/css/style.css`, `assets/js/main.js`, and `assets/video/hero.mp4` in place.
 
-The registration button currently points to the Google Form URL from the earlier draft. Replace it in `index.html` if the official registration URL changes. Dates, venue, and conference leadership are intentionally not invented; insert confirmed details when ready.
-
-Poppins is loaded from Google Fonts, so an internet connection is needed for the exact typeface. The page has a standard sans-serif fallback.
+## Important registration note
+The registration page validates fields in the browser but does not save or transmit registrations yet. Connect the form to a secure Google Apps Script/web app endpoint or another backend before using it for real registrations. Speaker names, sponsor logos, workshop topics, and confirmed Strategic Day details are placeholders pending official confirmation.
