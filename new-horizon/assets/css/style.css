@@ -46,3 +46,89 @@ body{font-size:16px}
 .inner-hero{background:radial-gradient(ellipse at 82% 28%,rgba(75,168,205,.22),transparent 38%),linear-gradient(120deg,#071421 0%,#0c263b 100%)}.content-card{border-radius:5px;box-shadow:0 10px 30px rgba(9,30,45,.04);transition:transform .2s,box-shadow .2s}.content-card:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(9,30,45,.09)}.dark .content-card{border-radius:5px}.speaker-placeholder{border-radius:3px}.button-outline{border-radius:2px}
 @media(max-width:900px){.site-header{height:74px}.nav{gap:14px}.nav a{font-size:10px}.hero{min-height:700px}.hero-content{width:88%}.hero h1{font-size:clamp(70px,12vw,112px)}.section{padding-top:70px;padding-bottom:70px}.theme-grid{gap:12px}.theme-card{padding:23px 19px}.theme-card h3{font-size:16px}.theme-card p{font-size:12px}}
 @media(max-width:650px){.site-header{height:70px}.hero{min-height:720px}.hero-content{margin:92px auto 100px}.hero h1{font-size:clamp(65px,18vw,105px);margin:20px 0 22px}.hero-intro{font-size:13px}.section{padding:58px 6%}.intro-grid{padding:38px 0 34px}.section-heading{padding:40px 0 28px}.theme-grid{gap:12px}.theme-card{min-height:0;padding:23px 20px 24px}.card-symbol{margin:21px 0 16px}.workshops{gap:30px}.workshop-art{min-height:250px}.venue-grid{padding-top:38px}.register{padding:65px 7% 70px}.footer{gap:18px}.footer>span{line-height:1.7}}
+
+
+/* ==========================================================
+   NEW HORIZON — Reference-inspired header and hero redesign
+   ========================================================== */
+.nh-header, .nh-header * { box-sizing: border-box; }
+.nh-header {
+  position: absolute; inset: 0 0 auto; z-index: 100; width: 100%; min-height: 102px;
+  padding: 18px 5%; display: flex; align-items: center; justify-content: space-between;
+  gap: 25px; background: rgba(3,20,39,.64); border-bottom: 1px solid rgba(255,255,255,.13);
+  backdrop-filter: blur(8px); font-family: "Poppins", sans-serif;
+}
+.nh-brand { display:flex; flex:0 0 auto; align-items:center; }
+.nh-brand img { display:block; width:305px; height:auto; max-height:70px; object-fit:contain; }
+.nh-nav { display:flex; align-items:center; justify-content:center; gap:clamp(13px,1.8vw,32px); }
+.nh-nav a { color:#fff; text-decoration:none; font-size:14px; font-weight:400; white-space:nowrap; padding:12px 0; position:relative; transition:color .2s ease; }
+.nh-nav a:hover, .nh-nav a.active { color:#fff; }
+.nh-nav a.active::after { content:""; position:absolute; left:0; right:0; bottom:3px; height:2px; background:linear-gradient(90deg,#00b9ff,#fff); }
+.nh-register, .nh-primary-btn { display:inline-flex; align-items:center; justify-content:center; gap:15px; color:#fff; text-decoration:none; background:linear-gradient(110deg,#078fff,#0758ff); border-radius:12px; font-family:"Poppins",sans-serif; font-weight:600; letter-spacing:.3px; transition:transform .2s ease,box-shadow .2s ease; }
+.nh-register { flex:0 0 auto; padding:18px 27px; font-size:14px; }
+.nh-register:hover, .nh-primary-btn:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,119,255,.28); }
+.nh-menu { display:none; background:transparent; border:0; padding:8px; cursor:pointer; }
+.nh-menu span { display:block; width:29px; height:2px; margin:6px 0; background:#fff; }
+.nh-hero { position:relative; isolation:isolate; min-height:850px; height:100vh; max-height:1100px; overflow:hidden; display:flex; align-items:center; background:#04172c; color:#fff; font-family:"Poppins",sans-serif; }
+.nh-hero-bg { position:absolute; inset:0; z-index:-3; width:100%; height:100%; object-fit:cover; object-position:center; }
+.nh-hero-overlay { position:absolute; inset:0; z-index:-2; background:linear-gradient(90deg,rgba(2,17,35,.98) 0%,rgba(2,17,35,.88) 24%,rgba(2,17,35,.46) 46%,rgba(2,17,35,.04) 72%,rgba(2,17,35,.18) 100%),linear-gradient(0deg,rgba(2,17,35,.62),transparent 35%); }
+.nh-hero-content { width:min(760px,54%); margin-left:5.3%; padding-top:105px; padding-bottom:24px; }
+.nh-kicker { margin:0 0 20px; color:#45c8ff; font-size:15px; line-height:1.55; font-weight:500; letter-spacing:5px; }
+.nh-hero h1 { margin:0 0 17px; color:#fff; font-size:clamp(76px,8.5vw,155px); line-height:.79; letter-spacing:-5px; font-weight:800; }
+.nh-hero h1 span { display:inline-block; margin-top:10px; color:#29adf4; letter-spacing:-6px; white-space:nowrap; }
+.nh-tagline { margin:24px 0 16px; font-size:clamp(21px,1.75vw,32px); line-height:1.4; font-weight:400; }
+.nh-tagline strong { color:#20adf6; font-weight:700; }
+.nh-description { max-width:660px; margin:0 0 25px; color:rgba(255,255,255,.86); font-size:15px; line-height:1.8; font-weight:300; }
+.nh-actions { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:34px; }
+.nh-primary-btn, .nh-secondary-btn { min-height:58px; padding:0 25px; font-size:13px; letter-spacing:.5px; }
+.nh-primary-btn span { font-size:20px; }
+.nh-secondary-btn { display:inline-flex; align-items:center; justify-content:space-between; gap:25px; border:1px solid #078fff; border-radius:11px; background:rgba(2,17,35,.58); color:#fff; text-decoration:none; font-weight:500; transition:background .2s ease; }
+.nh-secondary-btn:hover { background:rgba(0,120,255,.18); }
+.nh-play { width:32px; height:32px; display:grid; place-items:center; border-radius:50%; background:#fff; color:#0877ff; font-size:12px; }
+.nh-info { display:flex; align-items:stretch; gap:27px; }
+.nh-info-item { display:flex; align-items:center; gap:15px; padding-right:26px; border-right:1px solid rgba(255,255,255,.18); }
+.nh-info-item:last-child { border-right:0; }
+.nh-info-icon { color:#13b4ff; font-size:34px; line-height:1; }
+.nh-info-item small { color:#18baff; font-size:11px; letter-spacing:1px; }
+.nh-info-item p { margin:3px 0 0; color:#fff; font-size:13px; line-height:1.5; }
+@media (max-width:1250px) {
+ .nh-header { gap:18px; padding-inline:3%; }
+ .nh-brand img { width:235px; }
+ .nh-nav { gap:12px; }
+ .nh-nav a { font-size:12px; }
+ .nh-register { padding:15px 18px; font-size:12px; }
+ .nh-hero-content { width:60%; }
+}
+@media (max-width:900px) {
+ .nh-header { min-height:82px; padding:12px 5%; }
+ .nh-brand img { width:225px; max-height:58px; }
+ .nh-register { margin-left:auto; padding:13px 16px; border-radius:8px; font-size:11px; }
+ .nh-menu { display:block; }
+ .nh-nav { display:none; position:absolute; top:82px; left:0; right:0; padding:15px 5% 22px; align-items:stretch; flex-direction:column; gap:0; background:rgba(3,20,39,.98); border-bottom:1px solid rgba(255,255,255,.12); }
+ .nh-nav.nh-nav-open { display:flex; }
+ .nh-nav a { padding:13px 0; font-size:14px; }
+ .nh-nav a.active::after { display:none; }
+ .nh-hero { height:auto; min-height:850px; max-height:none; align-items:flex-start; }
+ .nh-hero-bg { object-position:62% center; }
+ .nh-hero-overlay { background:linear-gradient(90deg,rgba(2,17,35,.94),rgba(2,17,35,.48)),linear-gradient(0deg,rgba(2,17,35,.95),transparent 80%); }
+ .nh-hero-content { width:90%; margin:0 auto; padding-top:155px; padding-bottom:42px; }
+ .nh-kicker { font-size:11px; letter-spacing:3px; }
+ .nh-hero h1 { font-size:clamp(66px,13vw,108px); letter-spacing:-3px; }
+ .nh-hero h1 span { letter-spacing:-4px; }
+ .nh-tagline { font-size:clamp(20px,4.5vw,28px); }
+ .nh-description { font-size:13px; }
+ .nh-info { flex-wrap:wrap; gap:16px; }
+ .nh-info-item { padding-right:15px; gap:10px; }
+ .nh-info-item p { font-size:12px; }
+}
+@media (max-width:480px) {
+ .nh-brand img { width:155px; }
+ .nh-register { padding:11px 10px; font-size:9px; gap:7px; }
+ .nh-menu span { width:23px; }
+ .nh-hero-content { width:90%; }
+ .nh-hero h1 { font-size:64px; }
+ .nh-actions { flex-direction:column; align-items:stretch; }
+ .nh-primary-btn, .nh-secondary-btn { width:100%; padding-inline:15px; font-size:11px; }
+ .nh-info { flex-direction:column; }
+ .nh-info-item { border-right:0; border-bottom:1px solid rgba(255,255,255,.14); padding:0 0 12px; }
+}
