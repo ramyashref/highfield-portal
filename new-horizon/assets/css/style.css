@@ -132,3 +132,32 @@ body{font-size:16px}
  .nh-info { flex-direction:column; }
  .nh-info-item { border-right:0; border-bottom:1px solid rgba(255,255,255,.14); padding:0 0 12px; }
 }
+
+/* NEW HORIZON — Egyptian heritage / international faculty refinement */
+.site-header .mark{width:44px;height:44px;border:0;color:#d7ad78;font-family:Georgia,serif;font-size:30px;font-weight:400;letter-spacing:-3px;position:relative}
+.site-header .mark:after{content:"";position:absolute;left:3px;right:3px;bottom:2px;height:1px;background:linear-gradient(90deg,transparent,#c99b65,transparent)}
+.site-header .wordmark-text b{letter-spacing:2.4px}
+.inner-hero{min-height:480px;padding:160px 8% 58px;background:linear-gradient(90deg,rgba(3,13,25,.97) 0%,rgba(5,20,35,.86) 38%,rgba(5,20,35,.28) 78%,rgba(5,15,26,.64) 100%),url('../hero-pharaonic-pediatric.webp') center 46%/cover no-repeat;border-bottom:3px solid #b88b5a;position:relative;isolation:isolate}
+.inner-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(3,12,22,.65),transparent 50%);pointer-events:none}
+.inner-hero .eyebrow{color:#d6ad7a;letter-spacing:3px}.inner-hero h1{max-width:850px;font-size:clamp(52px,6.5vw,86px);letter-spacing:-3.4px}.inner-hero h1 span{color:#d7ad78}.inner-hero .lead{max-width:630px;font-size:15px;color:#d6e0e8}
+.page-content{padding-top:48px;padding-bottom:60px;background:linear-gradient(135deg,#f8f7f3,#edf0f1);}
+.speaker-section-heading{display:grid;grid-template-columns:.85fr 1.15fr;align-items:end;gap:36px;margin-bottom:20px}
+.speaker-section-heading .eyebrow{color:#9b7046;margin-bottom:5px}.speaker-section-heading h2{font-size:clamp(30px,3.2vw,44px);line-height:1.15;letter-spacing:-1.6px;color:#102238}.speaker-section-heading>p{max-width:540px;font-size:13px;line-height:1.9;color:#536171;padding-bottom:3px}
+.speaker-intro{font-size:12px;line-height:1.8;margin-bottom:28px;color:#667381;max-width:850px}
+.content-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.speaker-card{padding:10px 13px 18px;min-height:0;border:1px solid rgba(20,39,56,.11);border-top:2px solid #b58b60;border-radius:5px;background:rgba(255,255,255,.77);box-shadow:0 8px 22px rgba(10,30,45,.045);transition:transform .25s,box-shadow .25s,border-color .25s;position:relative;overflow:hidden}
+.speaker-card:after{content:"";position:absolute;right:-16px;top:10px;width:100px;height:100px;opacity:.045;background:url('../hero-pharaonic-pediatric.webp') center/cover;clip-path:polygon(50% 0,100% 25%,80% 100%,20% 100%,0 25%);pointer-events:none}
+.speaker-card:hover{transform:translateY(-4px);border-top-color:#d7ad78;box-shadow:0 16px 30px rgba(10,30,45,.11)}
+.speaker-flag-panel{height:112px;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;border-radius:3px;background:linear-gradient(125deg,#e6e9e7,#d6e0e4);border:1px solid rgba(18,39,57,.06);margin-bottom:13px}
+.speaker-flag-panel:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.55) 48%,transparent 72%);opacity:.7}
+.flag-emoji{font-size:42px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.12));z-index:1}
+.flag-country{font-size:9px;letter-spacing:2px;color:#647483;font-weight:600;z-index:1}
+.speaker-card .card-kicker{display:flex;align-items:center;gap:7px;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;color:#8a6949;margin:0 0 7px}
+.country-flag{font-size:15px;letter-spacing:0}
+.speaker-card h3{font-size:17px;line-height:1.35;letter-spacing:-.35px;margin:0 0 7px;color:#102238;position:relative;z-index:1}
+.speaker-card>p:not(.card-kicker){font-size:11px;line-height:1.75;color:#586777;margin:0;position:relative;z-index:1}
+.page-actions{margin-top:28px}
+.button-outline{border-color:#b58b60;color:#183047;background:rgba(255,255,255,.4)}
+.footer{border-top:1px solid rgba(210,170,120,.3)}
+@media(max-width:800px){.speaker-section-heading{grid-template-columns:1fr;gap:12px}.content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.inner-hero{background-position:58% center}}
+@media(max-width:560px){.content-grid{grid-template-columns:1fr}.speaker-card{padding:11px 12px 16px}.speaker-flag-panel{height:145px}.speaker-card h3{font-size:18px}.speaker-card>p:not(.card-kicker){font-size:12px}.inner-hero{min-height:440px;padding:135px 6% 48px}.inner-hero h1{font-size:clamp(42px,11vw,62px);letter-spacing:-1.7px}.inner-hero .lead{font-size:13px}.page-content{padding:38px 6%}.speaker-section-heading h2{font-size:34px}}
