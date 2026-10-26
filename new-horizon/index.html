@@ -9,26 +9,42 @@
   <link rel="stylesheet" href="assets/css/style.css"><script src="assets/js/main.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
-    <a class="wordmark" href="#home" aria-label="New Horizon home"><span class="mark">NH<span>+</span></span><span class="wordmark-text"><b>NEW HORIZON</b><small>INTERNATIONAL CONFERENCE</small></span></a>
-    <nav class="nav" id="nav"><a href="index.html#about">About</a><a href="speakers.html">Speakers</a><a href="agenda.html">Scientific Agenda</a><a href="workshops.html">Workshops</a><a href="strategic-day.html">Strategic Day</a><a href="sponsors.html">Partners</a></nav>
-    <a class="header-cta" href="register.html">Register <span>↗</span></a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false"><i></i><i></i></button>
+  <header class="nh-header">
+    <a class="nh-brand" href="#home" aria-label="NEW HORIZON Home">
+      <img src="assets/new-horizon-logo-reference.png" alt="NEW HORIZON — International Conference in Pediatric Surgery">
+    </a>
+    <nav class="nh-nav" id="nhNav" aria-label="Main navigation">
+      <a class="active" href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="agenda.html">Scientific Program</a>
+      <a href="workshops.html">Workshops</a>
+      <a href="speakers.html">Speakers</a>
+      <a href="strategic-day.html">Strategic Day</a>
+      <a href="sponsors.html">Sponsors</a>
+      <a href="#venue">Venue</a>
+    </nav>
+    <a class="nh-register" href="register.html">REGISTER NOW <span>→</span></a>
+    <button class="nh-menu" id="nhMenu" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </header>
   <main>
-    <section class="hero" id="home">
-      <img class="hero-video hero-image" src="assets/hero-pharaonic-pediatric.webp" alt="A pediatric surgeon and child framed by ancient Egyptian architecture and pyramids" fetchpriority="high">
-      <div class="video-shade"></div><div class="hero-grain"></div>
-      <div class="hero-content">
-        <div class="conference-label"><span class="label-line"></span> INTERNATIONAL SCIENTIFIC CONFERENCE <span class="label-line"></span></div>
-        <p class="edition">PEDIATRIC SURGERY · SCIENCE · INNOVATION</p><div class="coming-soon"><span></span> CONFERENCE DATES & VENUE — COMING SOON</div>
+    <section class="nh-hero" id="home">
+      <img class="nh-hero-bg" src="assets/hero-pharaonic-pediatric.webp" alt="Pediatric surgeon and child framed by Egyptian heritage" fetchpriority="high">
+      <div class="nh-hero-overlay"></div>
+      <div class="nh-hero-content">
+        <p class="nh-kicker">INTERNATIONAL CONFERENCE<br>ON PEDIATRIC SURGERY</p>
         <h1>NEW<br><span>HORIZON</span></h1>
-        <p class="hero-subtitle">Bridging Egyptian heritage with the future of <strong>pediatric surgery.</strong></p>
-        <p class="hero-intro">Where the legacy of ancient Egypt meets medical innovation — bringing the pediatric surgery community together to advance care for every child.</p>
-        <div class="hero-buttons"><a class="button button-light" href="#about">Discover the conference <span>↗</span></a><a class="text-link" href="agenda.html">Explore the scientific agenda <span>↗</span></a></div>
+        <p class="nh-tagline">Bridging Heritage and Innovation<br>for a <strong>Healthier Future for Children.</strong></p>
+        <p class="nh-description">A global platform bringing together experts, innovators, and changemakers to advance the science and practice of pediatric surgery through education, collaboration, and a shared vision for every child.</p>
+        <div class="nh-actions">
+          <a class="nh-primary-btn" href="register.html">REGISTER YOUR INTEREST <span>→</span></a>
+          <a class="nh-secondary-btn" href="#about">EXPLORE THE CONFERENCE <span class="nh-play">▶</span></a>
+        </div>
+        <div class="nh-info">
+          <div class="nh-info-item"><span class="nh-info-icon" aria-hidden="true">▦</span><div><small>DATES</small><p>Coming Soon</p></div></div>
+          <div class="nh-info-item"><span class="nh-info-icon" aria-hidden="true">⌖</span><div><small>VENUE</small><p>Venue to be announced</p></div></div>
+          <div class="nh-info-item"><span class="nh-info-icon" aria-hidden="true">♧</span><div><small>ATTENDEES</small><p>International<br>Experts &amp; Professionals</p></div></div>
+        </div>
       </div>
-      <div class="hero-footer"><span class="hero-index">01 <i></i> 04</span><span class="scroll-cue">SCROLL TO EXPLORE <b>↓</b></span><span class="hero-specialty">A PEDIATRIC SURGERY CONFERENCE</span></div>
-      <div class="hero-side-note">KNOWLEDGE THAT MOVES MEDICINE FORWARD</div>
     </section>
     <section class="intro section" id="about">
       <div class="section-overline"><span>01 / THE VISION</span><span>NEW HORIZON</span></div>
@@ -43,4 +59,23 @@
     <section class="register" id="register"><div class="register-glow"></div><p class="eyebrow">YOUR NEXT HORIZON STARTS HERE</p><h2>Be part of<br>what comes next.</h2><p>Connect with the pediatric surgery community and follow the conference announcements.</p><a class="button button-light" href="register.html">Register now <span>↗</span></a></section>
   </main>
   <footer class="footer"><a class="wordmark footer-mark" href="#home"><span class="mark">NH<span>+</span></span><span class="wordmark-text"><b>NEW HORIZON</b><small>INTERNATIONAL CONFERENCE</small></span></a><span>ADVANCING THE FUTURE OF PEDIATRIC SURGERY</span><a href="#home">BACK TO TOP ↑</a></footer>
+
+<script>
+  (function () {
+    const button = document.getElementById('nhMenu');
+    const nav = document.getElementById('nhNav');
+    if (!button || !nav) return;
+    button.addEventListener('click', function () {
+      const isOpen = nav.classList.toggle('nh-nav-open');
+      button.setAttribute('aria-expanded', String(isOpen));
+      button.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    });
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        nav.classList.remove('nh-nav-open');
+        button.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
 </body></html>
