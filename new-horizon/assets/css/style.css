@@ -164,242 +164,214 @@ body{font-size:16px}
 
 
 
-/* ===== SPEAKERS PAGE — FINAL CARD NORMALIZATION ===== */
-.page-content .content-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  grid-auto-rows: 1fr !important;
-  align-items: stretch !important;
-  gap: 16px !important;
+/* =========================================================
+   NEW HORIZON HOMEPAGE — editorial, premium and low-clutter
+   ========================================================= */
+:root { --nh-home-ink:#071421; --nh-home-navy:#0a2034; --nh-home-blue:#24a9ed; --nh-home-champagne:#d8b47b; }
+body:has(.nh-hero) { background:#071421; }
+.nh-header { min-height:88px !important; padding:14px 5.2% !important; }
+.nh-brand img { width:260px !important; max-height:60px !important; }
+.nh-nav a { font-size:12px !important; }
+.nh-register { padding:14px 21px !important; border-radius:3px !important; background:transparent !important; border:1px solid rgba(255,255,255,.48) !important; font-size:11px !important; }
+.nh-register:hover { background:#fff !important; color:#071421 !important; }
+.nh-hero { min-height:760px !important; height:min(100svh,1000px) !important; }
+.nh-hero-bg { object-position:center 48% !important; }
+.nh-hero-overlay { background:linear-gradient(90deg,rgba(2,13,25,.96) 0%,rgba(2,13,25,.82) 33%,rgba(2,13,25,.34) 67%,rgba(2,13,25,.15) 100%),linear-gradient(0deg,rgba(2,13,25,.7),transparent 43%) !important; }
+.nh-hero-content { width:min(760px,88%) !important; margin-left:7% !important; padding-top:90px !important; }
+.nh-kicker { color:#d8b47b !important; font-size:12px !important; letter-spacing:4px !important; line-height:1.7 !important; margin-bottom:24px !important; }
+.nh-hero h1 { font-size:clamp(82px,10vw,148px) !important; letter-spacing:-.07em !important; line-height:.78 !important; }
+.nh-hero h1 span { color:#29b7ff !important; letter-spacing:-.075em !important; }
+.nh-tagline { margin-top:28px !important; font-size:clamp(20px,2vw,28px) !important; line-height:1.5 !important; max-width:670px !important; }
+.nh-tagline strong { color:#d8b47b !important; }
+.nh-description { max-width:540px !important; font-size:14px !important; line-height:1.9 !important; color:rgba(255,255,255,.82) !important; margin-top:17px !important; }
+.nh-actions { margin-top:27px !important; gap:13px !important; }
+.nh-primary-btn,.nh-secondary-btn { min-height:54px !important; padding:0 22px !important; border-radius:3px !important; font-size:11px !important; letter-spacing:1px !important; }
+.nh-primary-btn { background:linear-gradient(110deg,#19a9f2,#0864c9) !important; }
+.nh-secondary-btn { background:rgba(4,19,33,.48) !important; border-color:rgba(255,255,255,.55) !important; }
+.nh-play { width:auto !important; height:auto !important; background:none !important; color:#d8b47b !important; font-size:17px !important; }
+.nh-info { margin-top:32px !important; gap:0 !important; }
+.nh-info-item { padding:0 24px 0 0 !important; margin-right:24px !important; border-right:1px solid rgba(255,255,255,.25) !important; gap:0 !important; }
+.nh-info-icon { display:none !important; }
+.nh-info-item small { color:#d8b47b !important; font-size:9px !important; letter-spacing:2px !important; }
+.nh-info-item p { font-size:13px !important; margin-top:6px !important; line-height:1.5 !important; }
+.nh-countdown-section { position:relative; z-index:2; padding:54px 7% 58px; color:#fff; background:linear-gradient(110deg,#0c263c,#071522 65%,#0d2c42); border-top:1px solid rgba(216,180,123,.6); border-bottom:1px solid rgba(216,180,123,.3); }
+.nh-countdown-inner { max-width:1260px; margin:auto; display:grid; grid-template-columns:1fr 1.2fr; align-items:center; gap:55px; }
+.nh-premium-eyebrow { color:#d8b47b; font-size:10px; letter-spacing:3px; font-weight:700; line-height:1.7; }
+.nh-countdown-heading h2,.nh-section-heading h2 { margin-top:12px; color:#fff; font-size:clamp(30px,3.3vw,46px); line-height:1.12; letter-spacing:-1.6px; font-weight:600; }
+.nh-countdown-heading h2 em,.nh-section-heading h2 em,.nh-president-copy h2 em,.nh-registration-copy h2 em { color:#d8b47b; font-family:Georgia,serif; font-weight:400; }
+.nh-countdown-heading>p:last-child { margin-top:14px; color:#b8c8d5; font-size:13px; letter-spacing:.4px; }
+.nh-countdown { display:grid; grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; gap:clamp(8px,1.4vw,20px); align-items:center; }
+.nh-time-unit { min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:19px 7px 16px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.035); box-shadow:inset 0 1px rgba(255,255,255,.04); }
+.nh-time-unit strong { color:#fff; font-size:clamp(30px,4.1vw,54px); line-height:1; letter-spacing:-2px; font-weight:600; font-variant-numeric:tabular-nums; }
+.nh-time-unit span { margin-top:12px; color:#d8b47b; font-size:8px; font-weight:700; letter-spacing:1.5px; }
+.nh-time-separator { color:#d8b47b; font-size:24px; font-weight:300; transform:translateY(-8px); }
+.nh-president-section { display:grid; grid-template-columns:minmax(300px,.8fr) 1.2fr; gap:clamp(45px,8vw,120px); align-items:center; padding:105px max(7%,calc((100% - 1220px)/2)); background:#f2f4f3; color:#102438; }
+.nh-president-image-wrap { position:relative; max-width:450px; width:100%; margin:auto; }
+.nh-president-image-frame { position:relative; padding:13px; border:1px solid #c6a16b; background:#e5e8e7; box-shadow:18px 18px 0 #dce2e4; }
+.nh-president-image-frame:before { content:""; position:absolute; inset:24px -9px -9px 24px; border:1px solid rgba(190,145,84,.42); pointer-events:none; }
+.nh-president-image-frame img { display:block; width:100%; height:510px; object-fit:cover; object-position:center 23%; position:relative; z-index:1; filter:saturate(.88); }
+.nh-president-image-caption { display:flex; justify-content:space-between; gap:15px; margin-top:27px; font-size:8px; letter-spacing:1.6px; color:#657382; }
+.nh-president-image-caption strong { color:#a47a43; font-weight:700; }
+.nh-president-copy { max-width:690px; }
+.nh-president-copy .nh-premium-eyebrow { color:#9c7544; }
+.nh-president-copy h2,.nh-registration-copy h2 { margin-top:17px; font-size:clamp(44px,5.4vw,72px); letter-spacing:-3px; line-height:.98; color:#102438; font-weight:600; }
+.nh-president-copy h2 em { color:#a77e4c; }
+.nh-president-copy h3 { margin-top:30px; font-size:clamp(22px,2.3vw,29px); line-height:1.25; color:#102438; font-weight:600; }
+.nh-president-role { margin-top:9px; color:#387b9c; font-size:12px; font-weight:600; line-height:1.8; }
+.nh-president-message { max-width:650px; margin-top:22px; color:#536474; font-size:15px; line-height:2; }
+.nh-text-link { display:inline-flex; align-items:center; gap:25px; padding-bottom:10px; margin-top:28px; border-bottom:1px solid #b28b58; color:#18384d; font-size:10px; font-weight:700; letter-spacing:1.1px; }
+.nh-text-link span { color:#b28b58; font-size:18px; transition:transform .2s; }
+.nh-text-link:hover span { transform:translate(3px,-3px); }
+.nh-sponsors-section { overflow:hidden; padding:78px 0 53px; background:#fff; color:#102438; }
+.nh-section-heading { max-width:1260px; margin:0 auto 37px; padding:0 7%; display:flex; align-items:end; justify-content:space-between; gap:25px; }
+.nh-section-heading .nh-premium-eyebrow { color:#9c7544; }
+.nh-section-heading h2 { color:#102438; font-size:clamp(31px,3.6vw,48px); }
+.nh-section-heading .nh-text-link { flex:0 0 auto; margin:0 0 5px; }
+.nh-sponsor-marquee { width:100%; overflow:hidden; position:relative; padding:12px 0 20px; }
+.nh-sponsor-marquee:before,.nh-sponsor-marquee:after { content:""; position:absolute; top:0; bottom:0; width:9%; z-index:2; pointer-events:none; }
+.nh-sponsor-marquee:before { left:0; background:linear-gradient(90deg,#fff,transparent); }
+.nh-sponsor-marquee:after { right:0; background:linear-gradient(270deg,#fff,transparent); }
+.nh-sponsor-track { display:flex; align-items:center; width:max-content; gap:34px; animation:nhSponsorSlide 32s linear infinite; }
+.nh-sponsor-marquee:hover .nh-sponsor-track { animation-play-state:paused; }
+.nh-sponsor-logo { width:142px; flex:0 0 142px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+.nh-sponsor-logo>span { display:grid; place-items:center; width:112px; height:112px; border-radius:50%; border:1px solid #d8b47b; outline:5px solid #f1f4f4; background:radial-gradient(circle at 35% 25%,#1c4762,#071a2b 72%); color:#d8b47b; font-size:16px; line-height:1.05; font-weight:700; text-align:center; letter-spacing:1px; box-shadow:0 8px 25px rgba(7,20,33,.13); }
+.nh-sponsor-logo small { font-size:8px; color:#617181; letter-spacing:1.2px; white-space:nowrap; }
+.nh-sponsor-note { margin:14px auto 0; padding:0 20px; text-align:center; color:#7b8791; font-size:10px; }
+@keyframes nhSponsorSlide { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.nh-program-section { padding:90px 7% 100px; background:linear-gradient(130deg,#071522,#0c2b42 68%,#071522); color:#fff; }
+.nh-program-heading { max-width:1260px; padding:0; margin-bottom:37px; }
+.nh-program-heading .nh-premium-eyebrow { color:#d8b47b; }
+.nh-program-heading h2 { color:#fff; }
+.nh-program-heading>p { max-width:320px; color:#b8c8d5; font-size:13px; line-height:1.8; }
+.nh-program-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; max-width:1260px; margin:auto; }
+.nh-program-card { min-height:360px; display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; padding:25px 27px 28px; border:1px solid rgba(255,255,255,.18); background-size:cover; background-position:center; position:relative; overflow:hidden; isolation:isolate; transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease; }
+.nh-program-card:before { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(4,16,28,.25),rgba(4,16,28,.95)); transition:background .3s ease; }
+.nh-program-card:hover { transform:translateY(-7px); border-color:#d8b47b; box-shadow:0 20px 50px rgba(0,0,0,.22); }
+.nh-program-card:hover:before { background:linear-gradient(180deg,rgba(4,16,28,.1),rgba(4,16,28,.9)); }
+.nh-program-workshops { background-image:url('../hero-pharaonic-pediatric.webp'); background-position:25% center; }
+.nh-program-science { background-image:linear-gradient(135deg,rgba(17,67,93,.2),rgba(4,15,27,.1)),url('../hero-pharaonic-pediatric.webp'); background-position:55% center; }
+.nh-program-strategy { background-image:linear-gradient(135deg,rgba(17,67,93,.25),rgba(4,15,27,.12)),url('../hero-pharaonic-pediatric.webp'); background-position:85% center; }
+.nh-program-index { color:#d8b47b; font-size:12px; letter-spacing:2px; }
+.nh-program-rule { width:55px; height:2px; background:#d8b47b; margin-top:25px; }
+.nh-program-card>div { width:100%; }
+.nh-program-card>div>p { color:#d8b47b; font-size:9px; font-weight:700; letter-spacing:2px; }
+.nh-program-card h3 { margin-top:13px; color:#fff; font-size:clamp(27px,3vw,38px); font-weight:600; line-height:1.1; letter-spacing:-1px; }
+.nh-program-link { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:25px; padding-top:15px; border-top:1px solid rgba(255,255,255,.28); color:#e5edf3; font-size:9px; letter-spacing:1.1px; font-weight:600; }
+.nh-program-link b { color:#d8b47b; font-size:17px; }
+.nh-home-registration { display:grid; grid-template-columns:.8fr 1.2fr; gap:clamp(40px,7vw,95px); padding:100px max(7%,calc((100% - 1260px)/2)); background:#edf2f4; color:#102438; align-items:start; }
+.nh-registration-copy { position:sticky; top:40px; }
+.nh-registration-copy .nh-premium-eyebrow { color:#9c7544; }
+.nh-registration-copy h2 { color:#102438; }
+.nh-registration-copy h2 em { color:#a77e4c; }
+.nh-registration-copy>p:not(.nh-premium-eyebrow) { margin-top:23px; color:#536474; font-size:15px; line-height:2; max-width:400px; }
+.nh-registration-meta { display:flex; flex-wrap:wrap; gap:10px; margin-top:29px; }
+.nh-registration-meta span { padding:11px 13px; border:1px solid #c8d4d9; color:#3e6379; font-size:9px; font-weight:700; letter-spacing:1px; }
+.nh-home-form { padding:clamp(22px,3vw,40px); background:#fff; border:1px solid #d8e0e4; border-top:3px solid #bd9762; box-shadow:0 18px 55px rgba(10,35,53,.08); }
+.nh-form-title { padding-bottom:23px; margin-bottom:25px; border-bottom:1px solid #e0e6e9; }
+.nh-form-title>span { color:#9c7544; font-size:9px; font-weight:700; letter-spacing:2px; }
+.nh-form-title p { margin-top:9px; color:#102438; font-size:22px; font-weight:600; }
+.nh-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 17px; }
+.nh-form-grid label { display:flex; flex-direction:column; gap:9px; color:#30495c; font-size:11px; font-weight:600; }
+.nh-form-grid input:not([type=checkbox]),.nh-form-grid select,.nh-form-grid textarea { width:100%; min-height:48px; padding:13px 14px; border:1px solid #d4dfe4; background:#f9fbfb; color:#102438; border-radius:2px; font:400 13px 'Poppins',sans-serif; outline:none; }
+.nh-form-grid input:focus,.nh-form-grid select:focus,.nh-form-grid textarea:focus { border-color:#168cc7; box-shadow:0 0 0 3px rgba(22,140,199,.1); }
+.nh-form-grid textarea { resize:vertical; min-height:90px; }
+.nh-form-full { grid-column:1/-1; }
+.nh-form-grid .nh-form-consent { flex-direction:row; align-items:flex-start; gap:10px; font-size:11px; line-height:1.7; font-weight:400; }
+.nh-form-consent input { margin-top:3px; accent-color:#0c81c3; }
+.nh-form-disclaimer { margin-top:19px; color:#7a8791; font-size:10px; line-height:1.8; }
+.nh-form-status { display:none; margin-top:15px; padding:13px 15px; background:#e8f2f6; border-left:3px solid #168cc7; color:#284b60; font-size:12px; line-height:1.7; }
+.nh-form-status.is-visible { display:block; }
+.nh-form-submit { margin-top:20px; cursor:pointer; border:0; }
+@media(max-width:1050px) {
+ .nh-header { gap:15px !important; }
+ .nh-brand img { width:210px !important; }
+ .nh-nav { gap:12px !important; }
+ .nh-nav a { font-size:10px !important; }
+ .nh-countdown-inner { grid-template-columns:1fr; gap:25px; }
+ .nh-countdown-heading { text-align:center; }
+ .nh-countdown { max-width:680px; width:100%; margin:auto; }
+ .nh-president-section { gap:45px; padding-top:80px; padding-bottom:80px; }
+ .nh-president-image-frame img { height:430px; }
+ .nh-program-card { min-height:320px; }
 }
-.page-content .content-grid > .speaker-card {
-  display: flex !important;
-  flex-direction: column !important;
-  align-self: stretch !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  height: 100% !important;
-  grid-column: auto !important;
-  padding: 12px 14px 16px !important;
-  border: 1px solid rgba(20,39,56,.13) !important;
-  border-top: 2px solid #b58b60 !important;
-  border-radius: 7px !important;
-  background: rgba(255,255,255,.9) !important;
-  box-shadow: 0 8px 22px rgba(10,30,45,.055) !important;
-  overflow: hidden !important;
-  position: relative !important;
-  transition: transform .25s ease, box-shadow .25s ease !important;
+@media(max-width:900px) {
+ .nh-header { min-height:78px !important; padding:11px 5% !important; }
+ .nh-brand img { width:210px !important; }
+ .nh-menu { display:block !important; margin-left:10px; }
+ .nh-nav { display:none !important; position:absolute; top:78px; left:0; right:0; padding:15px 5% 22px; flex-direction:column; align-items:stretch; gap:0 !important; background:rgba(3,20,39,.98); border-bottom:1px solid rgba(255,255,255,.12); }
+ .nh-nav.nh-nav-open { display:flex !important; }
+ .nh-nav a { padding:13px 0; font-size:13px !important; }
+ .nh-hero { min-height:760px !important; height:auto !important; }
+ .nh-hero-content { width:88% !important; margin:0 auto !important; padding-top:150px !important; padding-bottom:65px !important; }
+ .nh-hero-bg { object-position:62% center !important; }
+ .nh-info { flex-wrap:wrap; row-gap:20px !important; }
+ .nh-president-section { grid-template-columns:.8fr 1.2fr; padding-left:6%; padding-right:6%; }
+ .nh-president-image-frame img { height:370px; }
+ .nh-section-heading { padding-left:6%; padding-right:6%; }
+ .nh-program-section { padding:75px 6%; }
+ .nh-program-grid { gap:12px; }
+ .nh-program-card { min-height:285px; padding:20px; }
+ .nh-home-registration { padding:75px 6%; gap:35px; }
 }
-.page-content .content-grid > .speaker-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 14px 30px rgba(10,30,45,.12) !important;
+@media(max-width:650px) {
+ .nh-header { min-height:70px !important; }
+ .nh-brand img { width:155px !important; max-height:43px !important; }
+ .nh-register { margin-left:auto; padding:10px 10px !important; font-size:8px !important; gap:6px !important; }
+ .nh-menu { padding:4px !important; }
+ .nh-menu span { width:22px !important; }
+ .nh-hero { min-height:750px !important; }
+ .nh-hero-overlay { background:linear-gradient(90deg,rgba(2,13,25,.92),rgba(2,13,25,.52)),linear-gradient(0deg,rgba(2,13,25,.85),transparent 70%) !important; }
+ .nh-hero-content { padding-top:135px !important; padding-bottom:55px !important; }
+ .nh-kicker { font-size:9px !important; letter-spacing:2.2px !important; }
+ .nh-hero h1 { font-size:clamp(68px,17vw,100px) !important; }
+ .nh-tagline { font-size:19px !important; }
+ .nh-description { font-size:12px !important; max-width:370px !important; }
+ .nh-actions { flex-direction:column; align-items:stretch; max-width:340px; }
+ .nh-primary-btn,.nh-secondary-btn { justify-content:center; width:100%; font-size:10px !important; }
+ .nh-info { gap:17px 0 !important; }
+ .nh-info-item { width:50%; margin:0 !important; padding-right:8px !important; border-right:0 !important; }
+ .nh-info-item p { font-size:11px !important; }
+ .nh-countdown-section { padding:45px 5% 48px; }
+ .nh-countdown-inner { gap:22px; }
+ .nh-countdown-heading h2 { font-size:31px; }
+ .nh-countdown-heading>p:last-child { font-size:11px; }
+ .nh-countdown { gap:5px; }
+ .nh-time-unit { padding:15px 3px 13px; }
+ .nh-time-unit strong { font-size:clamp(24px,7vw,36px); letter-spacing:-1px; }
+ .nh-time-unit span { font-size:6px; letter-spacing:.6px; margin-top:9px; }
+ .nh-time-separator { font-size:16px; }
+ .nh-president-section { grid-template-columns:1fr; gap:42px; padding:65px 7%; }
+ .nh-president-image-wrap { max-width:370px; }
+ .nh-president-image-frame img { height:430px; }
+ .nh-president-copy h2,.nh-registration-copy h2 { font-size:48px; }
+ .nh-president-copy h3 { margin-top:24px; font-size:23px; }
+ .nh-president-message { font-size:13px; line-height:1.9; }
+ .nh-president-image-caption { font-size:7px; letter-spacing:1px; }
+ .nh-sponsors-section { padding:60px 0 40px; }
+ .nh-section-heading { padding:0 7%; display:block; margin-bottom:26px; }
+ .nh-section-heading h2 { font-size:34px; }
+ .nh-section-heading .nh-text-link { margin-top:22px; }
+ .nh-sponsor-track { gap:20px; animation-duration:25s; }
+ .nh-sponsor-logo { width:115px; flex-basis:115px; }
+ .nh-sponsor-logo>span { width:88px; height:88px; font-size:13px; }
+ .nh-sponsor-logo small { font-size:6px; letter-spacing:.7px; }
+ .nh-sponsor-note { font-size:9px; line-height:1.7; padding:0 7%; }
+ .nh-program-section { padding:62px 6% 70px; }
+ .nh-program-heading { display:block; padding:0; }
+ .nh-program-heading>p { margin-top:17px; font-size:12px; }
+ .nh-program-grid { grid-template-columns:1fr; gap:13px; }
+ .nh-program-card { min-height:245px; padding:20px 22px; }
+ .nh-program-card h3 { font-size:31px; }
+ .nh-home-registration { grid-template-columns:1fr; padding:65px 6%; gap:35px; }
+ .nh-registration-copy { position:static; }
+ .nh-registration-copy>p:not(.nh-premium-eyebrow) { font-size:13px; }
+ .nh-form-grid { grid-template-columns:1fr; gap:16px; }
+ .nh-form-full { grid-column:auto; }
+ .nh-home-form { padding:23px 18px; }
+ .nh-form-title p { font-size:20px; }
 }
-.page-content .speaker-flag-panel,
-.page-content .speaker-portrait-wrap {
-  box-sizing: border-box !important;
-  flex: 0 0 112px !important;
-  width: 100% !important;
-  height: 112px !important;
-  min-height: 112px !important;
-  max-height: 112px !important;
-  margin: 0 0 13px !important;
-  padding: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: relative !important;
-  overflow: hidden !important;
-  border-radius: 4px !important;
-  border: 1px solid rgba(18,39,57,.09) !important;
-  border-bottom: 1px solid rgba(181,139,96,.5) !important;
-  background: linear-gradient(135deg, #102a40, #193f58) !important;
-}
-.page-content .speaker-flag-panel::before {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.12), transparent 65%) !important;
-}
-.page-content .speaker-flag-panel::after {
-  content: "" !important;
-  position: absolute !important;
-  width: 160px !important;
-  height: 160px !important;
-  border: 1px solid rgba(214,173,122,.22) !important;
-  border-radius: 50% !important;
-}
-.page-content .flag-emoji {
-  z-index: 1 !important;
-  display: block !important;
-  font-size: 44px !important;
-  line-height: 1 !important;
-  filter: drop-shadow(0 3px 7px rgba(0,0,0,.25)) !important;
-}
-.page-content .flag-country {
-  position: absolute !important;
-  z-index: 2 !important;
-  right: 11px !important;
-  bottom: 9px !important;
-  color: #f0d6ae !important;
-  font-size: 8px !important;
-  letter-spacing: 1.25px !important;
-  font-weight: 700 !important;
-}
-.page-content .speaker-card .card-kicker {
-  display: flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-  margin: 0 0 7px !important;
-  font-size: 9px !important;
-  line-height: 1.5 !important;
-  letter-spacing: 1.1px !important;
-  text-transform: uppercase !important;
-  color: #8a6949 !important;
-}
-.page-content .speaker-card .country-flag {
-  font-size: 16px !important;
-  line-height: 1 !important;
-}
-.page-content .speaker-card h3 {
-  margin: 0 0 7px !important;
-  color: #102238 !important;
-  font-size: 16px !important;
-  line-height: 1.4 !important;
-  letter-spacing: -.2px !important;
-  overflow-wrap: anywhere !important;
-}
-.page-content .speaker-card > p:not(.card-kicker) {
-  margin: 0 !important;
-  color: #586777 !important;
-  font-size: 11px !important;
-  line-height: 1.7 !important;
-  overflow-wrap: anywhere !important;
-}
-/* The featured speaker follows the exact same card dimensions; only the flag panel is replaced by a circular portrait. */
-.page-content .content-grid > .speaker-featured {
-  grid-column: auto !important;
-  padding: 12px 14px 16px !important;
-}
-.page-content .speaker-featured .speaker-portrait-wrap {
-  flex: 0 0 112px !important;
-  width: 100% !important;
-  height: 112px !important;
-  min-height: 112px !important;
-  max-height: 112px !important;
-  margin: 0 0 13px !important;
-  border: 1px solid rgba(181,139,96,.55) !important;
-  border-radius: 4px !important;
-  background: linear-gradient(135deg, #102a40, #193f58) !important;
-}
-.page-content .speaker-featured .speaker-portrait-wrap::before {
-  content: "" !important;
-  position: absolute !important;
-  width: 96px !important;
-  height: 96px !important;
-  border: 1px solid rgba(214,173,122,.7) !important;
-  border-radius: 50% !important;
-}
-.page-content .speaker-featured .speaker-photo {
-  display: block !important;
-  position: relative !important;
-  z-index: 1 !important;
-  flex: 0 0 84px !important;
-  width: 84px !important;
-  height: 84px !important;
-  min-width: 84px !important;
-  min-height: 84px !important;
-  max-width: 84px !important;
-  max-height: 84px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 3px solid #f0d6ae !important;
-  border-radius: 50% !important;
-  object-fit: cover !important;
-  object-position: center 22% !important;
-  box-shadow: 0 4px 13px rgba(0,0,0,.28) !important;
-}
-.page-content .speaker-featured .speaker-info {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  flex-direction: column !important;
-  min-width: 0 !important;
-  padding: 0 !important;
-}
-.page-content .speaker-featured .speaker-country {
-  display: flex !important;
-  align-items: center !important;
-  gap: 7px !important;
-  margin: 0 0 8px !important;
-  color: #8a6949 !important;
-  font-size: 9px !important;
-  font-weight: 700 !important;
-  letter-spacing: 1.1px !important;
-}
-.page-content .speaker-featured .speaker-flag {
-  font-size: 17px !important;
-  line-height: 1 !important;
-}
-.page-content .speaker-featured .speaker-info h3 {
-  margin: 0 0 7px !important;
-  font-size: 16px !important;
-}
-.page-content .speaker-featured .speaker-info p {
-  margin: 0 0 5px !important;
-  font-size: 11px !important;
-  line-height: 1.7 !important;
-  color: #586777 !important;
-}
-@media (max-width: 800px) {
-  .page-content .content-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-auto-rows: 1fr !important;
-    gap: 13px !important;
-  }
-}
-@media (max-width: 560px) {
-  .page-content .content-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-auto-rows: 1fr !important;
-    gap: 10px !important;
-  }
-  .page-content .content-grid > .speaker-card {
-    padding: 9px 9px 12px !important;
-  }
-  .page-content .speaker-flag-panel,
-  .page-content .speaker-portrait-wrap {
-    flex-basis: 88px !important;
-    height: 88px !important;
-    min-height: 88px !important;
-    max-height: 88px !important;
-    margin-bottom: 10px !important;
-  }
-  .page-content .flag-emoji { font-size: 35px !important; }
-  .page-content .flag-country { right: 6px !important; bottom: 6px !important; font-size: 6px !important; letter-spacing: .7px !important; }
-  .page-content .speaker-featured .speaker-portrait-wrap {
-    flex-basis: 88px !important;
-    height: 88px !important;
-    min-height: 88px !important;
-    max-height: 88px !important;
-  }
-  .page-content .speaker-featured .speaker-portrait-wrap::before { width: 74px !important; height: 74px !important; }
-  .page-content .speaker-featured .speaker-photo {
-    flex-basis: 64px !important;
-    width: 64px !important;
-    height: 64px !important;
-    min-width: 64px !important;
-    min-height: 64px !important;
-    max-width: 64px !important;
-    max-height: 64px !important;
-  }
-  .page-content .speaker-card .card-kicker { font-size: 7px !important; letter-spacing: .5px !important; }
-  .page-content .speaker-card h3,
-  .page-content .speaker-featured .speaker-info h3 { font-size: 12px !important; }
-  .page-content .speaker-card > p:not(.card-kicker),
-  .page-content .speaker-featured .speaker-info p { font-size: 9px !important; line-height: 1.55 !important; }
-  .page-content .speaker-featured .speaker-country { font-size: 7px !important; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .page-content .speaker-card { transition: none !important; }
+@media(prefers-reduced-motion:reduce) {
+ .nh-sponsor-track { animation:none !important; }
+ .nh-program-card,.nh-text-link span { transition:none !important; }
 }
 
