@@ -1,0 +1,3 @@
+NEW HORIZON Speakers Premium — no speaker photos
+
+Upload speakers.html to the site root, then upload assets/css/speakers-premium.css, assets/new-horizon-logo-reference.png, assets/hero-pharaonic-pediatric.webp, and assets/js/main.js to their matching paths. Keep your existing assets/css/style.css; it is not replaced. This page adds a page-scoped premium stylesheet only. All 27 existing speaker entries are preserved, and Prof. Dr. Hany Embaby is added as a text-only card with the Egypt flag. No speaker portraits are used.
