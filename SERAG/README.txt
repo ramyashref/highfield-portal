@@ -9,3 +9,5 @@ Cart functionality uses browser localStorage only. It does not process payments,
 Package prices are intentionally marked as to be announced until approved package prices and exact inclusions are provided.
 
 Package prices: Congress + 1 Workshop = EGP 3,500; Congress + 2 Workshops = EGP 5,500; Congress + all 5 Workshops = EGP 10,000. Package buttons add a package to the cart and prompt for workshop selection where applicable. Countdown targets 1 February 2027 at 9:00 AM Cairo time.
+
+Homepage visuals: wide SERAG hero image and a Conference President section immediately below the hero featuring Prof. Dr. Mostafa Selim.
