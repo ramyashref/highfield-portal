@@ -1,20 +1,9 @@
-SERAG 2027 WEBSITE
-==================
+SERAG 2027 website update
 
-Files:
-- index.html: complete responsive website (HTML, CSS and JavaScript in one file)
-- assets/serag-hero-source.jpg: supplied SERAG visual used as a cropped hero background
-- assets/conference-president-source.jpg: supplied conference president visual
+Upload the complete folder contents to your hosting path. Keep index.html, agenda.html, cart.html, workshops/ and assets/ in their relative positions.
 
-To preview:
-Open index.html in a modern browser.
+Prices: workshop 2,500 EGP each; scientific congress 1,500 EGP.
 
-To publish:
-Upload index.html and the assets folder together to your hosting public root.
+Cart functionality uses browser localStorage only. It does not process payments, reserve seats, or send registrations. Connect a backend and payment gateway before accepting real bookings.
 
-Important:
-1. The hero uses a CSS crop of the supplied artwork to keep its embedded poster lettering mostly outside the visible hero area. The original artwork itself has not been retouched.
-2. Workshop dates are shown as TBA, as supplied.
-3. Venue details are intentionally left for confirmation. The supplied visual says "Le Ciel" while earlier planning notes referenced "Le Sial"; confirm the official spelling before publishing.
-4. Registration form is a front-end demo only. Connect it to Google Sheets, a CRM, or the official registration endpoint before launch.
-5. Countdown is set to 1 February 2027 at 09:00 Cairo time (UTC+2).
+Package prices are intentionally marked as to be announced until approved package prices and exact inclusions are provided.
