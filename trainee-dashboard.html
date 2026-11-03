@@ -1,89 +1,43 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>لوحة المتدرب | HIGHFIELD SCHOLARS 2027</title>
-
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Highfield Egypt Learning Portal | لوحة المتدرب</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="portal.css">
 </head>
-
 <body data-page="trainee">
-  <header class="top">
-    <strong>HIGHFIELD SCHOLARS 2027</strong>
-    <button id="logout" class="secondary">تسجيل الخروج</button>
-  </header>
-
+  <header class="top"><strong>HIGHFIELD EGYPT <span>LEARNING PORTAL</span></strong><button id="logout" class="secondary">تسجيل الخروج</button></header>
   <main class="wrap">
-    <h1>لوحة المتدرب</h1>
-    <p>أهلًا <strong id="traineeName">...</strong></p>
-    <p id="traineeEmail"></p>
-
+    <h1>لوحة المتدرب</h1><p>أهلًا <strong id="traineeName">...</strong></p><p id="traineeEmail"></p>
     <section class="grid">
-      <article class="tile">
-        <small>حالة الاشتراك</small>
-        <strong id="subscriptionStatus">—</strong>
-      </article>
-      <article class="tile">
-        <small>حالة الحساب</small>
-        <strong id="accountStatus">—</strong>
-      </article>
-      <article class="tile">
-        <small>قيمة الاشتراك</small>
-        <strong id="totalFee">—</strong>
-      </article>
-      <article class="tile">
-        <small>المدفوع المعتمد</small>
-        <strong id="totalPaid">—</strong>
-      </article>
-      <article class="tile">
-        <small>المتبقي</small>
-        <strong id="balance">—</strong>
-      </article>
+      <article class="tile"><small>حالة الاشتراك السنوي</small><strong id="subscriptionStatus">—</strong></article>
+      <article class="tile"><small>حالة الحساب</small><strong id="accountStatus">—</strong></article>
+      <article class="tile"><small>قيمة الاشتراك السنوي</small><strong id="totalFee">—</strong></article>
+      <article class="tile"><small>المدفوع المعتمد</small><strong id="totalPaid">—</strong></article>
+      <article class="tile"><small>المتبقي</small><strong id="balance">—</strong></article>
     </section>
-
-    <section class="panel">
-      <h2>إرسال إثبات دفع</h2>
-      <form id="paymentForm">
-        <label>
-          المبلغ بالجنيه
-          <input id="amount" type="number" min="1" step="0.01" required>
-        </label>
-
-        <label>
-          طريقة الدفع
-          <select id="method">
-            <option>InstaPay / محفظة</option>
-            <option>تحويل بنكي</option>
-          </select>
-        </label>
-
-        <label>
-          إثبات الدفع (JPG / PNG / PDF، حتى 5MB)
-          <input id="proof" type="file" accept=".jpg,.jpeg,.png,.pdf" required>
-        </label>
-
-        <button type="submit">إرسال للمراجعة</button>
-      </form>
+    <section class="panel"><h2>البرامج الإضافية المسجل بها</h2><div id="extraPrograms" class="enrollment-list"><p class="note">لا توجد برامج إضافية مسجلة حتى الآن.</p></div></section>
+    <section class="panel"><h2>استكشف البرامج التدريبية</h2><p>اختر أي برنامج من كتالوج Highfield Egypt. رسوم البرامج الإضافية مستقلة عن الاشتراك السنوي.</p>
+      <div class="catalog-tools"><input id="programSearch" type="search" placeholder="ابحث باسم البرنامج أو التخصص"><select id="programCategory"><option value="">كل التخصصات</option></select></div>
+      <div id="programCatalog" class="program-catalog"><p class="note">جارٍ تحميل البرامج...</p></div>
     </section>
-
-    <section class="panel">
-      <h2>سجل الدفعات</h2>
-      <ul id="payments"></ul>
-    </section>
-
-    <section class="panel">
-      <h2>تقدم البرامج التدريبية</h2>
-      <p>سيظهر هنا تقدم البرامج بعد إدخال خطة البرامج وحالات الحضور والاجتياز.</p>
-      <ul id="progress"></ul>
-    </section>
-
-    <p id="status" class="status"></p>
+    <section class="panel" id="enrollmentPanel" hidden><h2>طلب الالتحاق ببرنامج</h2><form id="extraEnrollmentForm">
+      <input id="selectedProgramId" type="hidden"><p><strong id="selectedProgramName"></strong></p><p>رسوم البرنامج: <strong id="selectedProgramFee"></strong></p><p><a href="https://wa.me/201101669115?text=Hello%20Highfield%20Egypt%2C%20I%20would%20like%20to%20complete%20my%20program%20enrollment." target="_blank" rel="noopener">التواصل مع Highfield عبر WhatsApp</a></p>
+      <label>طريقة استكمال التسجيل<select id="extraPaymentMethod" required><option value="contact">التواصل مع Highfield لاستكمال التسجيل</option><option value="transfer">تحويل بنكي / InstaPay مع رفع الإيصال</option><option value="online_unavailable" disabled>الدفع الإلكتروني — سيتم تفعيله لاحقًا</option></select></label>
+      <div id="extraProofWrap" hidden><label>إيصال التحويل (JPG / PNG / PDF، حتى 5MB)<input id="extraProof" type="file" accept=".jpg,.jpeg,.png,.pdf"></label></div>
+      <button type="submit">إرسال طلب الالتحاق</button><button type="button" class="secondary" onclick="document.getElementById('enrollmentPanel').hidden=true">إلغاء</button>
+    </form><p class="note">لا يصبح الحجز مؤكدًا إلا بعد مراجعة الإدارة واعتماد التسجيل أو الدفع.</p></section>
+    <section class="panel"><h2>إرسال قسط الاشتراك السنوي</h2><p class="note">الاشتراك السنوي 60,000 جنيه، بالإضافة إلى 1,000 جنيه رسوم تسجيل. يتم سداد الاشتراك على 12 قسطًا شهريًا بقيمة 5,000 جنيه.</p><form id="paymentForm">
+      <label>المبلغ بالجنيه<input id="amount" type="number" min="1" step="0.01" required></label>
+      <label>طريقة الدفع<select id="method"><option>InstaPay / محفظة</option><option>تحويل بنكي</option></select></label>
+      <label>إثبات الدفع (JPG / PNG / PDF، حتى 5MB)<input id="proof" type="file" accept=".jpg,.jpeg,.png,.pdf" required></label>
+      <button type="submit">إرسال للمراجعة</button>
+    </form></section>
+    <section class="panel"><h2>سجل المدفوعات</h2><ul id="payments"></ul></section>
+    <section class="panel"><h2>تقدم المسار السنوي</h2><ul id="progress"></ul></section>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <p><a href="programs.html">العودة إلى كتالوج البرامج العام</a></p>
   </main>
-
-  <script src="firebase-config.js"></script>
-  <script type="module" src="portal.js"></script>
-</body>
-</html>
+  <script src="firebase-config.js"></script><script src="js/programs.js"></script><script src="js/program-pricing.js"></script><script type="module" src="portal.js"></script>
+</body></html>
