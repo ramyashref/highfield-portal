@@ -375,3 +375,70 @@ body:has(.nh-hero) { background:#071421; }
  .nh-program-card,.nh-text-link span { transition:none !important; }
 }
 
+
+
+/* NEW HORIZON 2027 — homepage programme, cart and WhatsApp booking */
+.nh-detail-section{padding:clamp(58px,7vw,100px) 6%;background:#f5f7f8;color:#10283c}
+.nh-detail-section.nh-detail-alt{background:#fff}
+.nh-detail-section>.nh-section-heading{max-width:1320px;margin:0 auto 34px}
+.nh-detail-section .nh-section-heading>p{max-width:430px;color:#637386;font-size:13px;line-height:1.9}
+.nh-table-wrap{max-width:1320px;margin:0 auto;overflow-x:auto;border:1px solid #dce4e9;border-radius:7px;background:#fff;box-shadow:0 15px 45px rgba(7,25,42,.06)}
+.nh-data-table{width:100%;border-collapse:collapse;min-width:760px;text-align:left}
+.nh-data-table th{padding:17px 18px;background:#0a2033;color:#fff;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;white-space:nowrap}
+.nh-data-table td{padding:17px 18px;border-bottom:1px solid #e8edf0;color:#3e5263;font-size:12px;line-height:1.7;vertical-align:middle}
+.nh-data-table tbody tr:last-child td{border-bottom:0}
+.nh-data-table tbody tr:hover td{background:#f7fafb}
+.nh-data-table td:first-child{color:#b18c5c;font-weight:700;white-space:nowrap}
+.nh-data-table td:nth-child(2){color:#132d42;font-weight:600;min-width:230px}
+.nh-add-cart{border:1px solid #b99360;background:#0b2236;color:#fff;border-radius:3px;padding:11px 13px;font:700 9px Poppins,sans-serif;letter-spacing:.8px;white-space:nowrap;cursor:pointer;transition:background .2s,transform .2s,border-color .2s}
+.nh-add-cart:hover,.nh-add-cart.is-added{background:#b99360;border-color:#b99360;color:#081725;transform:translateY(-1px)}
+.nh-pricing-note{max-width:1320px;margin:16px auto 0;color:#6c7b88;font-size:11px}
+.nh-day-banner{max-width:1320px;margin:0 auto 22px;padding:22px 25px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(110deg,#071a2b,#12344c);border-left:3px solid #c5a16d;color:#fff}
+.nh-day-banner span{font-size:9px;letter-spacing:1.5px;color:#d8bd91;font-weight:700}
+.nh-day-banner strong{font-size:13px;letter-spacing:1.2px}
+.nh-day-banner small{margin-left:auto;color:#c5d0d8;font-size:10px}
+.nh-agenda-table td:first-child{white-space:nowrap;font-weight:600;color:#a17e51}
+.nh-agenda-table .nh-break-row td{background:#f3f6f7;color:#758594;font-style:italic}
+.nh-strategic-table{min-width:940px}
+.nh-strategic-table td:nth-child(2){min-width:230px}
+.nh-strategic-table td:nth-child(3){min-width:360px;font-weight:400;color:#5d6f7e}
+.nh-booking-section{padding:clamp(60px,8vw,110px) 6%;display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:clamp(30px,6vw,85px);align-items:start;background:#071725;color:#fff}
+.nh-booking-intro{max-width:650px}
+.nh-booking-intro h2{font-size:clamp(36px,5vw,62px);line-height:1.08;letter-spacing:-1.8px;margin:12px 0 18px}
+.nh-booking-intro h2 em{font-family:Georgia,serif;font-weight:400;color:#d7bd91}
+.nh-booking-intro>p:not(.nh-premium-eyebrow){color:#c0ccd5;font-size:13px;line-height:1.9;max-width:540px}
+.nh-combo-package{margin-top:36px;padding:24px;border:1px solid rgba(197,161,109,.45);background:linear-gradient(130deg,rgba(255,255,255,.08),rgba(255,255,255,.025));display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.nh-package-label{color:#d6b987;font-size:9px;letter-spacing:1.5px;font-weight:700}
+.nh-combo-package h3{font-size:17px;margin:9px 0 6px;color:#fff}
+.nh-combo-package p{font-size:11px;color:#b9c7d1;line-height:1.7;margin:0}
+.nh-combo-package>strong{font-size:22px;color:#e0c99e;white-space:nowrap}
+.nh-combo-package>strong small{font-size:10px}
+.nh-combo-package .nh-add-cart{grid-column:1/-1;justify-self:start}
+.nh-checkout-card{padding:28px;background:#fff;color:#132b40;border-radius:6px;box-shadow:0 20px 55px rgba(0,0,0,.2)}
+.nh-cart-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:20px;border-bottom:1px solid #e5eaed}
+.nh-cart-head h3{margin:7px 0 0;font-size:21px}
+.nh-cart-count{font-size:9px;letter-spacing:1px;color:#9a784e;font-weight:700}
+.nh-cart-items{padding:10px 0}
+.nh-cart-empty{padding:20px 0;color:#71808d;font-size:12px;line-height:1.8}
+.nh-cart-line{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #edf0f2}
+.nh-cart-line-copy{display:flex;flex-direction:column;gap:5px}
+.nh-cart-line-copy strong{font-size:11px;color:#173149;line-height:1.5}
+.nh-cart-line-copy small{font-size:10px;color:#7a8791}
+.nh-cart-controls{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nh-cart-controls button{width:25px;height:25px;border:1px solid #d9e0e5;background:#f7f9fa;color:#173149;border-radius:3px;cursor:pointer;font-size:15px}
+.nh-cart-controls span{font-size:11px;font-weight:700;min-width:12px;text-align:center}
+.nh-cart-controls .nh-cart-remove{border:0;background:transparent;color:#9c6d5c;font-size:19px}
+.nh-cart-total{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-top:1px solid #e5eaed;color:#586b7a;font-size:12px}
+.nh-cart-total strong{font-size:20px;color:#0c2a40}
+.nh-booking-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.nh-booking-form label{display:flex;flex-direction:column;gap:7px;font-size:10px;font-weight:600;color:#43596b}
+.nh-booking-form input{width:100%;min-width:0;border:1px solid #dce4e9;border-radius:3px;padding:12px;font:400 11px Poppins,sans-serif;color:#142d42;background:#fbfcfd;outline:none}
+.nh-booking-form input:focus{border-color:#b99360;box-shadow:0 0 0 3px rgba(185,147,96,.12)}
+.nh-whatsapp-submit{grid-column:1/-1;border:0;border-radius:3px;padding:16px;background:#1b8d63;color:#fff;font:700 10px Poppins,sans-serif;letter-spacing:.8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s,transform .2s}
+.nh-whatsapp-submit:hover{background:#14734f;transform:translateY(-2px)}
+.nh-whatsapp-note{grid-column:1/-1;margin:0;color:#7a8791;font-size:9px;line-height:1.7}
+.nh-form-status{grid-column:1/-1;display:none;padding:10px;background:#fff4e6;color:#815c2d;font-size:10px;line-height:1.6}
+.nh-form-status.is-visible{display:block}
+.nh-contact-whatsapp{align-self:center;justify-self:start}
+@media(max-width:900px){.nh-booking-section{grid-template-columns:1fr}.nh-booking-intro{max-width:none}.nh-checkout-card{max-width:680px;width:100%}}
+@media(max-width:620px){.nh-detail-section{padding:52px 4%}.nh-detail-section>.nh-section-heading{align-items:flex-start;gap:12px}.nh-day-banner{gap:9px;padding:18px}.nh-day-banner small{margin-left:0;width:100%}.nh-booking-section{padding:55px 4%}.nh-combo-package{grid-template-columns:1fr auto;padding:18px}.nh-checkout-card{padding:20px}.nh-booking-form{grid-template-columns:1fr}.nh-booking-form label,.nh-whatsapp-submit,.nh-whatsapp-note,.nh-form-status{grid-column:1}.nh-cart-line{align-items:flex-start;flex-direction:column}.nh-cart-controls{align-self:flex-end}}
