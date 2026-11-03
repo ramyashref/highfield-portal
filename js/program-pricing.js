@@ -39,6 +39,9 @@
     return { level, price: prices[level] };
   }
 
+  // Expose the exact same pricing calculation to the authenticated Learning Portal.
+  window.HIGHFIELD_GET_PROGRAM_PRICE = getPricing;
+
   function addStyles() {
     if (document.getElementById("hf-program-pricing-styles")) return;
 
