@@ -21,7 +21,7 @@ function addToCart(id){const item=CATALOG[id];if(!item)return;let c=getCart();if
 function removeFromCart(id){saveCart(getCart().filter(x=>x.id!==id));renderCart()}
 function updateCartCount(){document.querySelectorAll('[data-cart-count]').forEach(x=>x.textContent=getCart().length)}
 function money(n){return new Intl.NumberFormat('en-EG').format(n)+' EGP'}
-function renderCart(){const host=document.getElementById('cartItems');if(!host)return;const cart=getCart();const total=cart.reduce((s,x)=>s+x.price,0);host.innerHTML=cart.length?cart.map(x=>`<div class="cart-item"><div><h3>${escapeHtml(x.title)}</h3><small>${money(x.price)}</small></div><button class="btn btn-outline" onclick="removeFromCart('${x.id}')">Remove</button></div>`).join(''):'<div class="empty">Your cart is empty. Add a workshop or congress registration to continue.</div>';const t=document.getElementById('cartTotal');if(t)t.textContent=money(total);const n=document.getElementById('cartCountSummary');if(n)n.textContent=cart.length;const c=document.getElementById('cartItemsCount');if(c)c.textContent=cart.length;const submit=document.querySelector('#bookingForm button[type=submit]');if(submit)submit.disabled=!cart.length;}
+function renderCart(){const host=document.getElementById('cartItems');if(!host)return;const cart=getCart();const total=cart.reduce((s,x)=>s+x.price,0);host.innerHTML=cart.length?cart.map(x=>`<div class="cart-item"><div><h3>${escapeHtml(x.title)}</h3>${x.workshopTitles?.length?`<small>Included workshops:<br>${x.workshopTitles.map((t,i)=>`${i+1}. ${escapeHtml(t)}`).join('<br>')}</small><br>`:''}<small>${money(x.price)}</small></div><button class="btn btn-outline" onclick="removeFromCart('${x.id}')">Remove</button></div>`).join(''):'<div class="empty">Your cart is empty. Add a workshop or congress registration to continue.</div>';const t=document.getElementById('cartTotal');if(t)t.textContent=money(total);const n=document.getElementById('cartCountSummary');if(n)n.textContent=cart.length;const c=document.getElementById('cartItemsCount');if(c)c.textContent=cart.length;const submit=document.querySelector('#bookingForm button[type=submit]');if(submit)submit.disabled=!cart.length;}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function sendBookingToWhatsApp(event){
  event.preventDefault();
@@ -32,7 +32,7 @@ function sendBookingToWhatsApp(event){
  const email=document.getElementById('customerEmail').value.trim();
  if(!name||!phone){alert('Please enter your name and mobile number.');return;}
  const total=cart.reduce((sum,item)=>sum+Number(item.price||0),0);
- const lines=cart.map((item,i)=>`${i+1}. ${item.title} — ${money(Number(item.price||0))}`);
+ const lines=cart.map((item,i)=>`${i+1}. ${item.title} — ${money(Number(item.price||0))}${item.workshopTitles?.length?'\n   Included workshops:\n   '+item.workshopTitles.map((title,j)=>`${j+1}. ${title}`).join('\n   '):''}`);
  const message=[
   'SERAG 2027 — Booking Request',
   '------------------------------',
