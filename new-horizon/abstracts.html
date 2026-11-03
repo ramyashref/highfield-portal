@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#031426">
+<meta name="description" content="Submit your abstract to NEW HORIZON 2027 — International Conference in Pediatric Surgery.">
+<title>Call for Abstracts | NEW HORIZON 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="assets/js/main.js" defer></script>
+<style>
+:root{--abs-navy:#031426;--abs-panel:#0a243a;--abs-gold:#e4c17b;--abs-text:#f4f5f7;--abs-muted:#bdc9d5}
+body{background:var(--abs-navy);color:var(--abs-text);font-family:Poppins,sans-serif}
+.abs-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 6%;background:rgba(3,17,32,.96);border-bottom:1px solid rgba(228,193,123,.35);backdrop-filter:blur(16px)}
+.abs-brand{display:flex;flex-direction:column;gap:4px;color:#fff;text-decoration:none}
+.abs-brand strong{font-size:20px;letter-spacing:2px}.abs-brand strong span{color:var(--abs-gold)}
+.abs-brand small{font-size:8px;letter-spacing:2px;color:#c6d0da}
+.abs-nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.abs-nav a{font-size:10px;color:#e5eaf0;text-decoration:none;letter-spacing:.5px}.abs-nav a:hover{color:var(--abs-gold)}
+.abs-top-cta{padding:12px 17px;background:linear-gradient(110deg,#f0d493,#c79b50);color:#071728;text-decoration:none;font-size:10px;font-weight:800;letter-spacing:.8px}
+.abs-hero{position:relative;overflow:hidden;min-height:370px;padding:90px 7% 70px;background:linear-gradient(90deg,rgba(3,17,32,.97),rgba(3,17,32,.7)),url('assets/images/new-horizon-key-visual.png') center 40%/cover;border-bottom:1px solid rgba(228,193,123,.35)}
+.abs-eyebrow{font-size:10px;letter-spacing:2.6px;color:var(--abs-gold);font-weight:700}
+.abs-hero h1{font-size:clamp(42px,7vw,78px);line-height:1.02;letter-spacing:-2px;margin:16px 0;color:#fff}
+.abs-hero h1 em{font-family:Georgia,serif;font-weight:400;color:var(--abs-gold)}
+.abs-hero p{max-width:700px;color:#c5d0db;font-size:14px;line-height:1.9}
+.abs-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:28px;color:var(--abs-gold);font-size:10px;letter-spacing:1.5px;font-weight:700}
+.abs-content{max-width:1200px;margin:0 auto;padding:65px 6% 90px}
+.abs-intro{max-width:850px;margin-bottom:30px}.abs-intro h2{font-size:clamp(25px,3vw,36px);margin:0 0 12px}.abs-intro h2 em{color:var(--abs-gold);font-family:Georgia,serif;font-weight:400}.abs-intro p{color:var(--abs-muted);font-size:13px;line-height:1.9}
+.abs-form-shell{padding:clamp(22px,4vw,42px);background:linear-gradient(145deg,#0b2942,#061a2d);border:1px solid rgba(228,193,123,.36);box-shadow:0 25px 70px rgba(0,0,0,.24)}
+.abs-form-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding-bottom:22px;border-bottom:1px solid rgba(228,193,123,.22)}
+.abs-form-top h3{font-size:22px;margin:6px 0 0}.abs-required{font-size:10px;color:#d7c49e}
+.abs-fields{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:25px 0}
+.abs-field{display:flex;flex-direction:column;gap:8px}.abs-field label{font-size:11px;font-weight:600;color:#edf1f5}.abs-field small{font-size:9px;color:#aebdca;line-height:1.6}
+.abs-field input,.abs-field select{width:100%;padding:14px 13px;background:#04192c;border:1px solid rgba(197,211,224,.23);border-radius:3px;color:#fff;font:400 11px Poppins,sans-serif;outline:none}
+.abs-field input:focus,.abs-field select:focus{border-color:var(--abs-gold);box-shadow:0 0 0 3px rgba(228,193,123,.1)}
+.abs-field input::file-selector-button{margin-right:12px;padding:8px 10px;border:0;background:#e4c17b;color:#071728;font:700 9px Poppins,sans-serif;cursor:pointer}
+.abs-upload-card{padding:17px;background:rgba(1,13,25,.48);border:1px dashed rgba(228,193,123,.55);border-radius:3px}
+.abs-upload-card label{color:var(--abs-gold)}
+.abs-note{margin:0 0 20px;padding:14px 16px;border-left:2px solid var(--abs-gold);background:rgba(228,193,123,.07);color:#c5d0db;font-size:10px;line-height:1.8}
+.abs-submit-row{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.abs-submit{border:0;padding:16px 22px;background:linear-gradient(110deg,#f0d493,#c79b50);color:#071728;font:800 10px Poppins,sans-serif;letter-spacing:1px;cursor:pointer}
+.abs-submit:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.abs-embed-wrap{display:none;margin-top:26px;overflow:hidden;border:1px solid rgba(228,193,123,.35);background:#fff;border-radius:3px}
+.abs-embed-wrap.is-active{display:block}
+.abs-embed-wrap iframe{display:block;width:100%;height:1250px;border:0;background:#fff}
+.abs-setup{margin-top:26px;padding:20px;background:#061a2d;border:1px solid rgba(228,193,123,.25)}
+.abs-setup h4{margin:0 0 8px;color:var(--abs-gold);font-size:12px}.abs-setup p{margin:0;color:#bdc9d5;font-size:10px;line-height:1.8}
+.abs-setup code{color:#f1d99f;overflow-wrap:anywhere}
+.abs-footer{padding:26px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#020f1e;border-top:1px solid rgba(228,193,123,.35);color:#aebdca;font-size:9px;letter-spacing:1px}
+.abs-footer a{color:var(--abs-gold);text-decoration:none}
+@media(max-width:760px){.abs-header{align-items:flex-start;flex-wrap:wrap}.abs-nav{order:3;width:100%;gap:14px}.abs-top-cta{margin-left:auto}.abs-hero{padding:70px 6% 55px;min-height:340px}.abs-content{padding:45px 4% 60px}.abs-fields{grid-template-columns:1fr}.abs-form-top{flex-direction:column}.abs-embed-wrap iframe{height:1450px}}
+</style>
+</head>
+<body>
+<header class="abs-header">
+  <a class="abs-brand" href="index.html"><strong>NEW <span>HORIZON</span></strong><small>IN PEDIATRIC SURGERY · 2027</small></a>
+  <nav class="abs-nav" aria-label="Main navigation">
+    <a href="index.html">HOME</a><a href="index.html#scientific-day">SCIENTIFIC DAY</a><a href="index.html#strategic-day">STRATEGIC DAY</a><a href="index.html#workshops">WORKSHOPS</a><a href="speakers.html">SPEAKERS</a><a href="abstracts.html">ABSTRACTS</a>
+  </nav>
+  <a class="abs-top-cta" href="#submission">SUBMIT ABSTRACT ↗</a>
+</header>
+<main>
+  <section class="abs-hero">
+    <div class="abs-eyebrow">INNOVATIVE IDEAS · PRACTICAL IMPACT</div>
+    <h1>Call for <em>Abstracts.</em></h1>
+    <p>NEW HORIZON 2027 welcomes innovative research and practical ideas relevant to pediatric surgery, emerging techniques, service improvement and surgical education.</p>
+    <div class="abs-meta"><span>19–20 JANUARY 2027</span><span>PRINCESS FATMA ACADEMY</span><span>CAIRO, EGYPT</span></div>
+  </section>
+  <section class="abs-content" id="submission">
+    <div class="abs-intro">
+      <h2>Share your work.<br><em>Shape the next horizon.</em></h2>
+      <p>Complete the submission form with your personal and professional details, then upload your abstract as a PDF and your presentation video. Please make sure your contact information is accurate so the scientific team can reach you.</p>
+    </div>
+    <div class="abs-form-shell">
+      <div class="abs-form-top"><div><div class="abs-eyebrow">ABSTRACT SUBMISSION</div><h3>Submission details</h3></div><div class="abs-required">* Required fields</div></div>
+      <div class="abs-fields">
+        <div class="abs-field"><label>Full Name in Arabic (Four Names) *</label><input type="text" autocomplete="name" placeholder="الاسم رباعي باللغة العربية" disabled></div>
+        <div class="abs-field"><label>Full Name in English (Four Names) *</label><input type="text" autocomplete="name" placeholder="Full name as shown on official documents" disabled></div>
+        <div class="abs-field"><label>WhatsApp Number *</label><input type="tel" autocomplete="tel" placeholder="Include country code" disabled></div>
+        <div class="abs-field"><label>Email Address *</label><input type="email" autocomplete="email" placeholder="name@example.com" disabled></div>
+        <div class="abs-field"><label>Workplace / Institution *</label><input type="text" placeholder="Hospital, university or organisation" disabled></div>
+        <div class="abs-field"><label>Faculty / College *</label><input type="text" placeholder="Faculty or college name" disabled></div>
+        <div class="abs-field"><label>Highest Academic Degree *</label><input type="text" placeholder="e.g. Bachelor's, Master's, MD, PhD" disabled></div>
+        <div class="abs-field abs-upload-card"><label>Upload Abstract (PDF) *</label><input type="file" accept="application/pdf" disabled><small>PDF file only. The final upload limit will be set in the Google Form.</small></div>
+        <div class="abs-field abs-upload-card"><label>Upload Presentation Video *</label><input type="file" accept="video/*" disabled><small>Video file. The accepted formats and maximum size will be set in the Google Form.</small></div>
+      </div>
+      <p class="abs-note">The fields above are the required submission structure. To ensure secure file uploads and direct collection in Google Drive, the live submission form will be embedded here once the Google Form is connected. Google may require submitters to sign in to upload files.</p>
+      <div class="abs-submit-row"><span class="abs-required">Submission link will be activated after Google Form connection.</span><button class="abs-submit" id="absOpenForm" type="button">OPEN SUBMISSION FORM ↗</button></div>
+      <div class="abs-embed-wrap" id="absEmbedWrap"><iframe id="absGoogleForm" title="NEW HORIZON Abstract Submission Form" loading="lazy" allow="camera; microphone"></iframe></div>
+    </div>
+    <div class="abs-setup">
+      <h4>Google Form connection</h4>
+      <p>After creating your Google Form with the same fields and two File upload questions (PDF and Video), paste its Embed URL in <code>assets/js/abstracts-config.js</code>. The form will then appear inside this page. The visible fields above are a preview only and do not submit data until the Google Form is connected.</p>
+    </div>
+  </section>
+</main>
+<footer class="abs-footer"><span>NEW HORIZON 2027 · INTERNATIONAL CONFERENCE IN PEDIATRIC SURGERY</span><span>19–20 JANUARY 2027 · CAIRO, EGYPT</span><a href="index.html">BACK TO HOME ↑</a></footer>
+<script src="assets/js/abstracts-config.js"></script>
+<script>
+(function(){
+  const button=document.getElementById('absOpenForm');
+  const wrap=document.getElementById('absEmbedWrap');
+  const frame=document.getElementById('absGoogleForm');
+  const url=window.NH_GOOGLE_FORM_EMBED_URL||'';
+  if(url && url.startsWith('https://docs.google.com/forms/')){
+    button.textContent='OPEN / VIEW SUBMISSION FORM ↗';
+    button.addEventListener('click',function(){
+      frame.src=url;
+      wrap.classList.add('is-active');
+      wrap.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+    frame.src=url;
+    wrap.classList.add('is-active');
+    button.style.display='none';
+  }else{
+    button.addEventListener('click',function(){
+      alert('The Google Form has not been connected yet. Add the Google Form Embed URL to assets/js/abstracts-config.js.');
+    });
+  }
+})();
+</script>
+</body>
+</html>

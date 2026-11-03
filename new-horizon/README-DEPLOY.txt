@@ -1,22 +1,46 @@
-NEW HORIZON 2027 — Homepage update
+NEW HORIZON 2027 — Website v2 (New Visual Identity + Abstracts)
 
-Included:
-- index.html: updated homepage with workshops, scientific day, strategic day, booking cart and WhatsApp checkout.
-- assets/css/style.css: original stylesheet plus styles for the new homepage sections.
-- assets/js/main.js: preserved existing shared JavaScript.
+FILES TO UPLOAD
+- index.html
+- abstracts.html
+- assets/css/style.css
+- assets/js/main.js
+- assets/js/abstracts-config.js
+- assets/images/new-horizon-key-visual.png
 
-Deployment:
-Upload/replace these files at the matching paths in the existing website:
-1. index.html (site root)
-2. assets/css/style.css
-3. assets/js/main.js
+Keep the rest of the existing website pages and assets in place.
 
-Keep all other existing site files and image assets unchanged.
+VISUAL IDENTITY
+The updated homepage follows the supplied Integrated Brochure: deep navy, champagne gold, white/silver typography and the extracted key visual artwork.
 
-Booking:
-- WhatsApp destination: +20 110 166 9115
-- One-day workshop: 1,500 EGP
-- Two-day workshop: 2,500 EGP
-- Scientific Day + Strategic Day package: 1,500 EGP
-- The cart supports adding/removing items and quantity changes.
-- The final WhatsApp message is prefilled; the attendee must press Send in WhatsApp.
+ABSTRACTS PAGE
+The new page is abstracts.html. It contains the requested submission fields:
+1. Full name in Arabic (four names)
+2. Full name in English (four names)
+3. WhatsApp number
+4. Email
+5. Workplace / institution
+6. Faculty / college
+7. Highest academic degree
+8. Abstract PDF upload
+9. Presentation video upload
+
+GOOGLE FORM CONNECTION
+The page is prepared to embed a Google Form. The input preview is disabled until the real Google Form is connected; this prevents visitors from entering details into a form that is not yet wired to receive submissions.
+
+To connect:
+1. Create a Google Form with the nine fields above.
+2. Make the first seven questions Short answer (required).
+3. Add a File upload question for the abstract and restrict it to PDF.
+4. Add a File upload question for the video and choose the allowed video formats / size.
+5. In Google Forms, use Send > Embed HTML and copy the iframe src URL.
+6. Open assets/js/abstracts-config.js and paste the URL:
+   window.NH_GOOGLE_FORM_EMBED_URL = "YOUR_EMBED_URL";
+7. Upload the updated abstracts-config.js to GitHub Pages.
+
+IMPORTANT GOOGLE FORMS NOTE
+Google Forms file-upload questions generally require the submitter to sign in to a Google account. The file-upload limits and accepted video formats are controlled in Google Forms, not by this website. The actual form URL is still needed to complete the connection.
+
+EXISTING BOOKING
+The workshop cart, conference-day package and WhatsApp booking flow from the previous update are retained.
+WhatsApp destination: +20 110 166 9115.
