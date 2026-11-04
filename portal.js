@@ -192,7 +192,7 @@ async function createEnrollmentRequest(pathType,program=null) {
     if(existing) {
       selectedEnrollmentId=existing.id;
       renderEnrollmentSummary(existing);
-      status("لديك بالفعل طلب تسجيل لهذا المسار. يمكنك متابعة الرصيد أو إرسال إثبات الدفع.");
+      status("لديك بالفعل طلب تسجيل لهذا المسار. يمكنك متابعة الرصيد أو تسجيل بيانات الدفع.");
       selectEnrollmentForPayment(existing.id);
       return;
     }
@@ -208,7 +208,7 @@ async function createEnrollmentRequest(pathType,program=null) {
     renderEnrollmentsTable();
     populatePaymentEnrollmentSelect();
     selectEnrollmentForPayment(refNew.id);
-    status("تم إنشاء طلب الالتحاق. يمكنك الآن سداد الرسوم أو إرسال إثبات التحويل.");
+    status("تم إنشاء طلب الالتحاق. يمكنك الآن سداد الرسوم أو تسجيل بيانات الدفع.");
   } catch(error) {
     console.error(error);
     status(`تعذر إنشاء طلب الالتحاق: ${error.code||error.message}`,true);
