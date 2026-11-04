@@ -1,29 +1,31 @@
-Highfield Egypt Learning Portal — Payment Date & Amount Update
+HIGHFIELD EGYPT LEARNING PORTAL – STUDENT EXPERIENCE UPDATE
 
-Included files:
-- trainee-dashboard.html
-- admin-dashboard.html
-- portal.js
-- portal.css
-- firestore.rules
+محتويات التحديث:
+1) trainee-dashboard.html
+   - إعادة ترتيب لوحة المتدرب لتقديم الإنجازات ومسار التعلم والشهادات.
+   - نقل الملخص المالي ونموذج الدفع وسجل الدفعات إلى أقسام قابلة للفتح عند الضغط.
+   - إظهار تفاصيل الدفعة عند الضغط على صف الدفعة.
+   - إضافة حقول الدفع المطلوبة ورابط واتساب الدعم.
+2) admin-dashboard.html
+   - لوحة مراجعة متوافقة مع وظائف الإدارة في portal.js.
+   - طلبات الالتحاق وطلبات الإلغاء والدفعات المعلقة.
+   - إظهار بيانات الهوية وطريقة الدفع ومصدر التحويل للإدارة.
+3) portal.js
+   - منع تكرار الاشتراك النشط في البرنامج السنوي أو البرنامج المنفصل.
+   - إعادة إتاحة المسار بعد الإلغاء أو الرفض أو اكتمال البرنامج.
+   - حفظ بيانات الدفع الجديدة.
+   - إظهار سبب رفض طلب الالتحاق وسبب رفض الدفعة للمتدرب.
+   - تحميل الشهادات من مجموعة Firestore المسماة certificates.
 
-Changes:
-1. The trainee records only the payment date and amount, linked to the selected enrollment.
-2. No receipt, image, PDF, payment method, Firebase Storage bucket, or Storage Rules are required.
-3. Every submitted payment is saved with status pending and is not counted as paid.
-4. The admin dashboard shows trainee, program, amount, payment date, and review actions.
-5. Admin can approve or reject a payment. Rejection requires a reason.
-6. Approval uses a Firestore transaction so the payment, trainee paid total, and related enrollment balance are updated together and cannot be counted twice by repeated approval.
-7. Rejected and pending payments do not affect the paid balance.
+طريقة التركيب:
+- خذ نسخة احتياطية من الملفات الحالية.
+- استبدل الملفات الثلاثة في جذر مستودع GitHub بنفس الأسماء.
+- ارفع التغييرات وانتظر اكتمال GitHub Pages.
+- افتح الموقع باستخدام Ctrl + Shift + R.
 
-Deployment:
-A. Back up the current portal files and Firestore Rules.
-B. Replace the matching files in the website repository with the files in this package.
-C. Publish firestore.rules in Firebase Console > Firestore Database > Rules.
-D. Do not configure Firebase Storage for this payment workflow.
-E. Test with a trainee account: submit date + amount, then approve/reject from the admin account.
-
-Notes:
-- Keep the existing firebase-config.js unchanged.
-- Historical payment documents that contain proofUrl/proofPath remain readable; this update stops creating new receipt uploads.
-- Firestore Security Rules still verify that the selected enrollment belongs to the signed-in trainee and that the amount does not exceed the remaining fee.
+ملاحظات مهمة:
+- لا يتطلب هذا التحديث Firebase Storage.
+- بوابة الدفع الإلكترونية غير مفعلة؛ النموذج يسجل بيانات الدفع اليدوي للمراجعة فقط.
+- مجموعة الشهادات المتوقعة في Firestore هي certificates، ويجب أن تحتوي المستندات على uid، ويمكنها استخدام programName أو certificateTitle و certificateNumber أو serialNumber و issueDate أو issuedAt و certificateUrl أو url.
+- رقم WhatsApp الحالي داخل صفحة المتدرب: 01101669115 بصيغة دولية. تأكد من أنه رقم الدعم الرسمي قبل النشر.
+- لم يتم تغيير Firestore Rules في هذا التحديث. إذا كانت قواعد المشروع الحالية لا تسمح بقراءة مجموعة certificates فستظهر رسالة تعذر تحميل الشهادات دون تعطيل بقية اللوحة.

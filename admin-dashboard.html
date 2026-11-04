@@ -1,16 +1,23 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Highfield Egypt Learning Portal | الإدارة</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="portal.css"></head>
-<body data-page="admin">
-<header class="top"><strong>HIGHFIELD EGYPT <span>LEARNING PORTAL — ADMIN</span></strong><button id="logout" class="secondary">تسجيل الخروج</button></header>
-<main class="wrap"><h1>لوحة الإدارة العليا</h1><p>الحساب الإداري المسموح به: info@highfieldeg.com</p><p id="status" class="status" role="status" aria-live="polite"></p>
-<section class="panel"><h2>طلبات المتدربين والاشتراكات السنوية</h2><div class="table-scroll"><table><thead><tr><th>البريد</th><th>الاسم</th><th>الاشتراك</th><th>الحساب</th><th>قيمة الاشتراك</th><th>المدفوع</th><th>إجراء</th></tr></thead><tbody id="trainees"></tbody></table></div></section>
-<section class="panel"><h2>إضافة متدرب إلى برنامج إضافي</h2><p>تتيح هذه الخاصية للإدارة العليا تسجيل متدرب لديه حساب بالفعل في المنصة. يجب تحديد حالة السداد بدقة؛ التسجيل الإداري لا يعني أن الرسوم مدفوعة. إنشاء حساب جديد للمتدرب من لوحة الإدارة يحتاج إعدادًا آمنًا على الخادم.</p><form id="adminEnrollmentForm">
-<label>المتدرب<select id="adminTraineeSelect" required><option value="">جارٍ تحميل المتدربين...</option></select></label>
-<label>البرنامج<select id="adminProgramSelect" required><option value="">جارٍ تحميل البرامج...</option></select></label>
-<label>حالة الدفع<select id="adminPaymentStatus"><option value="unpaid">مستحق الدفع</option><option value="paid">مدفوع ومعتمد</option><option value="waived">إعفاء / اعتماد إداري</option></select></label>
-<label>ملاحظات إدارية<input id="adminEnrollmentNote" type="text" placeholder="سبب التسجيل أو رقم الموافقة (اختياري)"></label>
-<button type="submit">إضافة المتدرب للبرنامج</button></form></section>
-<section class="panel"><h2>طلبات البرامج الإضافية</h2><div class="table-scroll"><table><thead><tr><th>المتدرب</th><th>البرنامج</th><th>حالة التسجيل</th><th>حالة الدفع</th><th>الرسوم</th><th>إجراء</th></tr></thead><tbody id="adminEnrollments"></tbody></table></div></section>
-<section class="panel"><h2>طلبات إلغاء الاشتراكات</h2><p>موافقة الإدارة تلغي التسجيل فقط؛ أي استرداد مالي يتم مراجعته وتنفيذه بشكل مستقل وفق سياسة الاسترداد.</p><div class="table-scroll"><table><thead><tr><th>المتدرب</th><th>البرنامج</th><th>سبب الإلغاء</th><th>المدفوع</th><th>إجمالي الرسوم</th><th>القرار</th></tr></thead><tbody id="adminCancellationRequests"><tr><td colspan="6">لا توجد طلبات إلغاء معلقة.</td></tr></tbody></table></div></section>\n<section class="panel"><h2>الدفعات المسجلة بانتظار المراجعة</h2><p>يتم اعتماد المبلغ بعد مراجعته والتحقق من وصوله فعليًا. الدفعات المعلقة أو المرفوضة لا تدخل ضمن إجمالي المدفوع.</p><div class="table-scroll"><table><thead><tr><th>المتدرب</th><th>البرنامج</th><th>المبلغ</th><th>تاريخ الدفع</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="pendingPayments"></tbody></table></div></section>
-</main><script src="firebase-config.js"></script><script src="js/programs.js"></script><script src="js/program-pricing.js"></script><script type="module" src="portal.js"></script></body></html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Highfield Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
+<style>
+.admin-section{margin:22px 0}.admin-section h2{margin:0 0 14px}.table-scroll{overflow-x:auto}.table-scroll table{min-width:760px;width:100%}button{cursor:pointer}.admin-note{color:#a9c5e8;font-size:13px}.danger-action{background:#8d3344;color:white;border:0;border-radius:8px;padding:9px 13px}.admin-action{background:#1b65bd;color:white;border:0;border-radius:8px;padding:9px 13px}
+</style>
+</head>
+<body data-page="admin" class="portal-dashboard">
+<header class="dashboard-top"><a class="brand-lockup" href="index.html"><strong>HIGHFIELD</strong><span> EGYPT LEARNING PORTAL — ADMIN</span></a><nav><button id="logout" class="logout-btn">تسجيل الخروج</button></nav></header>
+<main class="dashboard-wrap">
+  <section class="welcome-banner"><div><span class="eyebrow">ADMINISTRATION</span><h1>لوحة الإدارة العليا</h1><p>مراجعة طلبات الالتحاق والمدفوعات وطلبات الإلغاء.</p><small>info@highfieldeg.com</small></div><div class="welcome-mark">HE</div></section>
+  <p id="status" class="status" role="status"></p>
+  <section class="portal-panel admin-section"><h2>حسابات المتدربين</h2><div class="table-scroll"><table><thead><tr><th>البريد</th><th>الاسم</th><th>الاشتراك</th><th>الحساب</th><th>قيمة الاشتراك</th><th>المدفوع</th><th>إجراء</th></tr></thead><tbody id="trainees"></tbody></table></div></section>
+  <section class="portal-panel admin-section"><h2>طلبات الالتحاق بالبرامج</h2><p class="admin-note">يمكن اعتماد الطلب أو رفضه مع تسجيل سبب الرفض ليظهر للمتدرب.</p><div class="table-scroll"><table><thead><tr><th>المتدرب</th><th>البرنامج</th><th>حالة التسجيل</th><th>حالة الدفع</th><th>الرسوم</th><th>الإجراء</th></tr></thead><tbody id="adminEnrollments"></tbody></table></div></section>
+  <section class="portal-panel admin-section"><h2>طلبات إلغاء الاشتراك</h2><div class="table-scroll"><table><thead><tr><th>المتدرب</th><th>البرنامج</th><th>سبب الإلغاء</th><th>المدفوع</th><th>الرسوم</th><th>الإجراء</th></tr></thead><tbody id="adminCancellationRequests"></tbody></table></div></section>
+  <section class="portal-panel admin-section"><h2>الدفعات قيد المراجعة</h2><p class="admin-note">راجع بيانات التحويل ورقم الهوية قبل اعتماد الدفعة. عند الرفض يجب كتابة السبب.</p><div class="table-scroll"><table><thead><tr><th>المتدرب</th><th>البرنامج</th><th>المبلغ</th><th>تاريخ الدفع</th><th>رقم الهوية/الجواز</th><th>رقم مزاولة المهنة</th><th>طريقة الدفع</th><th>مصدر التحويل</th><th>الحالة</th><th>الإجراء</th></tr></thead><tbody id="pendingPayments"></tbody></table></div></section>
+</main>
+<script src="firebase-config.js"></script><script src="js/programs.js"></script><script src="js/program-pricing.js"></script><script type="module" src="portal.js?v=20261104-student-experience-update-2"></script>
+</body></html>

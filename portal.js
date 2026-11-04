@@ -23,7 +23,9 @@ const money = value => `${Number(value||0).toLocaleString("en-US")} EGP`;
 const profileRef = user => doc(db,"trainees",user.uid);
 let currentEnrollments = [];
 let currentCancellationRequests = [];
+let currentProgressRecords = [];
 let selectedEnrollmentId = "";
+let enrollmentSubmissionInProgress = false;
 const ANNUAL_TOTAL_FEE = 61000;
 const ANNUAL_FIRST_DUE = 6000; // 1,000 EGP registration + first 5,000 EGP installment
 const getProfile = async user => { const snap=await getDoc(profileRef(user)); return snap.exists()?snap.data():null; };
@@ -132,25 +134,39 @@ async function resetPassword() {
 
 
 function formatStatus(value) {
-  const map={pending_payment:"في انتظار الدفع",pending:"قيد المراجعة",partial:"مدفوع جزئيًا",paid:"مدفوع بالكامل",confirmed:"مؤكد",active:"نشط",unpaid:"غير مدفوع",admin_enrolled:"تم التسجيل بواسطة الإدارة",waived:"إعفاء إداري",pending_cancellation:"طلب إلغاء قيد المراجعة",cancelled:"ملغي",approved:"تمت الموافقة",rejected:"مرفوض"};
+  const map={pending_payment:"في انتظار الدفع",pending:"قيد المراجعة",partial:"مدفوع جزئيًا",paid:"مدفوع بالكامل",confirmed:"مؤكد",active:"نشط",unpaid:"غير مدفوع",admin_enrolled:"تم التسجيل بواسطة الإدارة",waived:"إعفاء إداري",pending_cancellation:"طلب إلغاء قيد المراجعة",cancelled:"ملغي",completed:"مكتمل",passed:"ناجح",approved:"تمت الموافقة",rejected:"مرفوض"};
   return map[String(value||"").toLowerCase()] || value || "قيد المراجعة";
 }
 
 function populateIndividualPrograms() {
   const select=$("individualProgramSelect");
-  if(!select || select.dataset.ready==="1") return;
+  if(!select) return;
   const programs=window.HIGHFIELD_PROGRAMS||[];
+  const unavailable=new Set(currentEnrollments.filter(e=>!isEnrollmentReleased(e)).map(e=>String(e.programId)));
   select.replaceChildren(new Option("اختر البرنامج التدريبي",""));
-  programs.forEach(item=>{
-    const option=new Option(`${item[1]} — ${item[2]}`,String(item[0]));
-    select.add(option);
-  });
-  select.dataset.ready="1";
-  select.addEventListener("change",()=>{
-    const id=Number(select.value),program=programs.find(x=>Number(x[0])===id);
-    const price=program&&window.HIGHFIELD_GET_PROGRAM_PRICE?window.HIGHFIELD_GET_PROGRAM_PRICE(program).price:0;
-    $("individualPrice").textContent=program?`${money(price)} · رسوم مستقلة للبرنامج`:"اختر برنامجًا لعرض الرسوم.";
-  });
+  const available=programs.filter(item=>!unavailable.has(String(item[0])));
+  available.forEach(item=>select.add(new Option(`${item[1]} — ${item[2]}`,String(item[0]))));
+  select.disabled=available.length===0;
+  if(!available.length) select.add(new Option("لا توجد برامج متاحة للاشتراك حاليًا",""));
+  const annualActive=currentEnrollments.some(e=>e.pathType==="annual"&&!isEnrollmentReleased(e));
+  const annualButton=$("chooseAnnualPath");
+  if(annualButton){annualButton.disabled=annualActive;annualButton.textContent=annualActive?"أنت مشترك بالفعل في البرنامج السنوي":"الاشتراك في البرنامج السنوي";const annualCard=annualButton.closest(".path-choice-card");if(annualCard)annualCard.classList.toggle("hidden",annualActive);}
+  const individualCard=select.closest(".path-choice-card");if(individualCard)individualCard.classList.toggle("hidden",available.length===0);
+  if(select.dataset.ready!=="1") {
+    select.addEventListener("change",()=>{
+      const id=Number(select.value),program=programs.find(x=>Number(x[0])===id);
+      const price=program&&window.HIGHFIELD_GET_PROGRAM_PRICE?window.HIGHFIELD_GET_PROGRAM_PRICE(program).price:0;
+      $("individualPrice").textContent=program?`${money(price)} · رسوم مستقلة للبرنامج`:"اختر برنامجًا لعرض الرسوم.";
+    });
+    select.dataset.ready="1";
+  }
+}
+
+function isEnrollmentReleased(enrollment) {
+  const state=String(enrollment.enrollmentStatus||"").toLowerCase();
+  if(["cancelled","rejected","completed"].includes(state)) return true;
+  const progress=currentProgressRecords.find(p=>p.enrollmentId===enrollment.id || (!p.enrollmentId && String(p.programId)===String(enrollment.programId)));
+  return ["completed","passed"].includes(String(progress?.status||"").toLowerCase());
 }
 
 function renderEnrollmentSummary(enrollment) {
@@ -174,12 +190,14 @@ function renderEnrollmentSummary(enrollment) {
 async function createEnrollmentRequest(pathType,program=null) {
   const user=auth.currentUser;
   if(!user) { status("سجّل الدخول أولًا.",true); return; }
+  if(enrollmentSubmissionInProgress){status("جارٍ تنفيذ طلب الاشتراك بالفعل.");return;}
+  enrollmentSubmissionInProgress=true;
   let programId="annual-medical-program",programName="Annual Medical Program — البرنامج الطبي السنوي الشامل";
   let totalFee=ANNUAL_TOTAL_FEE,dueNow=ANNUAL_FIRST_DUE;
   if(pathType==="individual") {
-    if(!program) { status("اختر برنامجًا من القائمة أولًا.",true); return; }
+    if(!program) { enrollmentSubmissionInProgress=false; status("اختر برنامجًا من القائمة أولًا.",true); return; }
     const pricing=window.HIGHFIELD_GET_PROGRAM_PRICE?.(program);
-    if(!pricing) { status("تعذر تحديد سعر البرنامج. حدّث الصفحة وحاول مرة أخرى.",true); return; }
+    if(!pricing) { enrollmentSubmissionInProgress=false; status("تعذر تحديد سعر البرنامج. حدّث الصفحة وحاول مرة أخرى.",true); return; }
     programId=String(program[0]);programName=program[1];totalFee=Number(pricing.price);dueNow=totalFee;
   }
   try {
@@ -187,7 +205,7 @@ async function createEnrollmentRequest(pathType,program=null) {
     let existing=null;
     existingSnap.forEach(s=>{
       const e=s.data();
-      if(e.programId===programId && !["cancelled","rejected"].includes(String(e.enrollmentStatus||"").toLowerCase())) existing={id:s.id,...e};
+      if(e.programId===programId && !isEnrollmentReleased({...e,id:s.id})) existing={id:s.id,...e};
     });
     if(existing) {
       selectedEnrollmentId=existing.id;
@@ -207,12 +225,13 @@ async function createEnrollmentRequest(pathType,program=null) {
     renderEnrollmentSummary(enrollment);
     renderEnrollmentsTable();
     populatePaymentEnrollmentSelect();
+    populateIndividualPrograms();
     selectEnrollmentForPayment(refNew.id);
     status("تم إنشاء طلب الالتحاق. يمكنك الآن سداد الرسوم أو تسجيل بيانات الدفع.");
   } catch(error) {
     console.error(error);
     status(`تعذر إنشاء طلب الالتحاق: ${error.code||error.message}`,true);
-  }
+  } finally { enrollmentSubmissionInProgress=false; }
 }
 
 function renderEnrollmentsTable() {
@@ -229,7 +248,7 @@ function renderEnrollmentsTable() {
     const values=[e.programName||"برنامج تدريبي",money(total),money(paid),money(Math.max(0,total-paid)),statusText];
     values.forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
     const action=document.createElement("td");
-    if(String(e.enrollmentStatus||"").toLowerCase()!=="cancelled" && !pendingRequest) {
+    if(!isEnrollmentReleased(e) && !pendingRequest) {
       const cancel=document.createElement("button");
       cancel.type="button";cancel.className="outline-link cancel-enrollment-btn";
       cancel.textContent="طلب إلغاء الاشتراك";
@@ -238,7 +257,7 @@ function renderEnrollmentsTable() {
     } else {
       const label=document.createElement("span");
       label.className="cancellation-state";
-      label.textContent=String(e.enrollmentStatus||"").toLowerCase()==="cancelled"?"تم إلغاء الاشتراك":"قيد مراجعة الإلغاء";
+      label.textContent=String(e.enrollmentStatus||"").toLowerCase()==="cancelled"?"تم إلغاء الاشتراك":(isEnrollmentReleased(e)?"تم استكمال البرنامج":"قيد مراجعة الإلغاء");
       action.append(label);
     }
     row.append(action);
@@ -279,7 +298,7 @@ function populatePaymentEnrollmentSelect() {
   const select=$("paymentEnrollment");if(!select)return;
   const current=select.value;
   select.replaceChildren(new Option("اختر التسجيل المرتبط بالدفعة",""));
-  currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()!=="cancelled"
+  currentEnrollments.filter(e=>!isEnrollmentReleased(e)
     && !currentCancellationRequests.some(r=>r.enrollmentId===e.id&&r.status==="pending")).forEach(e=>{
     const remain=Math.max(0,Number(e.totalFee||0)-Number(e.paidAmount||0));
     if(remain>0) select.add(new Option(`${e.programName} — متبقي ${money(remain)}`,e.id));
@@ -322,28 +341,39 @@ async function loadTrainee(user) {
   if(!data) { status("ملف المتدرب غير موجود. يرجى التواصل مع الدعم.",true); return; }
   $("traineeName").textContent=data.fullNameAr||data.displayName||"متدرب Highfield";
   $("traineeEmail").textContent=data.email||user.email||"";
+  if($("paymentNationalId")&&!$("paymentNationalId").value) $("paymentNationalId").value=data.nationalIdOrPassport||"";
+  if($("paymentProfessionalLicense")&&!$("paymentProfessionalLicense").value) $("paymentProfessionalLicense").value=data.professionalLicenseNumber||"";
   const paidTotal=Number(data.totalPaid||0), fee=Number(data.totalFee||0);
-  $("totalPaid").textContent=money(paidTotal);
-  $("balance").textContent=fee?money(Math.max(0,fee-paidTotal)):"غير محدد";
+  if($("totalPaid")) $("totalPaid").textContent=money(paidTotal);
+  if($("balance")) $("balance").textContent=fee?money(Math.max(0,fee-paidTotal)):"غير محدد";
   const paymentsSnap=await getDocs(query(collection(db,"paymentSubmissions"),where("uid","==",user.uid)));
   const payments=[]; paymentsSnap.forEach(s=>payments.push(s.data()));
   const paymentsBody=$("payments"); paymentsBody.replaceChildren();
   if(!payments.length) paymentsBody.innerHTML='<tr><td colspan="4">لا توجد مدفوعات مسجلة.</td></tr>';
   payments.forEach(p=>{
-    const tr=document.createElement("tr");
+    const tr=document.createElement("tr");tr.className="payment-history-row";tr.tabIndex=0;tr.title="اضغط لعرض تفاصيل الدفعة";
     const date=p.paymentDate|| (p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString("ar-EG"):"—");
-    [money(p.amount),p.programName||"—",p.rejectionReason?`${formatStatus(p.status)}: ${p.rejectionReason}`:formatStatus(p.status),date].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});
-    paymentsBody.append(tr);
+    [money(p.amount),p.programName||"—",formatStatus(p.status),date].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});
+    const detail=document.createElement("tr");detail.className="payment-detail-row hidden";
+    const cell=document.createElement("td");cell.colSpan=4;
+    const methodLabels={vodafone_cash:"Vodafone Cash",instapay:"InstaPay",bank_transfer:"تحويل بنكي",cash:"Cash"};
+    const lines=[`طريقة الدفع: ${methodLabels[p.paymentMethod]||p.paymentMethod||"—"}`,`مصدر التحويل: ${p.transferSource||"—"}`,`رقم الهوية: ${p.nationalIdOrPassport||"—"}`,`رقم مزاولة المهنة: ${p.professionalLicenseNumber||"غير مسجل"}`];
+    if(p.rejectionReason) lines.push(`سبب الرفض: ${p.rejectionReason}`);
+    const detailBox=document.createElement("div");detailBox.className="payment-detail-box";detailBox.textContent=lines.join(" · ");cell.append(detailBox);detail.append(cell);
+    const toggle=()=>detail.classList.toggle("hidden");tr.addEventListener("click",toggle);tr.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+    paymentsBody.append(tr,detail);
   });
   const progressSnap=await getDocs(query(collection(db,"trainingProgress"),where("uid","==",user.uid)));
-  const progress=[]; progressSnap.forEach(s=>progress.push(s.data()));
+  const progress=[]; progressSnap.forEach(s=>progress.push({id:s.id,...s.data()}));
+  currentProgressRecords=progress;
   const enrollmentSnap=await getDocs(query(collection(db,"programEnrollments"),where("uid","==",user.uid)));
   currentEnrollments=[]; enrollmentSnap.forEach(s=>currentEnrollments.push({id:s.id,...s.data()}));
   const cancellationSnap=await getDocs(query(collection(db,"enrollmentCancellationRequests"),where("uid","==",user.uid)));
   currentCancellationRequests=[]; cancellationSnap.forEach(s=>currentCancellationRequests.push({id:s.id,...s.data()}));
   const activeEnrollments=currentEnrollments.filter(e=>!["cancelled","rejected"].includes(String(e.enrollmentStatus||"").toLowerCase()));
-  const annualEnrollments=activeEnrollments.filter(e=>e.pathType==="annual");
-  const individualEnrollments=activeEnrollments.filter(e=>e.pathType==="individual");
+  const billableEnrollments=activeEnrollments.filter(e=>!isEnrollmentReleased(e));
+  const annualEnrollments=billableEnrollments.filter(e=>e.pathType==="annual");
+  const individualEnrollments=billableEnrollments.filter(e=>e.pathType==="individual");
   const sumFinance=list=>({
     total:list.reduce((sum,e)=>sum+Number(e.totalFee||0),0),
     paid:list.reduce((sum,e)=>sum+Number(e.paidAmount||0),0)
@@ -352,7 +382,7 @@ async function loadTrainee(user) {
   const enrollmentTotal=annualFinance.total+individualFinance.total;
   const enrollmentPaid=annualFinance.paid+individualFinance.paid;
   const enrollmentBalance=Math.max(0,enrollmentTotal-enrollmentPaid);
-  $("balance").textContent=activeEnrollments.length?money(enrollmentBalance):"لا توجد التزامات نشطة";
+  if($("balance")) $("balance").textContent=activeEnrollments.length?money(enrollmentBalance):"لا توجد التزامات نشطة";
   if($("annualBalance")) $("annualBalance").textContent=money(Math.max(0,annualFinance.total-annualFinance.paid));
   if($("annualFinanceDetail")) $("annualFinanceDetail").textContent=`المدفوع ${money(annualFinance.paid)} · إجمالي الرسوم ${money(annualFinance.total)}`;
   if($("individualBalance")) $("individualBalance").textContent=money(Math.max(0,individualFinance.total-individualFinance.paid));
@@ -384,6 +414,7 @@ async function loadTrainee(user) {
     if(!p.enrollmentId && activeEnrollments.some(e=>String(e.programId)===String(p.programId))) return;
     learningRows.push({name:p.programName||"برنامج تدريبي",type:p.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",status:formatStatus(p.status||"not_started"),pct:`${Math.max(0,Math.min(100,Number(p.progressPercent||0)))}%`});
   });
+  currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()==="rejected").forEach(e=>learningRows.push({name:e.programName||"طلب التحاق",type:e.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",status:`مرفوض: ${e.rejectionReason||"يرجى التواصل مع الإدارة لمعرفة التفاصيل"}`,pct:"—"}));
   if(!learningRows.length) body.innerHTML='<tr><td colspan="4">لم تسجل في أي برنامج بعد. اختر البرنامج السنوي أو استكشف البرامج المنفصلة أعلاه.</td></tr>';
   learningRows.forEach(p=>{
     const tr=document.createElement("tr");
@@ -392,6 +423,25 @@ async function loadTrainee(user) {
   });
   $("programCount").textContent=learningRows.length;
   $("completedCount").textContent=learningRows.filter(p=>["مكتمل","تمت الموافقة","completed","passed","approved"].includes(String(p.status).toLowerCase())).length;
+  if($("activeCount")) $("activeCount").textContent=billableEnrollments.length;
+  const certificatesBody=$("certificates");
+  if(certificatesBody){
+    certificatesBody.replaceChildren();
+    try{
+      const certSnap=await getDocs(query(collection(db,"certificates"),where("uid","==",user.uid)));
+      if($("certificateCount")) $("certificateCount").textContent=certSnap.size;
+      if(!certSnap.size) certificatesBody.innerHTML='<tr><td colspan="4">لا توجد شهادات صادرة حتى الآن. ستظهر شهاداتك هنا بعد اعتماد إتمام البرامج.</td></tr>';
+      certSnap.forEach(certDoc=>{
+        const c=certDoc.data(),tr=document.createElement("tr");
+        const title=c.programName||c.certificateTitle||"شهادة تدريبية";
+        const issue=c.issueDate|| (c.issuedAt?.toDate?c.issuedAt.toDate().toLocaleDateString("ar-EG"):"—");
+        [title,c.certificateNumber||c.serialNumber||"—",issue].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});
+        const td=document.createElement("td");
+        if(c.certificateUrl||c.url){const a=document.createElement("a");a.href=c.certificateUrl||c.url;a.target="_blank";a.rel="noopener";a.textContent="عرض الشهادة";td.append(a);}else td.textContent="غير متاحة إلكترونيًا";
+        tr.append(td);certificatesBody.append(tr);
+      });
+    }catch(certError){console.warn("Certificates could not be loaded:",certError);if($("certificateCount")) $("certificateCount").textContent="—";certificatesBody.innerHTML='<tr><td colspan="4">تعذر تحميل الشهادات حاليًا.</td></tr>';}
+  }
   const details=[
     ["الاسم بالعربي",data.fullNameAr],["Full name",data.fullNameEn],["WhatsApp",data.whatsapp],
     ["التخصص",data.specialty],["رقم الهوية / الجواز",data.nationalIdOrPassport?("••••"+String(data.nationalIdOrPassport).slice(-4)):"—"],["الدولة",data.country],
@@ -406,6 +456,10 @@ async function submitPayment() {
   const user=auth.currentUser;
   const amount=Number($("amount")?.value);
   const paymentDate=$("paymentDate")?.value;
+  const nationalId=$("paymentNationalId")?.value.trim();
+  const professionalLicense=$("paymentProfessionalLicense")?.value.trim()||"";
+  const paymentMethod=$("paymentMethod")?.value;
+  const transferSource=$("transferSource")?.value.trim();
   const enrollmentId=$("paymentEnrollment")?.value;
   const enrollment=currentEnrollments.find(e=>e.id===enrollmentId);
   const progressEl=$("paymentProgress"),submitBtn=$("paymentSubmitBtn");
@@ -413,7 +467,7 @@ async function submitPayment() {
     if(progressEl){progressEl.textContent=message;progressEl.className=isError?"status error":"status";}
     else status(message,isError);
   };
-  if(!user||!enrollment||!(amount>0)||!paymentDate){showProgress("اختر التسجيل، وأدخل تاريخ الدفع والمبلغ.",true);return;}
+  if(!user||!enrollment||!(amount>0)||!paymentDate||!nationalId||!paymentMethod||!transferSource){showProgress("أكمل التسجيل وتاريخ الدفع والمبلغ ورقم الهوية وطريقة الدفع وبيانات التحويل.",true);return;}
   const remaining=Math.max(0,Number(enrollment.totalFee||0)-Number(enrollment.paidAmount||0));
   if(amount>remaining){showProgress(`المبلغ أكبر من الرصيد المتبقي (${money(remaining)}).`,true);return;}
   if(new Date(paymentDate+"T00:00:00")>new Date(new Date().toDateString())){showProgress("تاريخ الدفع لا يمكن أن يكون في المستقبل.",true);return;}
@@ -421,7 +475,8 @@ async function submitPayment() {
   try{
     await addDoc(collection(db,"paymentSubmissions"),{
       uid:user.uid,enrollmentId,programId:enrollment.programId,programName:enrollment.programName,
-      amount,paymentDate,status:"pending",createdAt:serverTimestamp()
+      amount,paymentDate,nationalIdOrPassport:nationalId,professionalLicenseNumber:professionalLicense,
+      paymentMethod,transferSource,status:"pending",createdAt:serverTimestamp()
     });
     showProgress("تم تسجيل بيانات الدفع وإرسالها للإدارة للمراجعة.");
     $("paymentForm").reset();
@@ -465,7 +520,7 @@ async function adminLoad() {
       const action=document.createElement("td");
       const approve=document.createElement("button");
       approve.textContent="تأكيد التسجيل الإداري";
-      approve.disabled=["confirmed","admin_enrolled"].includes(String(e.enrollmentStatus||"").toLowerCase());
+      approve.disabled=["confirmed","admin_enrolled","rejected","cancelled","completed"].includes(String(e.enrollmentStatus||"").toLowerCase());
       approve.onclick=async()=>{
         approve.disabled=true;
         try {
@@ -480,7 +535,19 @@ async function adminLoad() {
           status(`تعذر تأكيد التسجيل: ${error.code||error.message}`,true);approve.disabled=false;
         }
       };
-      action.append(approve);row.append(action);adminEnrollmentBody.append(row);
+      const rejectEnrollment=document.createElement("button");rejectEnrollment.className="secondary";rejectEnrollment.textContent="رفض طلب التسجيل";
+      rejectEnrollment.disabled=["rejected","cancelled","completed"].includes(String(e.enrollmentStatus||"").toLowerCase());
+      rejectEnrollment.onclick=async()=>{
+        const reason=prompt("اكتب سبب رفض طلب الالتحاق:");
+        if(reason===null)return;
+        if(!reason.trim()){status("يجب كتابة سبب الرفض حتى يظهر للمتدرب.",true);return;}
+        rejectEnrollment.disabled=true;
+        try{
+          await setDoc(doc(db,"programEnrollments",item.id),{enrollmentStatus:"rejected",rejectionReason:reason.trim(),reviewedAt:serverTimestamp(),reviewedBy:auth.currentUser.email},{merge:true});
+          status("تم رفض طلب التسجيل وإرسال السبب إلى المتدرب.");await adminLoad();
+        }catch(error){status(`تعذر رفض طلب التسجيل: ${error.code||error.message}`,true);rejectEnrollment.disabled=false;}
+      };
+      action.append(approve,document.createTextNode(" "),rejectEnrollment);row.append(action);adminEnrollmentBody.append(row);
     }
     if(!enrollmentRows.size) adminEnrollmentBody.innerHTML='<tr><td colspan="6">لا توجد طلبات تسجيل حتى الآن.</td></tr>';
   }
@@ -547,12 +614,13 @@ async function adminLoad() {
   }
   const pending=await getDocs(query(collection(db,"paymentSubmissions"),where("status","==","pending")));
   $("pendingPayments").replaceChildren();
-  if(!pending.size) $("pendingPayments").innerHTML='<tr><td colspan="6">لا توجد دفعات قيد المراجعة.</td></tr>';
+  if(!pending.size) $("pendingPayments").innerHTML='<tr><td colspan="10">لا توجد دفعات قيد المراجعة.</td></tr>';
   for(const paymentDoc of pending.docs){
     const p=paymentDoc.data(),row=document.createElement("tr");
     const traineeSnap=await getDoc(doc(db,"trainees",p.uid));
     const trainee=traineeSnap.exists()?traineeSnap.data():{};
-    [trainee.fullNameAr||trainee.displayName||p.uid,p.programName||"—",money(p.amount),p.paymentDate||"—",formatStatus(p.status)].forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
+    const methodLabels={vodafone_cash:"Vodafone Cash",instapay:"InstaPay",bank_transfer:"تحويل بنكي",cash:"Cash"};
+    [trainee.fullNameAr||trainee.displayName||p.uid,p.programName||"—",money(p.amount),p.paymentDate||"—",p.nationalIdOrPassport||"—",p.professionalLicenseNumber||"—",methodLabels[p.paymentMethod]||p.paymentMethod||"—",p.transferSource||"—",formatStatus(p.status)].forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
     const action=document.createElement("td");
     const approve=document.createElement("button");approve.textContent="اعتماد الدفعة";
     approve.onclick=async()=>{
