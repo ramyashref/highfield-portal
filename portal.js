@@ -305,9 +305,15 @@ function drawCharts(progressItems,payments,totalFee,totalPaid) {
   const inProgress=progressItems.filter(x=>["in progress","in_progress","started"].includes(String(x.status||"").toLowerCase())).length;
   const upcoming=Math.max(0,progressItems.length-completed-inProgress);
   const academic=$("academicChart");
-  if(academic) new Chart(academic,{type:"doughnut",data:{labels:["مكتمل","قيد التنفيذ","لم يبدأ"],datasets:[{data:[completed,inProgress,upcoming],backgroundColor:["#4fc49a","#4b9cff","#243e63"],borderColor:"#0b2040",borderWidth:4,hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:"70%",plugins:{legend:{position:"bottom",labels:{color:"#c8d8ec",padding:18,font:{family:"Cairo"}}}}}});
+  if(academic) {
+    Chart.getChart(academic)?.destroy();
+    new Chart(academic,{type:"doughnut",data:{labels:["مكتمل","قيد التنفيذ","لم يبدأ"],datasets:[{data:[completed,inProgress,upcoming],backgroundColor:["#4fc49a","#4b9cff","#243e63"],borderColor:"#0b2040",borderWidth:4,hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:"70%",plugins:{legend:{position:"bottom",labels:{color:"#c8d8ec",padding:18,font:{family:"Cairo"}}}}}});
+  }
   const paid=$("paymentChart");
-  if(paid) new Chart(paid,{type:"bar",data:{labels:["المدفوع","المتبقي"],datasets:[{label:"EGP",data:[totalPaid,Math.max(0,totalFee-totalPaid)],backgroundColor:["#4fc49a","#4b9cff"],borderRadius:8,maxBarThickness:62}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:"#c8d8ec",font:{family:"Cairo"}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:"#9fb4d0"},grid:{color:"#ffffff12"}}}}});
+  if(paid) {
+    Chart.getChart(paid)?.destroy();
+    new Chart(paid,{type:"bar",data:{labels:["المدفوع","المتبقي"],datasets:[{label:"EGP",data:[totalPaid,Math.max(0,totalFee-totalPaid)],backgroundColor:["#4fc49a","#4b9cff"],borderRadius:8,maxBarThickness:62}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:"#c8d8ec",font:{family:"Cairo"}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:"#9fb4d0"},grid:{color:"#ffffff12"}}}}});
+  }
   $("academicCaption").textContent=progressItems.length?`تم استكمال ${completed} من ${progressItems.length} برنامجًا مسجلًا ضمن مسار التطوير المستمر.`:"لم تتم إضافة برامج تدريبية إلى حسابك بعد.";
 }
 
