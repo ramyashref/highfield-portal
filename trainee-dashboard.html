@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Student Dashboard | Highfield Egypt Learning Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./portal.css?v=20261104-portal-fix1">
+<link rel="stylesheet" href="portal.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body data-page="trainee" class="portal-dashboard">
@@ -18,12 +18,48 @@
     <article class="metric-card"><span>المبلغ المتبقي</span><strong id="balance">—</strong><small>Account Balance</small></article>
   </section>
   <section class="chart-grid">
-    <article class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">ACADEMIC OVERVIEW</span><h2>التقدم الأكاديمي</h2></div><span class="panel-icon">◉</span></div><div class="chart-box"><canvas id="academicChart" aria-label="Academic progress chart"></canvas></div><p class="chart-caption" id="academicCaption">ستظهر مؤشرات تقدمك بعد التسجيل في البرامج.</p></article>
+    <article class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">ACADEMIC OVERVIEW</span><h2>مسار التطوير المستمر</h2></div><span class="panel-icon">◉</span></div><div class="chart-box"><canvas id="academicChart" aria-label="Academic progress chart"></canvas></div><p class="chart-caption" id="academicCaption">ستظهر مؤشرات تقدمك بعد التسجيل في البرامج.</p></article>
     <article class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">PAYMENT OVERVIEW</span><h2>ملخص المدفوعات</h2></div><span class="panel-icon">▥</span></div><div class="chart-box"><canvas id="paymentChart" aria-label="Payment overview chart"></canvas></div><p class="chart-caption">المدفوعات المعتمدة والرصيد المتبقي.</p></article>
+  </section>
+  <section class="portal-panel" id="learningPathPanel">
+    <div class="panel-heading"><div><span class="eyebrow">CHOOSE YOUR LEARNING PATH</span><h2>اختر مسارك التدريبي</h2></div></div>
+    <div class="path-choice-grid">
+      <article class="path-choice-card">
+        <span class="eyebrow">OPTION 01</span><h3>البرنامج الطبي السنوي الشامل</h3>
+        <p>مسار تدريبي سنوي متكامل، يشمل البرامج المحددة في الخطة السنوية.</p>
+        <strong class="path-price">61,000 EGP</strong>
+        <small>60,000 جنيه اشتراك + 1,000 جنيه رسوم تسجيل · 12 قسطًا شهريًا بقيمة 5,000 جنيه</small>
+        <button type="button" class="primary-btn" id="chooseAnnualPath">الاشتراك في البرنامج السنوي</button>
+      </article>
+      <article class="path-choice-card">
+        <span class="eyebrow">OPTION 02</span><h3>البرامج التدريبية المنفصلة</h3>
+        <p>اختر برنامجًا واحدًا أو أكثر من كتالوج برامج Highfield برسوم مستقلة لكل برنامج.</p>
+        <strong class="path-price">حسب البرنامج المختار</strong>
+        <label for="individualProgramSelect">اختر البرنامج</label>
+        <select id="individualProgramSelect"><option value="">تحميل البرامج...</option></select>
+        <div class="selected-price" id="individualPrice">اختر برنامجًا لعرض الرسوم.</div>
+        <button type="button" class="primary-btn" id="chooseIndividualPath">إضافة البرنامج إلى حسابي</button>
+      </article>
+    </div>
+    <div class="enrollment-summary hidden" id="enrollmentSummary" aria-live="polite">
+      <div><span class="eyebrow">SELECTED ENROLLMENT</span><h3 id="selectedEnrollmentName">—</h3></div>
+      <div class="enrollment-finance-grid">
+        <div><small>إجمالي الرسوم</small><strong id="selectedTotal">—</strong></div>
+        <div><small>المدفوع المعتمد</small><strong id="selectedPaid">—</strong></div>
+        <div><small>المتبقي عليك</small><strong id="selectedBalance">—</strong></div>
+        <div><small>المطلوب الآن</small><strong id="selectedDueNow">—</strong></div>
+      </div>
+      <p class="chart-caption" id="selectedPaymentNote"></p>
+      <button type="button" class="outline-link" id="useSelectedEnrollment">اختيار هذا التسجيل لإرسال إثبات الدفع</button>
+    </div>
+    <div class="table-scroll enrollment-table-wrap">
+      <table><thead><tr><th>المسار / البرنامج</th><th>إجمالي الرسوم</th><th>المدفوع</th><th>المتبقي</th><th>الحالة</th></tr></thead><tbody id="enrollments"><tr><td colspan="5">لم تختر مسارًا تدريبيًا بعد.</td></tr></tbody></table>
+    </div>
   </section>
   <section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">MY LEARNING</span><h2>برامجي التدريبية</h2></div><a class="outline-link" href="programs.html">استكشف كل البرامج ←</a></div><div class="table-scroll"><table><thead><tr><th>البرنامج</th><th>الحالة</th><th>التقدم</th></tr></thead><tbody id="progress"><tr><td colspan="3">لم تتم إضافة برامج إلى حسابك بعد.</td></tr></tbody></table></div></section>
   <section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">PAYMENT SUBMISSION</span><h2>إرسال إثبات دفع</h2></div></div>
     <form id="paymentForm" class="form-grid">
+      <label>التسجيل المرتبط بالدفعة<select id="paymentEnrollment" required><option value="">اختر مسارًا أو برنامجًا أولًا</option></select></label>
       <label>المبلغ بالجنيه المصري<input id="amount" type="number" min="1" step="0.01" required></label>
       <label>طريقة الدفع<select id="method"><option>InstaPay / محفظة</option><option>تحويل بنكي</option></select></label>
       <label>إيصال الدفع (JPG / PNG / PDF حتى 5MB)<input id="proof" type="file" accept=".jpg,.jpeg,.png,.pdf" required></label>
@@ -34,5 +70,8 @@
   <section class="portal-panel profile-panel"><div class="panel-heading"><div><span class="eyebrow">PERSONAL INFORMATION</span><h2>بيانات المتدرب</h2></div></div><div id="profileDetails" class="profile-grid"></div></section>
   <p id="status" class="status" role="status"></p>
 </main>
-<script src="firebase-config.js"></script><script type="module" src="portal.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/programs.js"></script>
+<script src="js/program-pricing.js"></script>
+<script type="module" src="portal.js"></script>
 </body></html>

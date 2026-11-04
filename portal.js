@@ -22,6 +22,10 @@ const status = (message, error=false) => {
 const go = url => { location.href=url; };
 const money = value => `${Number(value||0).toLocaleString("en-US")} EGP`;
 const profileRef = user => doc(db,"trainees",user.uid);
+let currentEnrollments = [];
+let selectedEnrollmentId = "";
+const ANNUAL_TOTAL_FEE = 61000;
+const ANNUAL_FIRST_DUE = 6000; // 1,000 EGP registration + first 5,000 EGP installment
 const getProfile = async user => { const snap=await getDoc(profileRef(user)); return snap.exists()?snap.data():null; };
 
 function authErr(error) {
@@ -38,11 +42,8 @@ function authErr(error) {
 
 function switchAuth(mode) {
   const login=mode==="login";
-  const loginForm=$("loginForm"), signupForm=$("signupForm");
-  loginForm?.classList.toggle("hidden",!login);
-  signupForm?.classList.toggle("hidden",login);
-  if(loginForm) loginForm.hidden=!login;
-  if(signupForm) signupForm.hidden=login;
+  $("loginForm")?.classList.toggle("hidden",!login);
+  $("signupForm")?.classList.toggle("hidden",login);
   $("showLogin")?.classList.toggle("active",login);
   $("showSignup")?.classList.toggle("active",!login);
   $("authTitle").textContent=login?"دخول المتدربين":"إنشاء حساب متدرب جديد";
@@ -129,6 +130,131 @@ async function resetPassword() {
   catch(error) { status(authErr(error),true); }
 }
 
+
+function formatStatus(value) {
+  const map={pending_payment:"في انتظار الدفع",pending:"قيد المراجعة",partial:"مدفوع جزئيًا",paid:"مدفوع بالكامل",confirmed:"مؤكد",active:"نشط",unpaid:"غير مدفوع",admin_enrolled:"تم التسجيل بواسطة الإدارة",waived:"إعفاء إداري"};
+  return map[String(value||"").toLowerCase()] || value || "قيد المراجعة";
+}
+
+function populateIndividualPrograms() {
+  const select=$("individualProgramSelect");
+  if(!select || select.dataset.ready==="1") return;
+  const programs=window.HIGHFIELD_PROGRAMS||[];
+  select.replaceChildren(new Option("اختر البرنامج التدريبي",""));
+  programs.forEach(item=>{
+    const option=new Option(`${item[1]} — ${item[2]}`,String(item[0]));
+    select.add(option);
+  });
+  select.dataset.ready="1";
+  select.addEventListener("change",()=>{
+    const id=Number(select.value),program=programs.find(x=>Number(x[0])===id);
+    const price=program&&window.HIGHFIELD_GET_PROGRAM_PRICE?window.HIGHFIELD_GET_PROGRAM_PRICE(program).price:0;
+    $("individualPrice").textContent=program?`${money(price)} · رسوم مستقلة للبرنامج`:"اختر برنامجًا لعرض الرسوم.";
+  });
+}
+
+function renderEnrollmentSummary(enrollment) {
+  if(!enrollment) return;
+  const paid=Number(enrollment.paidAmount||0),total=Number(enrollment.totalFee||0);
+  const balance=Math.max(0,total-paid);
+  $("enrollmentSummary").classList.remove("hidden");
+  $("selectedEnrollmentName").textContent=enrollment.programName||"مسار تدريبي";
+  $("selectedTotal").textContent=money(total);
+  $("selectedPaid").textContent=money(paid);
+  $("selectedBalance").textContent=money(balance);
+  const scheduledDue=enrollment.pathType==="annual"?(paid===0?6000:5000):Number(enrollment.dueNow||balance);
+  const dueNow=Math.min(balance,scheduledDue);
+  $("selectedDueNow").textContent=money(dueNow);
+  $("selectedPaymentNote").textContent=enrollment.pathType==="annual"
+    ?"البرنامج السنوي: 1,000 جنيه رسوم تسجيل + 5,000 جنيه قسط شهري. إجمالي الالتزام 61,000 جنيه."
+    :"رسوم هذا البرنامج مستقلة عن الاشتراك السنوي.";
+  selectedEnrollmentId=enrollment.id;
+}
+
+async function createEnrollmentRequest(pathType,program=null) {
+  const user=auth.currentUser;
+  if(!user) { status("سجّل الدخول أولًا.",true); return; }
+  let programId="annual-medical-program",programName="Annual Medical Program — البرنامج الطبي السنوي الشامل";
+  let totalFee=ANNUAL_TOTAL_FEE,dueNow=ANNUAL_FIRST_DUE;
+  if(pathType==="individual") {
+    if(!program) { status("اختر برنامجًا من القائمة أولًا.",true); return; }
+    const pricing=window.HIGHFIELD_GET_PROGRAM_PRICE?.(program);
+    if(!pricing) { status("تعذر تحديد سعر البرنامج. حدّث الصفحة وحاول مرة أخرى.",true); return; }
+    programId=String(program[0]);programName=program[1];totalFee=Number(pricing.price);dueNow=totalFee;
+  }
+  try {
+    const existingSnap=await getDocs(query(collection(db,"programEnrollments"),where("uid","==",user.uid)));
+    let existing=null;
+    existingSnap.forEach(s=>{
+      const e=s.data();
+      if(e.programId===programId && !["cancelled","rejected"].includes(String(e.enrollmentStatus||"").toLowerCase())) existing={id:s.id,...e};
+    });
+    if(existing) {
+      selectedEnrollmentId=existing.id;
+      renderEnrollmentSummary(existing);
+      status("لديك بالفعل طلب تسجيل لهذا المسار. يمكنك متابعة الرصيد أو إرسال إثبات الدفع.");
+      selectEnrollmentForPayment(existing.id);
+      return;
+    }
+    const payload={
+      uid:user.uid,pathType,programId,programName,totalFee,dueNow,paidAmount:0,
+      paymentStatus:"unpaid",enrollmentStatus:"pending_payment",createdAt:serverTimestamp()
+    };
+    const refNew=await addDoc(collection(db,"programEnrollments"),payload);
+    const enrollment={id:refNew.id,...payload,createdAt:new Date()};
+    currentEnrollments.push(enrollment);
+    selectedEnrollmentId=refNew.id;
+    renderEnrollmentSummary(enrollment);
+    renderEnrollmentsTable();
+    populatePaymentEnrollmentSelect();
+    selectEnrollmentForPayment(refNew.id);
+    status("تم إنشاء طلب الالتحاق. يمكنك الآن سداد الرسوم أو إرسال إثبات التحويل.");
+  } catch(error) {
+    console.error(error);
+    status(`تعذر إنشاء طلب الالتحاق: ${error.code||error.message}`,true);
+  }
+}
+
+function renderEnrollmentsTable() {
+  const body=$("enrollments");if(!body)return;
+  body.replaceChildren();
+  if(!currentEnrollments.length) {
+    body.innerHTML='<tr><td colspan="5">لم تختر مسارًا تدريبيًا بعد.</td></tr>';return;
+  }
+  currentEnrollments.forEach(e=>{
+    const paid=Number(e.paidAmount||0),total=Number(e.totalFee||0);
+    const row=document.createElement("tr");
+    const values=[e.programName||"برنامج تدريبي",money(total),money(paid),money(Math.max(0,total-paid)),formatStatus(e.paymentStatus||e.enrollmentStatus)];
+    values.forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
+    row.style.cursor="pointer";row.title="اضغط لعرض تفاصيل الرصيد";
+    row.addEventListener("click",()=>{renderEnrollmentSummary(e);selectEnrollmentForPayment(e.id);});
+    body.append(row);
+  });
+}
+
+function populatePaymentEnrollmentSelect() {
+  const select=$("paymentEnrollment");if(!select)return;
+  const current=select.value;
+  select.replaceChildren(new Option("اختر التسجيل المرتبط بالدفعة",""));
+  currentEnrollments.forEach(e=>{
+    const remain=Math.max(0,Number(e.totalFee||0)-Number(e.paidAmount||0));
+    select.add(new Option(`${e.programName} — متبقي ${money(remain)}`,e.id));
+  });
+  if(currentEnrollments.some(e=>e.id===current))select.value=current;
+}
+
+function selectEnrollmentForPayment(id) {
+  const select=$("paymentEnrollment");if(!select)return;
+  select.value=id;
+  const enrollment=currentEnrollments.find(e=>e.id===id);
+  if(!enrollment)return;
+  const remain=Math.max(0,Number(enrollment.totalFee||0)-Number(enrollment.paidAmount||0));
+  const scheduledDue=enrollment.pathType==="annual"?(Number(enrollment.paidAmount||0)===0?6000:5000):Number(enrollment.dueNow||remain);
+  const due=Math.min(remain,scheduledDue);
+  $("amount").value=due>0?due:"";
+  $("amount").max=remain;
+}
+
 function drawCharts(progressItems,payments,totalFee,totalPaid) {
   if(!window.Chart) return;
   const completed=progressItems.filter(x=>["completed","passed","approved"].includes(String(x.status||"").toLowerCase())).length;
@@ -138,7 +264,7 @@ function drawCharts(progressItems,payments,totalFee,totalPaid) {
   if(academic) new Chart(academic,{type:"doughnut",data:{labels:["مكتمل","قيد التنفيذ","لم يبدأ"],datasets:[{data:[completed,inProgress,upcoming],backgroundColor:["#4fc49a","#4b9cff","#243e63"],borderColor:"#0b2040",borderWidth:4,hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:"70%",plugins:{legend:{position:"bottom",labels:{color:"#c8d8ec",padding:18,font:{family:"Cairo"}}}}}});
   const paid=$("paymentChart");
   if(paid) new Chart(paid,{type:"bar",data:{labels:["المدفوع","المتبقي"],datasets:[{label:"EGP",data:[totalPaid,Math.max(0,totalFee-totalPaid)],backgroundColor:["#4fc49a","#4b9cff"],borderRadius:8,maxBarThickness:62}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:"#c8d8ec",font:{family:"Cairo"}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:"#9fb4d0"},grid:{color:"#ffffff12"}}}}});
-  $("academicCaption").textContent=progressItems.length?`تم استكمال ${completed} من ${progressItems.length} برنامجًا مسجلًا.`:"لم تتم إضافة برامج تدريبية إلى حسابك بعد.";
+  $("academicCaption").textContent=progressItems.length?`تم استكمال ${completed} من ${progressItems.length} برنامجًا مسجلًا ضمن مسار التطوير المستمر.`:"لم تتم إضافة برامج تدريبية إلى حسابك بعد.";
 }
 
 async function loadTrainee(user) {
@@ -161,6 +287,17 @@ async function loadTrainee(user) {
   });
   const progressSnap=await getDocs(query(collection(db,"trainingProgress"),where("uid","==",user.uid)));
   const progress=[]; progressSnap.forEach(s=>progress.push(s.data()));
+  const enrollmentSnap=await getDocs(query(collection(db,"programEnrollments"),where("uid","==",user.uid)));
+  currentEnrollments=[]; enrollmentSnap.forEach(s=>currentEnrollments.push({id:s.id,...s.data()}));
+  const enrollmentTotal=currentEnrollments.reduce((sum,e)=>sum+Number(e.totalFee||0),0);
+  const enrollmentPaid=currentEnrollments.reduce((sum,e)=>sum+Number(e.paidAmount||0),0);
+  const enrollmentBalance=Math.max(0,enrollmentTotal-enrollmentPaid);
+  $("balance").textContent=currentEnrollments.length?money(enrollmentBalance):"لا توجد التزامات";
+  renderEnrollmentsTable();populatePaymentEnrollmentSelect();populateIndividualPrograms();
+  if(currentEnrollments.length) {
+    const latest=currentEnrollments[currentEnrollments.length-1];
+    renderEnrollmentSummary(latest);selectedEnrollmentId=latest.id;
+  }
   const body=$("progress"); body.replaceChildren();
   if(!progress.length) body.innerHTML='<tr><td colspan="3">لم تتم إضافة برامج إلى حسابك بعد. يمكنك استكشاف البرامج المتاحة.</td></tr>';
   progress.forEach(p=>{
@@ -170,7 +307,7 @@ async function loadTrainee(user) {
     const pct=document.createElement("td");pct.textContent=`${Math.max(0,Math.min(100,Number(p.progressPercent||0)))}%`;
     tr.append(name,state,pct);body.append(tr);
   });
-  $("programCount").textContent=progress.length;
+  $("programCount").textContent=currentEnrollments.length + progress.length;
   $("completedCount").textContent=progress.filter(p=>["completed","passed","approved"].includes(String(p.status||"").toLowerCase())).length;
   const details=[
     ["الاسم بالعربي",data.fullNameAr],["Full name",data.fullNameEn],["WhatsApp",data.whatsapp],
@@ -179,18 +316,26 @@ async function loadTrainee(user) {
   ];
   const grid=$("profileDetails");grid.replaceChildren();
   details.forEach(([label,value])=>{const item=document.createElement("div");item.className="profile-item";const small=document.createElement("small");small.textContent=label;const strong=document.createElement("strong");strong.textContent=value||"—";item.append(small,strong);grid.append(item);});
-  drawCharts(progress,payments,fee,paidTotal);
+  drawCharts(progress,payments,enrollmentTotal,enrollmentPaid);
 }
 
 async function submitPayment() {
   const user=auth.currentUser,file=$("proof")?.files[0],amount=Number($("amount")?.value);
-  if(!user||!(amount>0)||!file){status("أدخل المبلغ واختر إثبات الدفع.",true);return;}
+  const enrollmentId=$("paymentEnrollment")?.value;
+  const enrollment=currentEnrollments.find(e=>e.id===enrollmentId);
+  if(!user||!enrollment||!(amount>0)||!file){status("اختر مسارًا تدريبيًا، وأدخل المبلغ، وارفق إثبات الدفع.",true);return;}
+  const remaining=Math.max(0,Number(enrollment.totalFee||0)-Number(enrollment.paidAmount||0));
+  if(amount>remaining){status(`المبلغ أكبر من الرصيد المتبقي (${money(remaining)}).`,true);return;}
   if(file.size>5*1024*1024||!["image/jpeg","image/png","application/pdf"].includes(file.type)){status("الملف لازم يكون JPG أو PNG أو PDF وأقل من 5MB.",true);return;}
   try{
     const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),path=`payment-proofs/${user.uid}/${Date.now()}-${safeName}`;
     const uploaded=await uploadBytes(ref(storage,path),file,{contentType:file.type}),url=await getDownloadURL(uploaded.ref);
-    await addDoc(collection(db,"paymentSubmissions"),{uid:user.uid,amount,proofPath:path,proofUrl:url,method:$("method").value,status:"pending",createdAt:serverTimestamp()});
-    status("تم إرسال إثبات الدفع للمراجعة. سيظهر تحديثه في سجل المدفوعات بعد المراجعة.");$("paymentForm").reset();
+    await addDoc(collection(db,"paymentSubmissions"),{
+      uid:user.uid,enrollmentId,programId:enrollment.programId,programName:enrollment.programName,
+      amount,proofPath:path,proofUrl:url,method:$("method").value,status:"pending",createdAt:serverTimestamp()
+    });
+    status("تم إرسال إثبات الدفع للمراجعة. سيظهر تحديث الرصيد بعد اعتماد الإدارة.");$("paymentForm").reset();
+    populatePaymentEnrollmentSelect();selectEnrollmentForPayment(enrollmentId);
   }catch(error){console.error(error);status(`تعذر إرسال الإثبات: ${error.code||error.message}`,true);}
 }
 
@@ -209,6 +354,48 @@ async function adminLoad() {
     };
     action.append(button);row.append(action);$("trainees").append(row);
   });
+  const enrollmentRows=await getDocs(collection(db,"programEnrollments"));
+  const adminEnrollmentBody=$("adminEnrollments");
+  if(adminEnrollmentBody) {
+    adminEnrollmentBody.replaceChildren();
+    for(const item of enrollmentRows.docs) {
+      const e=item.data(),traineeSnap=await getDoc(doc(db,"trainees",e.uid));
+      const trainee=traineeSnap.exists()?traineeSnap.data():{};
+      const row=document.createElement("tr");
+      [trainee.fullNameAr||trainee.displayName||e.uid,e.programName||"برنامج تدريبي",formatStatus(e.enrollmentStatus),formatStatus(e.paymentStatus),money(e.totalFee)].forEach(value=>{
+        const td=document.createElement("td");td.textContent=value;row.append(td);
+      });
+      const action=document.createElement("td");
+      const approve=document.createElement("button");
+      approve.textContent="تأكيد التسجيل الإداري";
+      approve.disabled=["confirmed","admin_enrolled"].includes(String(e.enrollmentStatus||"").toLowerCase());
+      approve.onclick=async()=>{
+        approve.disabled=true;
+        try {
+          await setDoc(doc(db,"programEnrollments",item.id),{
+            enrollmentStatus:"admin_enrolled",
+            enrollmentMethod:"admin",
+            adminConfirmedAt:serverTimestamp()
+          },{merge:true});
+          status("تم تأكيد التسجيل بواسطة الإدارة مع الاحتفاظ بحالة الدفع المستقلة.");
+          await adminLoad();
+        } catch(error) {
+          status(`تعذر تأكيد التسجيل: ${error.code||error.message}`,true);approve.disabled=false;
+        }
+      };
+      action.append(approve);row.append(action);adminEnrollmentBody.append(row);
+    }
+    if(!enrollmentRows.size) adminEnrollmentBody.innerHTML='<tr><td colspan="6">لا توجد طلبات تسجيل حتى الآن.</td></tr>';
+  }
+  const adminTraineeSelect=$("adminTraineeSelect"),adminProgramSelect=$("adminProgramSelect");
+  if(adminTraineeSelect) {
+    adminTraineeSelect.replaceChildren(new Option("اختر المتدرب",""));
+    traineesSnapshot.forEach(s=>{const t=s.data();adminTraineeSelect.add(new Option(`${t.fullNameAr||t.displayName||t.email} — ${t.email}`,s.id));});
+  }
+  if(adminProgramSelect) {
+    adminProgramSelect.replaceChildren(new Option("اختر البرنامج",""));
+    (window.HIGHFIELD_PROGRAMS||[]).forEach(p=>adminProgramSelect.add(new Option(`${p[1]} — ${money(window.HIGHFIELD_GET_PROGRAM_PRICE?.(p)?.price||0)}`,String(p[0]))));
+  }
   const pending=await getDocs(query(collection(db,"paymentSubmissions"),where("status","==","pending")));
   $("pendingPayments").replaceChildren();
   pending.forEach(snapshot=>{
@@ -221,7 +408,21 @@ async function adminLoad() {
       try{const refT=doc(db,"trainees",p.uid),snap=await getDoc(refT);if(!snap.exists())throw new Error("ملف المتدرب غير موجود.");
         await setDoc(doc(db,"paymentSubmissions",snapshot.id),{status:"approved",reviewedAt:serverTimestamp()},{merge:true});
         await setDoc(refT,{totalPaid:Number(snap.data().totalPaid||0)+Number(p.amount||0)},{merge:true});
-        status("تم اعتماد الدفعة وتحديث الرصيد.");await adminLoad();
+        if(p.enrollmentId) {
+          const enrollmentRef=doc(db,"programEnrollments",p.enrollmentId),enrollmentSnap=await getDoc(enrollmentRef);
+          if(enrollmentSnap.exists()) {
+            const enrollment=enrollmentSnap.data();
+            const paid=Number(enrollment.paidAmount||0)+Number(p.amount||0);
+            const total=Number(enrollment.totalFee||0);
+            await setDoc(enrollmentRef,{
+              paidAmount:paid,
+              paymentStatus:paid>=total?"paid":"partial",
+              enrollmentStatus:paid>=total?"confirmed":"pending_payment",
+              lastPaymentApprovedAt:serverTimestamp()
+            },{merge:true});
+          }
+        }
+        status("تم اعتماد الدفعة وتحديث رصيد التسجيل.");await adminLoad();
       }catch(error){status(`تعذر اعتماد الدفعة: ${error.code||error.message}`,true);button.disabled=false;}
     };
     action.append(button);row.append(action);$("pendingPayments").append(row);
@@ -250,3 +451,29 @@ $("showSignup")?.addEventListener("click",()=>switchAuth("signup"));
 $("resetPassword")?.addEventListener("click",resetPassword);
 $("logout")?.addEventListener("click",async()=>{await signOut(auth);go("trainee-login.html");});
 $("paymentForm")?.addEventListener("submit",e=>{e.preventDefault();submitPayment();});
+$("adminEnrollmentForm")?.addEventListener("submit",async e=>{
+  e.preventDefault();
+  const uid=$("adminTraineeSelect").value,programId=$("adminProgramSelect").value;
+  const program=(window.HIGHFIELD_PROGRAMS||[]).find(p=>String(p[0])===programId);
+  if(!uid||!program){status("اختر المتدرب والبرنامج.",true);return;}
+  const fee=Number(window.HIGHFIELD_GET_PROGRAM_PRICE?.(program)?.price||0);
+  const paymentStatus=$("adminPaymentStatus").value;
+  try{
+    await addDoc(collection(db,"programEnrollments"),{
+      uid,pathType:"individual",programId,programName:program[1],totalFee:fee,
+      paidAmount:paymentStatus==="paid"||paymentStatus==="waived"?fee:0,
+      dueNow:fee,paymentStatus:paymentStatus==="waived"?"waived":paymentStatus,
+      enrollmentStatus:"admin_enrolled",enrollmentMethod:"admin",
+      adminNote:$("adminEnrollmentNote").value.trim(),createdAt:serverTimestamp()
+    });
+    status("تم تسجيل المتدرب في البرنامج بواسطة الإدارة.");$("adminEnrollmentForm").reset();await adminLoad();
+  }catch(error){status(`تعذر إضافة البرنامج: ${error.code||error.message}`,true);}
+});
+$("chooseAnnualPath")?.addEventListener("click",()=>createEnrollmentRequest("annual"));
+$("chooseIndividualPath")?.addEventListener("click",()=>{
+  const id=Number($("individualProgramSelect")?.value);
+  const program=(window.HIGHFIELD_PROGRAMS||[]).find(x=>Number(x[0])===id);
+  createEnrollmentRequest("individual",program);
+});
+$("useSelectedEnrollment")?.addEventListener("click",()=>selectEnrollmentForPayment(selectedEnrollmentId));
+$("paymentEnrollment")?.addEventListener("change",e=>selectEnrollmentForPayment(e.target.value));
