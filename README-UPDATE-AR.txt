@@ -1,4 +1,4 @@
-Highfield Egypt Learning Portal — My Learning + Financial Split + Payment Upload Fix
+Highfield Egypt Learning Portal — Payment Date & Amount Update
 
 Included files:
 - trainee-dashboard.html
@@ -6,26 +6,24 @@ Included files:
 - portal.js
 - portal.css
 - firestore.rules
-- storage.rules
 
-What this update does:
-1. My Learning now displays active annual and individual programEnrollments, not only trainingProgress documents.
-2. Financial summary separates annual-program fees/paid/balance from individual-program fees/paid/balance.
-3. Keeps Cancellation Management in the admin dashboard, including approve/reject actions and admin decision notes.
-4. Payment submission now displays upload and save stages, disables the button while processing, and shows specific Firebase Storage/Firestore errors.
-5. Includes Storage Rules for payment proof uploads. This is likely required because publishing Firestore Rules alone does not authorize Firebase Storage uploads.
+Changes:
+1. The trainee records only the payment date and amount, linked to the selected enrollment.
+2. No receipt, image, PDF, payment method, Firebase Storage bucket, or Storage Rules are required.
+3. Every submitted payment is saved with status pending and is not counted as paid.
+4. The admin dashboard shows trainee, program, amount, payment date, and review actions.
+5. Admin can approve or reject a payment. Rejection requires a reason.
+6. Approval uses a Firestore transaction so the payment, trainee paid total, and related enrollment balance are updated together and cannot be counted twice by repeated approval.
+7. Rejected and pending payments do not affect the paid balance.
 
 Deployment:
-A. Back up current files and current Firebase rules.
-B. Replace the matching site files in the repository root with the files in this ZIP.
-C. Firebase Console > Build > Firestore Database > Rules: publish firestore.rules.
-D. Firebase Console > Build > Storage > Rules: publish storage.rules.
-E. Ensure Firebase Storage is enabled and firebase-config.js includes the correct storageBucket for the same Firebase project.
-F. Test payment submission using a small JPG or PDF under 5 MB.
+A. Back up the current portal files and Firestore Rules.
+B. Replace the matching files in the website repository with the files in this package.
+C. Publish firestore.rules in Firebase Console > Firestore Database > Rules.
+D. Do not configure Firebase Storage for this payment workflow.
+E. Test with a trainee account: submit date + amount, then approve/reject from the admin account.
 
-Important:
-- Do not paste storage.rules into Firestore Rules. They belong in Firebase Storage > Rules.
-- The payment proof is uploaded to Storage first, then a paymentSubmissions document is created in Firestore.
-- Admin approval is still required before the payment is counted as paid.
-- Cancellation approval does not automatically refund money.
-- Keep the existing firebase-config.js; do not replace it with a sample config.
+Notes:
+- Keep the existing firebase-config.js unchanged.
+- Historical payment documents that contain proofUrl/proofPath remain readable; this update stops creating new receipt uploads.
+- Firestore Security Rules still verify that the selected enrollment belongs to the signed-in trainee and that the amount does not exceed the remaining fee.

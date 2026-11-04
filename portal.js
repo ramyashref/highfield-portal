@@ -5,12 +5,11 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, setDoc, collection, query, where,
-  getDocs, addDoc, serverTimestamp
+  getDocs, addDoc, serverTimestamp, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
 const app = initializeApp(window.HIGHFIELD_FIREBASE_CONFIG);
-const auth = getAuth(app), db = getFirestore(app), storage = getStorage(app);
+const auth = getAuth(app), db = getFirestore(app);
 const $ = id => document.getElementById(id);
 let authFlowInProgress = false;
 const adminEmail = "info@highfieldeg.com";
@@ -326,8 +325,8 @@ async function loadTrainee(user) {
   if(!payments.length) paymentsBody.innerHTML='<tr><td colspan="4">لا توجد مدفوعات مسجلة.</td></tr>';
   payments.forEach(p=>{
     const tr=document.createElement("tr");
-    const date=p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString("ar-EG"):"—";
-    [money(p.amount),p.method||"—",p.status||"قيد المراجعة",date].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});
+    const date=p.paymentDate|| (p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString("ar-EG"):"—");
+    [money(p.amount),p.programName||"—",p.rejectionReason?`${formatStatus(p.status)}: ${p.rejectionReason}`:formatStatus(p.status),date].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td);});
     paymentsBody.append(tr);
   });
   const progressSnap=await getDocs(query(collection(db,"trainingProgress"),where("uid","==",user.uid)));
@@ -398,47 +397,36 @@ async function loadTrainee(user) {
 }
 
 async function submitPayment() {
-  const user=auth.currentUser,file=$("proof")?.files[0],amount=Number($("amount")?.value);
+  const user=auth.currentUser;
+  const amount=Number($("amount")?.value);
+  const paymentDate=$("paymentDate")?.value;
   const enrollmentId=$("paymentEnrollment")?.value;
   const enrollment=currentEnrollments.find(e=>e.id===enrollmentId);
-  const progressEl=$("paymentProgress");
-  const submitBtn=$("paymentSubmitBtn");
+  const progressEl=$("paymentProgress"),submitBtn=$("paymentSubmitBtn");
   const showProgress=(message,isError=false)=>{
     if(progressEl){progressEl.textContent=message;progressEl.className=isError?"status error":"status";}
     else status(message,isError);
   };
-  if(!user||!enrollment||!(amount>0)||!file){showProgress("اختر التسجيل، وأدخل المبلغ، وارفق صورة أو PDF لإثبات الدفع.",true);return;}
+  if(!user||!enrollment||!(amount>0)||!paymentDate){showProgress("اختر التسجيل، وأدخل تاريخ الدفع والمبلغ.",true);return;}
   const remaining=Math.max(0,Number(enrollment.totalFee||0)-Number(enrollment.paidAmount||0));
   if(amount>remaining){showProgress(`المبلغ أكبر من الرصيد المتبقي (${money(remaining)}).`,true);return;}
-  if(file.size>5*1024*1024||!["image/jpeg","image/png","application/pdf"].includes(file.type)){showProgress("الملف لازم يكون JPG أو PNG أو PDF وأقل من 5MB.",true);return;}
-  if(!window.HIGHFIELD_FIREBASE_CONFIG?.storageBucket){showProgress("إعداد Firebase Storage غير مكتمل: storageBucket غير موجود في firebase-config.js.",true);return;}
-  if(submitBtn){submitBtn.disabled=true;submitBtn.textContent="جارٍ إرسال الإثبات...";}
+  if(new Date(paymentDate+"T00:00:00")>new Date(new Date().toDateString())){showProgress("تاريخ الدفع لا يمكن أن يكون في المستقبل.",true);return;}
+  if(submitBtn){submitBtn.disabled=true;submitBtn.textContent="جارٍ تسجيل الدفعة...";}
   try{
-    showProgress("1/2 جارٍ رفع إيصال الدفع إلى التخزين الآمن...");
-    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),path=`payment-proofs/${user.uid}/${Date.now()}-${safeName}`;
-    const uploaded=await uploadBytes(ref(storage,path),file,{contentType:file.type});
-    const url=await getDownloadURL(uploaded.ref);
-    showProgress("2/2 تم رفع الملف. جارٍ تسجيل طلب الدفع...");
     await addDoc(collection(db,"paymentSubmissions"),{
       uid:user.uid,enrollmentId,programId:enrollment.programId,programName:enrollment.programName,
-      amount,proofPath:path,proofUrl:url,method:$("method").value,status:"pending",createdAt:serverTimestamp()
+      amount,paymentDate,status:"pending",createdAt:serverTimestamp()
     });
-    showProgress("تم إرسال إثبات الدفع بنجاح إلى الإدارة للمراجعة.");
+    showProgress("تم تسجيل بيانات الدفع وإرسالها للإدارة للمراجعة.");
     $("paymentForm").reset();
     populatePaymentEnrollmentSelect();
     selectEnrollmentForPayment(enrollmentId);
     await loadTrainee(user);
   }catch(error){
     console.error("Payment submission failed:",error);
-    let message=`تعذر إرسال الإثبات (${error.code||"unknown"}). `;
-    if(error.code==="storage/unauthorized") message+="صلاحيات Firebase Storage لا تسمح برفع الملف. انشر قواعد storage.rules المرفقة من Firebase Storage > Rules.";
-    else if(error.code==="storage/bucket-not-found") message+="لم يتم إعداد Storage bucket. فعّل Firebase Storage وتأكد من storageBucket في firebase-config.js.";
-    else if(error.code==="storage/unknown") message+="حدث خطأ أثناء رفع الملف. راجع Firebase Storage وتأكد من تفعيل الخدمة.";
-    else if(error.code==="permission-denied") message+="قواعد Firestore لا تسمح بإنشاء سجل الدفعة أو أن مبلغ الدفعة يتجاوز المتبقي.";
-    else message+=error.message||"راجع إعدادات Firebase Storage وFirestore.";
-    showProgress(message,true);
+    showProgress(`تعذر تسجيل الدفعة (${error.code||"unknown"}): ${error.message||"راجع صلاحيات Firestore."}`,true);
   }finally{
-    if(submitBtn){submitBtn.disabled=false;submitBtn.textContent="إرسال الإيصال للمراجعة";}
+    if(submitBtn){submitBtn.disabled=false;submitBtn.textContent="تسجيل الدفعة للمراجعة";}
   }
 }
 
@@ -553,35 +541,49 @@ async function adminLoad() {
   }
   const pending=await getDocs(query(collection(db,"paymentSubmissions"),where("status","==","pending")));
   $("pendingPayments").replaceChildren();
-  pending.forEach(snapshot=>{
-    const p=snapshot.data(),row=document.createElement("tr");
-    [p.uid,money(p.amount),p.method,p.status].forEach(v=>{const td=document.createElement("td");td.textContent=v||"";row.append(td);});
-    const action=document.createElement("td"),link=document.createElement("a");link.href=p.proofUrl||"#";link.target="_blank";link.rel="noopener";link.textContent="فتح الإثبات";action.append(link);
-    const button=document.createElement("button");button.textContent="اعتماد الدفعة";
-    button.onclick=async()=>{
-      button.disabled=true;
-      try{const refT=doc(db,"trainees",p.uid),snap=await getDoc(refT);if(!snap.exists())throw new Error("ملف المتدرب غير موجود.");
-        await setDoc(doc(db,"paymentSubmissions",snapshot.id),{status:"approved",reviewedAt:serverTimestamp()},{merge:true});
-        await setDoc(refT,{totalPaid:Number(snap.data().totalPaid||0)+Number(p.amount||0)},{merge:true});
-        if(p.enrollmentId) {
-          const enrollmentRef=doc(db,"programEnrollments",p.enrollmentId),enrollmentSnap=await getDoc(enrollmentRef);
-          if(enrollmentSnap.exists()) {
-            const enrollment=enrollmentSnap.data();
-            const paid=Number(enrollment.paidAmount||0)+Number(p.amount||0);
-            const total=Number(enrollment.totalFee||0);
-            await setDoc(enrollmentRef,{
-              paidAmount:paid,
-              paymentStatus:paid>=total?"paid":"partial",
-              enrollmentStatus:paid>=total?"confirmed":"pending_payment",
-              lastPaymentApprovedAt:serverTimestamp()
-            },{merge:true});
+  if(!pending.size) $("pendingPayments").innerHTML='<tr><td colspan="6">لا توجد دفعات قيد المراجعة.</td></tr>';
+  for(const paymentDoc of pending.docs){
+    const p=paymentDoc.data(),row=document.createElement("tr");
+    const traineeSnap=await getDoc(doc(db,"trainees",p.uid));
+    const trainee=traineeSnap.exists()?traineeSnap.data():{};
+    [trainee.fullNameAr||trainee.displayName||p.uid,p.programName||"—",money(p.amount),p.paymentDate||"—",formatStatus(p.status)].forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
+    const action=document.createElement("td");
+    const approve=document.createElement("button");approve.textContent="اعتماد الدفعة";
+    approve.onclick=async()=>{
+      approve.disabled=true;
+      try{
+        await runTransaction(db,async transaction=>{
+          const paymentRef=doc(db,"paymentSubmissions",paymentDoc.id);
+          const latestPayment=await transaction.get(paymentRef);
+          if(!latestPayment.exists()||latestPayment.data().status!=="pending")throw new Error("تمت مراجعة هذه الدفعة بالفعل.");
+          const traineeRef=doc(db,"trainees",p.uid),latestTrainee=await transaction.get(traineeRef);
+          if(!latestTrainee.exists())throw new Error("ملف المتدرب غير موجود.");
+          let enrollmentRef=null,enrollmentData=null;
+          if(p.enrollmentId){enrollmentRef=doc(db,"programEnrollments",p.enrollmentId);const enrollmentSnap=await transaction.get(enrollmentRef);if(!enrollmentSnap.exists()||enrollmentSnap.data().uid!==p.uid)throw new Error("تعذر العثور على تسجيل البرنامج المرتبط بالدفعة.");enrollmentData=enrollmentSnap.data();}
+          transaction.update(paymentRef,{status:"approved",reviewedAt:serverTimestamp(),reviewedBy:auth.currentUser.email});
+          transaction.update(traineeRef,{totalPaid:Number(latestTrainee.data().totalPaid||0)+Number(p.amount||0)});
+          if(enrollmentRef&&enrollmentData){
+            const paid=Number(enrollmentData.paidAmount||0)+Number(p.amount||0),total=Number(enrollmentData.totalFee||0);
+            transaction.update(enrollmentRef,{paidAmount:paid,paymentStatus:paid>=total?"paid":"partial",enrollmentStatus:paid>=total?"confirmed":"pending_payment",lastPaymentApprovedAt:serverTimestamp()});
           }
-        }
-        status("تم اعتماد الدفعة وتحديث رصيد التسجيل.");await adminLoad();
-      }catch(error){status(`تعذر اعتماد الدفعة: ${error.code||error.message}`,true);button.disabled=false;}
+        });
+        status("تم اعتماد الدفعة وتحديث رصيد المتدرب والبرنامج.");await adminLoad();
+      }catch(error){status(`تعذر اعتماد الدفعة: ${error.code||error.message}`,true);approve.disabled=false;}
     };
-    action.append(button);row.append(action);$("pendingPayments").append(row);
-  });
+    const reject=document.createElement("button");reject.className="secondary";reject.textContent="رفض الدفعة";
+    reject.onclick=async()=>{
+      const reason=prompt("اكتب سبب رفض تسجيل الدفعة:");
+      if(reason===null)return;
+      if(!reason.trim()){status("يجب كتابة سبب الرفض.",true);return;}
+      reject.disabled=true;
+      try{
+        await setDoc(doc(db,"paymentSubmissions",paymentDoc.id),{status:"rejected",rejectionReason:reason.trim(),reviewedAt:serverTimestamp(),reviewedBy:auth.currentUser.email},{merge:true});
+        status("تم رفض الدفعة وتسجيل سبب الرفض.");await adminLoad();
+      }catch(error){status(`تعذر رفض الدفعة: ${error.code||error.message}`,true);reject.disabled=false;}
+    };
+    action.append(approve,document.createTextNode(" "),reject);row.append(action);$("pendingPayments").append(row);
+  }
+
 }
 
 onAuthStateChanged(auth,async user=>{
