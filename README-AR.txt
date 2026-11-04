@@ -1,16 +1,13 @@
-إصلاح ظهور بيانات إنشاء حساب المتدرب
+تحديث الفوتر الرئيسي لموقع Highfield Egypt
 
-المشكلة: تبويب إنشاء الحساب يتغير عنوانه لكن نموذج البيانات يظل مخفيًا.
-الإصلاح: توحيد التحكم في hidden/class/display، وإضافة قواعد CSS واضحة، وتحديث رابط portal.js لمنع تحميل نسخة مخزنة قديمة.
+تم تنظيم الفوتر إلى خمسة أعمدة:
+1) Quick Links: About Us, All Programs, Annual Medical Program, Orthodontics, Scientific Council, Accreditations, Certificate Verification, Join as a Trainer, Student Portal.
+2) Conferences & Events: SERAG Conference, NEW HORIZON 2027.
+3) Policies & Legal: Refund & Cancellation Policy.
+4) Contact Us: العنوان، أرقام الهاتف، واتساب، البريد الإلكتروني.
+5) تعريف Highfield Egypt.
 
-الملفات:
-- trainee-login.html
-- portal.js
-- portal.css
+تم الإبقاء على Student Portal في الهيدر، مع عدم إعادة Accreditations إلى الهيدر.
+روابط الصفحات تستخدم أسماء الملفات الموجودة في مستودع الموقع.
 
-طريقة التركيب:
-1) فك الضغط.
-2) استبدل الملفات الثلاثة في جذر مستودع Highfield Portal.
-3) لا تستبدل firebase-config.js ولا أي ملفات بيانات.
-4) انتظر GitHub Pages ثم افتح trainee-login.html واضغط Ctrl+Shift+R.
-5) اضغط إنشاء حساب جديد. يجب أن تظهر حقول البيانات الـ12.
+طريقة التركيب: استبدل index.html في جذر مستودع GitHub فقط، ثم انتظر النشر وافتح الموقع باستخدام Ctrl + Shift + R.
