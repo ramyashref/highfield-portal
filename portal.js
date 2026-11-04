@@ -336,25 +336,57 @@ async function loadTrainee(user) {
   currentEnrollments=[]; enrollmentSnap.forEach(s=>currentEnrollments.push({id:s.id,...s.data()}));
   const cancellationSnap=await getDocs(query(collection(db,"enrollmentCancellationRequests"),where("uid","==",user.uid)));
   currentCancellationRequests=[]; cancellationSnap.forEach(s=>currentCancellationRequests.push({id:s.id,...s.data()}));
-  const activeEnrollments=currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()!=="cancelled");
-  const enrollmentTotal=activeEnrollments.reduce((sum,e)=>sum+Number(e.totalFee||0),0);
-  const enrollmentPaid=activeEnrollments.reduce((sum,e)=>sum+Number(e.paidAmount||0),0);
+  const activeEnrollments=currentEnrollments.filter(e=>!["cancelled","rejected"].includes(String(e.enrollmentStatus||"").toLowerCase()));
+  const annualEnrollments=activeEnrollments.filter(e=>e.pathType==="annual");
+  const individualEnrollments=activeEnrollments.filter(e=>e.pathType==="individual");
+  const sumFinance=list=>({
+    total:list.reduce((sum,e)=>sum+Number(e.totalFee||0),0),
+    paid:list.reduce((sum,e)=>sum+Number(e.paidAmount||0),0)
+  });
+  const annualFinance=sumFinance(annualEnrollments), individualFinance=sumFinance(individualEnrollments);
+  const enrollmentTotal=annualFinance.total+individualFinance.total;
+  const enrollmentPaid=annualFinance.paid+individualFinance.paid;
   const enrollmentBalance=Math.max(0,enrollmentTotal-enrollmentPaid);
   $("balance").textContent=activeEnrollments.length?money(enrollmentBalance):"لا توجد التزامات نشطة";
+  if($("annualBalance")) $("annualBalance").textContent=money(Math.max(0,annualFinance.total-annualFinance.paid));
+  if($("annualFinanceDetail")) $("annualFinanceDetail").textContent=`المدفوع ${money(annualFinance.paid)} · إجمالي الرسوم ${money(annualFinance.total)}`;
+  if($("individualBalance")) $("individualBalance").textContent=money(Math.max(0,individualFinance.total-individualFinance.paid));
+  if($("individualFinanceDetail")) $("individualFinanceDetail").textContent=`المدفوع ${money(individualFinance.paid)} · إجمالي الرسوم ${money(individualFinance.total)}`;
   renderEnrollmentsTable();populatePaymentEnrollmentSelect();populateIndividualPrograms();
   const latest=[...activeEnrollments].reverse()[0];
   if(latest) { renderEnrollmentSummary(latest);selectedEnrollmentId=latest.id; }
   const body=$("progress"); body.replaceChildren();
-  if(!progress.length) body.innerHTML='<tr><td colspan="3">لم تتم إضافة برامج إلى حسابك بعد. يمكنك استكشاف البرامج المتاحة.</td></tr>';
+  const learningRows=[];
+  const progressByEnrollment=new Map();
   progress.forEach(p=>{
-    const tr=document.createElement("tr");
-    const name=document.createElement("td");name.textContent=p.programName||"برنامج تدريبي";
-    const state=document.createElement("td");state.textContent=p.status||"لم يبدأ";
-    const pct=document.createElement("td");pct.textContent=`${Math.max(0,Math.min(100,Number(p.progressPercent||0)))}%`;
-    tr.append(name,state,pct);body.append(tr);
+    if(p.enrollmentId) progressByEnrollment.set(p.enrollmentId,p);
+    else if(p.programId) progressByEnrollment.set(String(p.programId),p);
   });
-  $("programCount").textContent=currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()!=="cancelled").length + progress.length;
-  $("completedCount").textContent=progress.filter(p=>["completed","passed","approved"].includes(String(p.status||"").toLowerCase())).length;
+  activeEnrollments.forEach(e=>{
+    const p=progressByEnrollment.get(e.id)||progressByEnrollment.get(String(e.programId))||{};
+    const state=p.status||e.enrollmentStatus||e.paymentStatus||"pending_payment";
+    const pct=Math.max(0,Math.min(100,Number(p.progressPercent||0)));
+    learningRows.push({
+      name:e.programName||"برنامج تدريبي",
+      type:e.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",
+      status:formatStatus(state),
+      pct:`${pct}%`
+    });
+  });
+  const enrollmentKeys=new Set(activeEnrollments.map(e=>String(e.id)));
+  progress.forEach(p=>{
+    if(p.enrollmentId&&enrollmentKeys.has(String(p.enrollmentId))) return;
+    if(!p.enrollmentId && activeEnrollments.some(e=>String(e.programId)===String(p.programId))) return;
+    learningRows.push({name:p.programName||"برنامج تدريبي",type:p.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",status:formatStatus(p.status||"not_started"),pct:`${Math.max(0,Math.min(100,Number(p.progressPercent||0)))}%`});
+  });
+  if(!learningRows.length) body.innerHTML='<tr><td colspan="4">لم تسجل في أي برنامج بعد. اختر البرنامج السنوي أو استكشف البرامج المنفصلة أعلاه.</td></tr>';
+  learningRows.forEach(p=>{
+    const tr=document.createElement("tr");
+    [p.name,p.type,p.status,p.pct].forEach(value=>{const td=document.createElement("td");td.textContent=value;tr.append(td);});
+    body.append(tr);
+  });
+  $("programCount").textContent=learningRows.length;
+  $("completedCount").textContent=learningRows.filter(p=>["مكتمل","تمت الموافقة","completed","passed","approved"].includes(String(p.status).toLowerCase())).length;
   const details=[
     ["الاسم بالعربي",data.fullNameAr],["Full name",data.fullNameEn],["WhatsApp",data.whatsapp],
     ["التخصص",data.specialty],["رقم الهوية / الجواز",data.nationalIdOrPassport?("••••"+String(data.nationalIdOrPassport).slice(-4)):"—"],["الدولة",data.country],
@@ -369,20 +401,45 @@ async function submitPayment() {
   const user=auth.currentUser,file=$("proof")?.files[0],amount=Number($("amount")?.value);
   const enrollmentId=$("paymentEnrollment")?.value;
   const enrollment=currentEnrollments.find(e=>e.id===enrollmentId);
-  if(!user||!enrollment||!(amount>0)||!file){status("اختر مسارًا تدريبيًا، وأدخل المبلغ، وارفق إثبات الدفع.",true);return;}
+  const progressEl=$("paymentProgress");
+  const submitBtn=$("paymentSubmitBtn");
+  const showProgress=(message,isError=false)=>{
+    if(progressEl){progressEl.textContent=message;progressEl.className=isError?"status error":"status";}
+    else status(message,isError);
+  };
+  if(!user||!enrollment||!(amount>0)||!file){showProgress("اختر التسجيل، وأدخل المبلغ، وارفق صورة أو PDF لإثبات الدفع.",true);return;}
   const remaining=Math.max(0,Number(enrollment.totalFee||0)-Number(enrollment.paidAmount||0));
-  if(amount>remaining){status(`المبلغ أكبر من الرصيد المتبقي (${money(remaining)}).`,true);return;}
-  if(file.size>5*1024*1024||!["image/jpeg","image/png","application/pdf"].includes(file.type)){status("الملف لازم يكون JPG أو PNG أو PDF وأقل من 5MB.",true);return;}
+  if(amount>remaining){showProgress(`المبلغ أكبر من الرصيد المتبقي (${money(remaining)}).`,true);return;}
+  if(file.size>5*1024*1024||!["image/jpeg","image/png","application/pdf"].includes(file.type)){showProgress("الملف لازم يكون JPG أو PNG أو PDF وأقل من 5MB.",true);return;}
+  if(!window.HIGHFIELD_FIREBASE_CONFIG?.storageBucket){showProgress("إعداد Firebase Storage غير مكتمل: storageBucket غير موجود في firebase-config.js.",true);return;}
+  if(submitBtn){submitBtn.disabled=true;submitBtn.textContent="جارٍ إرسال الإثبات...";}
   try{
+    showProgress("1/2 جارٍ رفع إيصال الدفع إلى التخزين الآمن...");
     const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),path=`payment-proofs/${user.uid}/${Date.now()}-${safeName}`;
-    const uploaded=await uploadBytes(ref(storage,path),file,{contentType:file.type}),url=await getDownloadURL(uploaded.ref);
+    const uploaded=await uploadBytes(ref(storage,path),file,{contentType:file.type});
+    const url=await getDownloadURL(uploaded.ref);
+    showProgress("2/2 تم رفع الملف. جارٍ تسجيل طلب الدفع...");
     await addDoc(collection(db,"paymentSubmissions"),{
       uid:user.uid,enrollmentId,programId:enrollment.programId,programName:enrollment.programName,
       amount,proofPath:path,proofUrl:url,method:$("method").value,status:"pending",createdAt:serverTimestamp()
     });
-    status("تم إرسال إثبات الدفع للمراجعة. سيظهر تحديث الرصيد بعد اعتماد الإدارة.");$("paymentForm").reset();
-    populatePaymentEnrollmentSelect();selectEnrollmentForPayment(enrollmentId);
-  }catch(error){console.error(error);status(`تعذر إرسال الإثبات: ${error.code||error.message}`,true);}
+    showProgress("تم إرسال إثبات الدفع بنجاح إلى الإدارة للمراجعة.");
+    $("paymentForm").reset();
+    populatePaymentEnrollmentSelect();
+    selectEnrollmentForPayment(enrollmentId);
+    await loadTrainee(user);
+  }catch(error){
+    console.error("Payment submission failed:",error);
+    let message=`تعذر إرسال الإثبات (${error.code||"unknown"}). `;
+    if(error.code==="storage/unauthorized") message+="صلاحيات Firebase Storage لا تسمح برفع الملف. انشر قواعد storage.rules المرفقة من Firebase Storage > Rules.";
+    else if(error.code==="storage/bucket-not-found") message+="لم يتم إعداد Storage bucket. فعّل Firebase Storage وتأكد من storageBucket في firebase-config.js.";
+    else if(error.code==="storage/unknown") message+="حدث خطأ أثناء رفع الملف. راجع Firebase Storage وتأكد من تفعيل الخدمة.";
+    else if(error.code==="permission-denied") message+="قواعد Firestore لا تسمح بإنشاء سجل الدفعة أو أن مبلغ الدفعة يتجاوز المتبقي.";
+    else message+=error.message||"راجع إعدادات Firebase Storage وFirestore.";
+    showProgress(message,true);
+  }finally{
+    if(submitBtn){submitBtn.disabled=false;submitBtn.textContent="إرسال الإيصال للمراجعة";}
+  }
 }
 
 async function adminLoad() {

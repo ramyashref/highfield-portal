@@ -27,3 +27,13 @@
 .cancellation-state{display:inline-block;color:#9fb4d0;font-size:12px;white-space:nowrap}
 #adminCancellationRequests button{margin:3px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#12345f;color:#fff;font-family:"Cairo",sans-serif}
 #adminCancellationRequests button:first-child{border-color:#367e68;background:#124c40}
+
+/* Financial split cards */
+.finance-split-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.finance-split-card{display:flex;flex-direction:column;gap:8px;padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}
+.finance-split-card small{color:var(--muted);font-size:.82rem}
+.finance-split-card strong{font-family:"Poppins","Cairo",sans-serif;font-size:1.35rem;color:var(--sky);direction:ltr;text-align:right}
+.finance-split-card span{font-size:.78rem;color:var(--muted)}
+#paymentProgress{grid-column:1/-1;min-height:1.4em}
+#paymentSubmitBtn:disabled{opacity:.65;cursor:wait}
+@media(max-width:700px){.finance-split-grid{grid-template-columns:1fr}}

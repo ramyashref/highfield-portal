@@ -56,14 +56,16 @@
       <table><thead><tr><th>المسار / البرنامج</th><th>إجمالي الرسوم</th><th>المدفوع</th><th>المتبقي</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="enrollments"><tr><td colspan="6">لم تختر مسارًا تدريبيًا بعد.</td></tr></tbody></table>
     </div>
   </section>
-  <section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">MY LEARNING</span><h2>برامجي التدريبية</h2></div><a class="outline-link" href="programs.html">استكشف كل البرامج ←</a></div><div class="table-scroll"><table><thead><tr><th>البرنامج</th><th>الحالة</th><th>التقدم</th></tr></thead><tbody id="progress"><tr><td colspan="3">لم تتم إضافة برامج إلى حسابك بعد.</td></tr></tbody></table></div></section>
+  <section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">MY LEARNING</span><h2>برامجي التدريبية</h2></div><a class="outline-link" href="programs.html">استكشف كل البرامج ←</a></div><div class="table-scroll"><table><thead><tr><th>البرنامج</th><th>نوع المسار</th><th>الحالة</th><th>التقدم</th></tr></thead><tbody id="progress"><tr><td colspan="4">جارٍ تحميل البرامج المسجل بها...</td></tr></tbody></table></div></section>
+<section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">FINANCIAL SUMMARY</span><h2>الملخص المالي حسب المسار</h2></div></div><div class="finance-split-grid"><article class="finance-split-card"><small>البرنامج السنوي</small><strong id="annualBalance">0 EGP</strong><span id="annualFinanceDetail">المدفوع 0 · إجمالي الرسوم 0</span></article><article class="finance-split-card"><small>البرامج المنفصلة</small><strong id="individualBalance">0 EGP</strong><span id="individualFinanceDetail">المدفوع 0 · إجمالي الرسوم 0</span></article></div></section>
   <section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">PAYMENT SUBMISSION</span><h2>إرسال إثبات دفع</h2></div></div>
     <form id="paymentForm" class="form-grid">
       <label>التسجيل المرتبط بالدفعة<select id="paymentEnrollment" required><option value="">اختر مسارًا أو برنامجًا أولًا</option></select></label>
       <label>المبلغ بالجنيه المصري<input id="amount" type="number" min="1" step="0.01" required></label>
       <label>طريقة الدفع<select id="method"><option>InstaPay / محفظة</option><option>تحويل بنكي</option></select></label>
       <label>إيصال الدفع (JPG / PNG / PDF حتى 5MB)<input id="proof" type="file" accept=".jpg,.jpeg,.png,.pdf" required></label>
-      <div style="display:flex;align-items:end"><button class="primary-btn" type="submit">إرسال الإيصال للمراجعة</button></div>
+      <div style="display:flex;align-items:end"><button class="primary-btn" id="paymentSubmitBtn" type="submit">إرسال الإيصال للمراجعة</button></div>
+      <p id="paymentProgress" class="status" role="status" aria-live="polite"></p>
     </form>
   </section>
   <section class="portal-panel"><div class="panel-heading"><div><span class="eyebrow">PAYMENT HISTORY</span><h2>سجل المدفوعات</h2></div></div><div class="table-scroll"><table><thead><tr><th>المبلغ</th><th>طريقة الدفع</th><th>الحالة</th><th>التاريخ</th></tr></thead><tbody id="payments"><tr><td colspan="4">لا توجد مدفوعات مسجلة.</td></tr></tbody></table></div></section>
