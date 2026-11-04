@@ -38,8 +38,11 @@ function authErr(error) {
 
 function switchAuth(mode) {
   const login=mode==="login";
-  $("loginForm")?.classList.toggle("hidden",!login);
-  $("signupForm")?.classList.toggle("hidden",login);
+  const loginForm=$("loginForm"), signupForm=$("signupForm");
+  loginForm?.classList.toggle("hidden",!login);
+  signupForm?.classList.toggle("hidden",login);
+  if(loginForm) loginForm.hidden=!login;
+  if(signupForm) signupForm.hidden=login;
   $("showLogin")?.classList.toggle("active",login);
   $("showSignup")?.classList.toggle("active",!login);
   $("authTitle").textContent=login?"دخول المتدربين":"إنشاء حساب متدرب جديد";
