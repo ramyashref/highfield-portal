@@ -1,0 +1,39 @@
+HIGHFIELD EGYPT LEARNING PORTAL — AUTH & STUDENT DASHBOARD UPDATE
+
+This patch updates ONLY these existing root-level files:
+- trainee-login.html
+- trainee-dashboard.html
+- portal.css
+- portal.js
+- firestore.rules
+
+WHAT CHANGED
+1. Self-service trainee account creation with immediate sign-in.
+2. Required profile fields:
+   Arabic four-part name, English four-part name, email, WhatsApp,
+   password, specialty, National ID/passport, country, governorate,
+   workplace, college and university.
+3. A trainee account is created with accountStatus=active and
+   subscriptionStatus=not_enrolled. Creating an account does NOT
+   activate or mark the annual subscription as paid.
+4. A trainee dashboard in Highfield's navy/blue visual identity.
+5. Chart.js academic and payment charts.
+6. Program progress, payment history, profile summary and payment receipt upload.
+
+DEPLOYMENT
+- Back up the current repository first.
+- Replace ONLY the five matching files above in the repository root.
+- In Firebase Console > Authentication > Sign-in method, enable Email/Password.
+- In Firebase Console > Firestore Database > Rules, publish the supplied firestore.rules.
+- Keep the existing Firebase project and firebase-config.js.
+- Keep the existing Storage rules. The current storage.rules supports trainee payment-proof uploads.
+- Test account creation using a real email and WhatsApp number, then sign in again.
+
+IMPORTANT
+- Email/password is the authentication credential. WhatsApp is collected as a required
+  profile/contact field; this patch does not implement OTP login by WhatsApp.
+- The account becomes accessible immediately. Annual subscription enrollment/payment
+  remains a separate administrative/financial status.
+- National ID/passport is stored in the trainee's protected Firestore profile. The dashboard
+  masks it to the last four characters. Restrict Firebase Console access to authorized staff.
+- No online card/payment gateway is connected in this patch.

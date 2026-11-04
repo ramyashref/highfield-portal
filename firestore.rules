@@ -7,19 +7,28 @@ service cloud.firestore {
         && request.auth.token.email == 'info@highfieldeg.com'
         && request.auth.token.email_verified == true;
     }
-
     match /trainees/{uid} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
       allow create: if signedIn()
         && request.auth.uid == uid
         && request.resource.data.uid == uid
-        && request.resource.data.accountStatus == 'pending'
-        && request.resource.data.subscriptionStatus == 'pending'
-        && !('totalFee' in request.resource.data)
-        && !('totalPaid' in request.resource.data);
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.accountStatus == 'active'
+        && request.resource.data.subscriptionStatus == 'not_enrolled'
+        && request.resource.data.enrollmentType == 'self_registered'
+        && request.resource.data.fullNameAr is string
+        && request.resource.data.fullNameEn is string
+        && request.resource.data.whatsapp is string
+        && request.resource.data.specialty is string
+        && request.resource.data.nationalIdOrPassport is string
+        && request.resource.data.country is string
+        && request.resource.data.governorate is string
+        && request.resource.data.workplace is string
+        && request.resource.data.college is string
+        && request.resource.data.university is string
+        && !('totalFee' in request.resource.data);
       allow update, delete: if isAdmin();
     }
-
     match /paymentSubmissions/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
       allow create: if signedIn()
@@ -29,26 +38,9 @@ service cloud.firestore {
         && request.resource.data.amount > 0;
       allow update, delete: if isAdmin();
     }
-
     match /trainingProgress/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
       allow write: if isAdmin();
-    }
-
-    match /programEnrollments/{id} {
-      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
-      allow create: if isAdmin() || (
-        signedIn()
-        && request.resource.data.uid == request.auth.uid
-        && request.resource.data.status in ['pending_payment', 'payment_review']
-        && request.resource.data.paymentStatus == 'unpaid'
-        && request.resource.data.programId is int
-        && request.resource.data.programName is string
-        && request.resource.data.fee is number
-        && request.resource.data.fee > 0
-        && request.resource.data.requestSource == 'trainee'
-      );
-      allow update, delete: if isAdmin();
     }
   }
 }

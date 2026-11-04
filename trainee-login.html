@@ -1,59 +1,42 @@
-
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Highfield Egypt Learning Portal | تسجيل الدخول</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="portal.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Highfield Egypt Learning Portal | دخول المتدربين</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="portal.css">
 </head>
-
-<body data-page="login">
-  <main class="card">
-    <p class="brand">HIGHFIELD <span>EGYPT LEARNING PORTAL</span></p>
-
-    <h1>دخول المتدربين</h1>
-    <p>بوابتك التعليمية لمتابعة البرامج والتسجيلات والمدفوعات والشهادات.</p>
-
-    <label>
-      الاسم بالكامل (عند إنشاء حساب جديد)
-      <input id="fullName" type="text" autocomplete="name">
-    </label>
-
-    <label>
-      البريد الإلكتروني
-      <input id="email" type="email" autocomplete="email">
-    </label>
-
-    <label>
-      كلمة المرور
-      <input id="password" type="password" autocomplete="current-password">
-    </label>
-
-    <button id="emailLogin">دخول بالبريد الإلكتروني</button>
-
-    <button id="googleLogin" class="secondary">
-      المتابعة باستخدام Google
-    </button>
-
-    <div class="split">
-      <button id="signup" class="link">إنشاء حساب</button>
-      <button id="resetPassword" class="link">نسيت كلمة المرور؟</button>
+<body data-page="login" class="portal-auth">
+<main class="auth-shell">
+  <a class="brand-lockup" href="index.html"><strong>HIGHFIELD</strong><span> EGYPT LEARNING PORTAL</span></a>
+  <div class="auth-heading"><span class="eyebrow">YOUR LEARNING JOURNEY</span><h1 id="authTitle">دخول المتدربين</h1><p id="authSubtitle">بوابتك التعليمية لمتابعة البرامج والتسجيلات والمدفوعات والشهادات.</p></div>
+  <div class="auth-tabs"><button type="button" class="tab active" id="showLogin">تسجيل الدخول</button><button type="button" class="tab" id="showSignup">إنشاء حساب جديد</button></div>
+  <form id="loginForm" class="auth-form">
+    <label>البريد الإلكتروني<input id="email" type="email" autocomplete="email" required placeholder="name@example.com"></label>
+    <label>كلمة المرور<input id="password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+    <button class="primary-btn" type="submit">دخول إلى حسابي</button>
+    <button type="button" id="resetPassword" class="text-btn">نسيت كلمة المرور؟</button>
+  </form>
+  <form id="signupForm" class="auth-form hidden">
+    <div class="form-grid">
+      <label>الاسم الرباعي بالعربي<input id="fullNameAr" required autocomplete="name" placeholder="الاسم رباعي بالعربية"></label>
+      <label>Full name in English<input id="fullNameEn" required placeholder="Four-part full name" dir="ltr"></label>
+      <label>البريد الإلكتروني<input id="signupEmail" type="email" required autocomplete="email" placeholder="name@example.com" dir="ltr"></label>
+      <label>رقم WhatsApp<input id="whatsapp" type="tel" required autocomplete="tel" placeholder="+20 10xxxxxxxx"></label>
+      <label>كلمة المرور<input id="signupPassword" type="password" required minlength="8" autocomplete="new-password" placeholder="8 أحرف على الأقل"></label>
+      <label>التخصص<input id="specialty" required placeholder="مثال: Human Medicine / Nursing"></label>
+      <label>رقم البطاقة أو جواز السفر<input id="nationalId" required autocomplete="off"></label>
+      <label>الدولة<input id="country" required autocomplete="country-name" placeholder="Egypt"></label>
+      <label>المحافظة / الولاية<input id="governorate" required autocomplete="address-level1"></label>
+      <label>جهة العمل<input id="workplace" required></label>
+      <label>الكلية<input id="college" required></label>
+      <label>الجامعة<input id="university" required></label>
     </div>
-
-    <p id="status" class="status" role="status"></p>
-
-    <p class="note">
-      إنشاء الحساب لا يعني اعتماد الاشتراك. تفعيل لوحة المتدرب يتطلب موافقة الإدارة.
-    </p>
-
-    <a href="annual-medical-program.html">العودة لصفحة البرنامج</a>
-  </main>
-
-  <script src="firebase-config.js"></script>
-  <script type="module" src="portal.js"></script>
-</body>
-</html>
+    <button class="primary-btn" type="submit">إنشاء حساب والدخول للمنصة</button>
+    <p class="privacy-note">بإنشاء الحساب، توافق على استخدام بياناتك لإدارة حسابك وتسجيلك التدريبي وفق سياسة الخصوصية.</p>
+  </form>
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+  <div class="auth-foot"><span>HIGHFIELD EGYPT</span><a href="annual-medical-program.html">العودة إلى البرامج</a></div>
+</main>
+<script src="firebase-config.js"></script><script type="module" src="portal.js"></script>
+</body></html>
