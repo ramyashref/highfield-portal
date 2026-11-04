@@ -23,6 +23,7 @@ const go = url => { location.href=url; };
 const money = value => `${Number(value||0).toLocaleString("en-US")} EGP`;
 const profileRef = user => doc(db,"trainees",user.uid);
 let currentEnrollments = [];
+let currentCancellationRequests = [];
 let selectedEnrollmentId = "";
 const ANNUAL_TOTAL_FEE = 61000;
 const ANNUAL_FIRST_DUE = 6000; // 1,000 EGP registration + first 5,000 EGP installment
@@ -132,7 +133,7 @@ async function resetPassword() {
 
 
 function formatStatus(value) {
-  const map={pending_payment:"في انتظار الدفع",pending:"قيد المراجعة",partial:"مدفوع جزئيًا",paid:"مدفوع بالكامل",confirmed:"مؤكد",active:"نشط",unpaid:"غير مدفوع",admin_enrolled:"تم التسجيل بواسطة الإدارة",waived:"إعفاء إداري"};
+  const map={pending_payment:"في انتظار الدفع",pending:"قيد المراجعة",partial:"مدفوع جزئيًا",paid:"مدفوع بالكامل",confirmed:"مؤكد",active:"نشط",unpaid:"غير مدفوع",admin_enrolled:"تم التسجيل بواسطة الإدارة",waived:"إعفاء إداري",pending_cancellation:"طلب إلغاء قيد المراجعة",cancelled:"ملغي",approved:"تمت الموافقة",rejected:"مرفوض"};
   return map[String(value||"").toLowerCase()] || value || "قيد المراجعة";
 }
 
@@ -219,26 +220,70 @@ function renderEnrollmentsTable() {
   const body=$("enrollments");if(!body)return;
   body.replaceChildren();
   if(!currentEnrollments.length) {
-    body.innerHTML='<tr><td colspan="5">لم تختر مسارًا تدريبيًا بعد.</td></tr>';return;
+    body.innerHTML='<tr><td colspan="6">لم تختر مسارًا تدريبيًا بعد.</td></tr>';return;
   }
   currentEnrollments.forEach(e=>{
     const paid=Number(e.paidAmount||0),total=Number(e.totalFee||0);
     const row=document.createElement("tr");
-    const values=[e.programName||"برنامج تدريبي",money(total),money(paid),money(Math.max(0,total-paid)),formatStatus(e.paymentStatus||e.enrollmentStatus)];
+    const pendingRequest=currentCancellationRequests.find(r=>r.enrollmentId===e.id && r.status==="pending");
+    const statusText=pendingRequest?"طلب إلغاء قيد المراجعة":formatStatus(e.enrollmentStatus||e.paymentStatus);
+    const values=[e.programName||"برنامج تدريبي",money(total),money(paid),money(Math.max(0,total-paid)),statusText];
     values.forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
+    const action=document.createElement("td");
+    if(String(e.enrollmentStatus||"").toLowerCase()!=="cancelled" && !pendingRequest) {
+      const cancel=document.createElement("button");
+      cancel.type="button";cancel.className="outline-link cancel-enrollment-btn";
+      cancel.textContent="طلب إلغاء الاشتراك";
+      cancel.addEventListener("click",event=>{event.stopPropagation();requestEnrollmentCancellation(e);});
+      action.append(cancel);
+    } else {
+      const label=document.createElement("span");
+      label.className="cancellation-state";
+      label.textContent=String(e.enrollmentStatus||"").toLowerCase()==="cancelled"?"تم إلغاء الاشتراك":"قيد مراجعة الإلغاء";
+      action.append(label);
+    }
+    row.append(action);
     row.style.cursor="pointer";row.title="اضغط لعرض تفاصيل الرصيد";
-    row.addEventListener("click",()=>{renderEnrollmentSummary(e);selectEnrollmentForPayment(e.id);});
+    row.addEventListener("click",()=>{if(String(e.enrollmentStatus||"").toLowerCase()!=="cancelled"){renderEnrollmentSummary(e);selectEnrollmentForPayment(e.id);}});
     body.append(row);
   });
+}
+
+async function requestEnrollmentCancellation(enrollment) {
+  const user=auth.currentUser;
+  if(!user||!enrollment)return;
+  const reason=prompt(`سبب طلب إلغاء الاشتراك في: ${enrollment.programName}\n\nسيتم إرسال الطلب للإدارة للمراجعة. الإلغاء لا يعني استردادًا تلقائيًا للمبلغ.`);
+  if(reason===null)return;
+  if(!reason.trim()){status("اكتب سبب طلب الإلغاء.",true);return;}
+  const alreadyPending=currentCancellationRequests.some(r=>r.enrollmentId===enrollment.id&&r.status==="pending");
+  if(alreadyPending){status("يوجد بالفعل طلب إلغاء قيد المراجعة لهذا البرنامج.",true);return;}
+  if(String(enrollment.enrollmentStatus||"").toLowerCase()==="cancelled"){status("هذا الاشتراك ملغي بالفعل.",true);return;}
+  try{
+    const ref=await addDoc(collection(db,"enrollmentCancellationRequests"),{
+      uid:user.uid,enrollmentId:enrollment.id,programId:enrollment.programId,
+      programName:enrollment.programName,reason:reason.trim(),status:"pending",
+      paidAmount:Number(enrollment.paidAmount||0),totalFee:Number(enrollment.totalFee||0),
+      createdAt:serverTimestamp()
+    });
+    currentCancellationRequests.push({
+      id:ref.id,uid:user.uid,enrollmentId:enrollment.id,programId:enrollment.programId,
+      programName:enrollment.programName,reason:reason.trim(),status:"pending"
+    });
+    renderEnrollmentsTable();populatePaymentEnrollmentSelect();
+    status("تم إرسال طلب الإلغاء إلى الإدارة. سيظل الاشتراك قائمًا حتى صدور القرار.");
+  }catch(error){
+    console.error(error);status(`تعذر إرسال طلب الإلغاء: ${error.code||error.message}`,true);
+  }
 }
 
 function populatePaymentEnrollmentSelect() {
   const select=$("paymentEnrollment");if(!select)return;
   const current=select.value;
   select.replaceChildren(new Option("اختر التسجيل المرتبط بالدفعة",""));
-  currentEnrollments.forEach(e=>{
+  currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()!=="cancelled"
+    && !currentCancellationRequests.some(r=>r.enrollmentId===e.id&&r.status==="pending")).forEach(e=>{
     const remain=Math.max(0,Number(e.totalFee||0)-Number(e.paidAmount||0));
-    select.add(new Option(`${e.programName} — متبقي ${money(remain)}`,e.id));
+    if(remain>0) select.add(new Option(`${e.programName} — متبقي ${money(remain)}`,e.id));
   });
   if(currentEnrollments.some(e=>e.id===current))select.value=current;
 }
@@ -289,15 +334,16 @@ async function loadTrainee(user) {
   const progress=[]; progressSnap.forEach(s=>progress.push(s.data()));
   const enrollmentSnap=await getDocs(query(collection(db,"programEnrollments"),where("uid","==",user.uid)));
   currentEnrollments=[]; enrollmentSnap.forEach(s=>currentEnrollments.push({id:s.id,...s.data()}));
-  const enrollmentTotal=currentEnrollments.reduce((sum,e)=>sum+Number(e.totalFee||0),0);
-  const enrollmentPaid=currentEnrollments.reduce((sum,e)=>sum+Number(e.paidAmount||0),0);
+  const cancellationSnap=await getDocs(query(collection(db,"enrollmentCancellationRequests"),where("uid","==",user.uid)));
+  currentCancellationRequests=[]; cancellationSnap.forEach(s=>currentCancellationRequests.push({id:s.id,...s.data()}));
+  const activeEnrollments=currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()!=="cancelled");
+  const enrollmentTotal=activeEnrollments.reduce((sum,e)=>sum+Number(e.totalFee||0),0);
+  const enrollmentPaid=activeEnrollments.reduce((sum,e)=>sum+Number(e.paidAmount||0),0);
   const enrollmentBalance=Math.max(0,enrollmentTotal-enrollmentPaid);
-  $("balance").textContent=currentEnrollments.length?money(enrollmentBalance):"لا توجد التزامات";
+  $("balance").textContent=activeEnrollments.length?money(enrollmentBalance):"لا توجد التزامات نشطة";
   renderEnrollmentsTable();populatePaymentEnrollmentSelect();populateIndividualPrograms();
-  if(currentEnrollments.length) {
-    const latest=currentEnrollments[currentEnrollments.length-1];
-    renderEnrollmentSummary(latest);selectedEnrollmentId=latest.id;
-  }
+  const latest=[...activeEnrollments].reverse()[0];
+  if(latest) { renderEnrollmentSummary(latest);selectedEnrollmentId=latest.id; }
   const body=$("progress"); body.replaceChildren();
   if(!progress.length) body.innerHTML='<tr><td colspan="3">لم تتم إضافة برامج إلى حسابك بعد. يمكنك استكشاف البرامج المتاحة.</td></tr>';
   progress.forEach(p=>{
@@ -307,7 +353,7 @@ async function loadTrainee(user) {
     const pct=document.createElement("td");pct.textContent=`${Math.max(0,Math.min(100,Number(p.progressPercent||0)))}%`;
     tr.append(name,state,pct);body.append(tr);
   });
-  $("programCount").textContent=currentEnrollments.length + progress.length;
+  $("programCount").textContent=currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()!=="cancelled").length + progress.length;
   $("completedCount").textContent=progress.filter(p=>["completed","passed","approved"].includes(String(p.status||"").toLowerCase())).length;
   const details=[
     ["الاسم بالعربي",data.fullNameAr],["Full name",data.fullNameEn],["WhatsApp",data.whatsapp],
@@ -387,6 +433,58 @@ async function adminLoad() {
     }
     if(!enrollmentRows.size) adminEnrollmentBody.innerHTML='<tr><td colspan="6">لا توجد طلبات تسجيل حتى الآن.</td></tr>';
   }
+  const cancellationRows=await getDocs(query(collection(db,"enrollmentCancellationRequests"),where("status","==","pending")));
+  const cancellationBody=$("adminCancellationRequests");
+  if(cancellationBody) {
+    cancellationBody.replaceChildren();
+    for(const item of cancellationRows.docs) {
+      const r=item.data(),traineeSnap=await getDoc(doc(db,"trainees",r.uid));
+      const trainee=traineeSnap.exists()?traineeSnap.data():{};
+      const row=document.createElement("tr");
+      [trainee.fullNameAr||trainee.displayName||r.uid,r.programName||"برنامج تدريبي",r.reason||"—",money(r.paidAmount||0),money(r.totalFee||0)].forEach(value=>{
+        const td=document.createElement("td");td.textContent=value;row.append(td);
+      });
+      const action=document.createElement("td");
+      const approve=document.createElement("button");approve.textContent="الموافقة على الإلغاء";
+      approve.onclick=async()=>{
+        const note=prompt("ملاحظة أو قرار الاسترداد (اختياري). لن يتم رد أي مبلغ تلقائيًا.","");
+        if(note===null)return;
+        approve.disabled=true;
+        try{
+          const enrollmentRef=doc(db,"programEnrollments",r.enrollmentId);
+          const enrollmentSnap=await getDoc(enrollmentRef);
+          if(!enrollmentSnap.exists()||enrollmentSnap.data().uid!==r.uid)throw new Error("تعذر العثور على تسجيل المتدرب.");
+          await setDoc(enrollmentRef,{
+            enrollmentStatus:"cancelled",cancelledAt:serverTimestamp(),
+            cancellationApprovedAt:serverTimestamp(),cancellationAdminNote:note.trim()
+          },{merge:true});
+          await setDoc(doc(db,"enrollmentCancellationRequests",item.id),{
+            status:"approved",reviewedAt:serverTimestamp(),reviewedBy:auth.currentUser.email,
+            adminDecisionNote:note.trim()
+          },{merge:true});
+          status("تمت الموافقة على إلغاء التسجيل. لم يتم تنفيذ استرداد مالي تلقائي.");
+          await adminLoad();
+        }catch(error){status(`تعذر اعتماد الإلغاء: ${error.code||error.message}`,true);approve.disabled=false;}
+      };
+      const reject=document.createElement("button");reject.textContent="رفض الطلب";
+      reject.onclick=async()=>{
+        const note=prompt("سبب رفض طلب الإلغاء:");
+        if(note===null)return;
+        if(!note.trim()){status("اكتب سبب الرفض.",true);return;}
+        reject.disabled=true;
+        try{
+          await setDoc(doc(db,"enrollmentCancellationRequests",item.id),{
+            status:"rejected",reviewedAt:serverTimestamp(),reviewedBy:auth.currentUser.email,
+            adminDecisionNote:note.trim()
+          },{merge:true});
+          status("تم رفض طلب الإلغاء.");await adminLoad();
+        }catch(error){status(`تعذر رفض الطلب: ${error.code||error.message}`,true);reject.disabled=false;}
+      };
+      action.append(approve,document.createTextNode(" "),reject);row.append(action);cancellationBody.append(row);
+    }
+    if(!cancellationRows.size)cancellationBody.innerHTML='<tr><td colspan="6">لا توجد طلبات إلغاء معلقة.</td></tr>';
+  }
+
   const adminTraineeSelect=$("adminTraineeSelect"),adminProgramSelect=$("adminProgramSelect");
   if(adminTraineeSelect) {
     adminTraineeSelect.replaceChildren(new Option("اختر المتدرب",""));

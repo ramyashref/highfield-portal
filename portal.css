@@ -20,3 +20,10 @@
 .enrollment-finance-grid strong{font:700 18px Poppins,sans-serif;color:#fff;margin-top:7px;overflow-wrap:anywhere}
 .enrollment-table-wrap{margin-top:18px}
 @media(max-width:760px){.path-choice-grid{grid-template-columns:1fr}.enrollment-finance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Enrollment cancellation controls */
+.cancel-enrollment-btn{display:inline-block;background:transparent;color:#ffb4bd;border-color:#a94b5b;cursor:pointer;font-family:"Cairo",sans-serif}
+.cancel-enrollment-btn:hover{background:#6b233522;border-color:#ff8293;color:#ffd7dc}
+.cancellation-state{display:inline-block;color:#9fb4d0;font-size:12px;white-space:nowrap}
+#adminCancellationRequests button{margin:3px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#12345f;color:#fff;font-family:"Cairo",sans-serif}
+#adminCancellationRequests button:first-child{border-color:#367e68;background:#124c40}
