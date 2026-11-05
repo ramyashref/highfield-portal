@@ -1,13 +1,19 @@
-تحديث الفوتر الرئيسي لموقع Highfield Egypt
+إصلاح موحد لصفحة دخول المتدرب ولوحة المتدرب
 
-تم تنظيم الفوتر إلى خمسة أعمدة:
-1) Quick Links: About Us, All Programs, Annual Medical Program, Orthodontics, Scientific Council, Accreditations, Certificate Verification, Join as a Trainer, Student Portal.
-2) Conferences & Events: SERAG Conference, NEW HORIZON 2027.
-3) Policies & Legal: Refund & Cancellation Policy.
-4) Contact Us: العنوان، أرقام الهاتف، واتساب، البريد الإلكتروني.
-5) تعريف Highfield Egypt.
+سبب الإصلاح:
+ملف portal.js مشترك بين صفحة الدخول ولوحة المتدرب. استبداله بنسخة قديمة خاصة بإصلاح نموذج الدخول قد يكسر تحميل لوحة المتدرب.
 
-تم الإبقاء على Student Portal في الهيدر، مع عدم إعادة Accreditations إلى الهيدر.
-روابط الصفحات تستخدم أسماء الملفات الموجودة في مستودع الموقع.
+ما تم:
+- اعتماد portal.js من نسخة Student Experience الأحدث التي تحتوي على منطق الاشتراكات والمدفوعات والشهادات.
+- دمج تبديل آمن بين تسجيل الدخول وإنشاء الحساب.
+- حماية تحديث النصوص حتى لا يتوقف التنفيذ إذا كان عنصر غير موجود في الصفحة.
+- تحديث رابط JavaScript في trainee-login.html وtrainee-dashboard.html لمنع استخدام نسخة مخزنة قديمة.
 
-طريقة التركيب: استبدل index.html في جذر مستودع GitHub فقط، ثم انتظر النشر وافتح الموقع باستخدام Ctrl + Shift + R.
+التركيب:
+1) خذ نسخة احتياطية من الملفات الحالية.
+2) استبدل الملفات الثلاثة: portal.js وtrainee-login.html وtrainee-dashboard.html.
+3) لا تستبدل firebase-config.js ولا تمسح أي بيانات من Firebase.
+4) انتظر GitHub Pages ثم افتح الصفحتين مع Ctrl + Shift + R.
+5) اختبر: فتح صفحة الدخول، إظهار نموذج إنشاء الحساب، ثم الدخول إلى لوحة المتدرب.
+
+ملاحظة: هذا الإصلاح يعالج خطأ JavaScript الناتج عن عنصر غير موجود. إذا بقيت البرامج أو الشهادات فارغة بعد زوال الخطأ، نراجع بعدها صلاحيات Firestore وحقول uid في السجلات الموجودة، دون حذف أي بيانات.
