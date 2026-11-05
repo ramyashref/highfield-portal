@@ -175,6 +175,49 @@ function populateIndividualPrograms() {
   }
 }
 
+
+function enrollmentIdentity(enrollment) {
+  if (enrollment.pathType === "annual" || String(enrollment.programId) === "annual-medical-program") {
+    return "annual-medical-program";
+  }
+  const programId = String(enrollment.programId || "").trim();
+  if (programId) return `individual:${programId}`;
+  const name = String(enrollment.programName || "").trim().toLowerCase().replace(/\s+/g, " ");
+  return `individual-name:${name}`;
+}
+
+function enrollmentCreatedMillis(enrollment) {
+  const value = enrollment.createdAt;
+  if (value?.toMillis) return value.toMillis();
+  if (value?.toDate) return value.toDate().getTime();
+  if (value instanceof Date) return value.getTime();
+  const parsed = Date.parse(value || "");
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+// Keep one live record per annual/individual path in totals and active learning.
+// Older records remain in Firestore and in the enrollment history table.
+function getUniqueLiveEnrollments(enrollments) {
+  const groups = new Map();
+  enrollments.forEach(enrollment => {
+    const state = String(enrollment.enrollmentStatus || "").toLowerCase();
+    if (["cancelled", "rejected", "completed"].includes(state) || isEnrollmentReleased(enrollment)) return;
+    const key = enrollmentIdentity(enrollment);
+    const current = groups.get(key);
+    const paid = Number(enrollment.paidAmount || 0);
+    const currentPaid = Number(current?.paidAmount || 0);
+    if (!current || paid > currentPaid ||
+        (paid === currentPaid && enrollmentCreatedMillis(enrollment) > enrollmentCreatedMillis(current))) {
+      groups.set(key, enrollment);
+    }
+  });
+  return [...groups.values()];
+}
+
+function normalizeProgramName(value) {
+  return String(value || "").trim().toLowerCase().replace(/[—–]/g, "-").replace(/\s+/g, " ");
+}
+
 function isEnrollmentReleased(enrollment) {
   const state=String(enrollment.enrollmentStatus||"").toLowerCase();
   if(["cancelled","rejected","completed"].includes(state)) return true;
@@ -248,34 +291,82 @@ async function createEnrollmentRequest(pathType,program=null) {
 }
 
 function renderEnrollmentsTable() {
-  const body=$("enrollments");if(!body)return;
+  const body = $("enrollments");
+  if (!body) return;
   body.replaceChildren();
-  if(!currentEnrollments.length) {
-    body.innerHTML='<tr><td colspan="6">لم تختر مسارًا تدريبيًا بعد.</td></tr>';return;
+  if (!currentEnrollments.length) {
+    body.innerHTML = '<tr><td colspan="6">لم تختر مسارًا تدريبيًا بعد.</td></tr>';
+    return;
   }
-  currentEnrollments.forEach(e=>{
-    const paid=Number(e.paidAmount||0),total=Number(e.totalFee||0);
-    const row=document.createElement("tr");
-    const pendingRequest=currentCancellationRequests.find(r=>r.enrollmentId===e.id && r.status==="pending");
-    const statusText=pendingRequest?"طلب إلغاء قيد المراجعة":formatStatus(e.enrollmentStatus||e.paymentStatus);
-    const values=[e.programName||"برنامج تدريبي",money(total),money(paid),money(Math.max(0,total-paid)),statusText];
-    values.forEach(v=>{const td=document.createElement("td");td.textContent=v;row.append(td);});
-    const action=document.createElement("td");
-    if(!isEnrollmentReleased(e) && !pendingRequest) {
-      const cancel=document.createElement("button");
-      cancel.type="button";cancel.className="outline-link cancel-enrollment-btn";
-      cancel.textContent="طلب إلغاء الاشتراك";
-      cancel.addEventListener("click",event=>{event.stopPropagation();requestEnrollmentCancellation(e);});
+
+  const liveWinners = getUniqueLiveEnrollments(currentEnrollments);
+  const winnerIds = new Set(liveWinners.map(e => e.id));
+
+  currentEnrollments.forEach(e => {
+    const paid = Number(e.paidAmount || 0);
+    const total = Number(e.totalFee || 0);
+    const state = String(e.enrollmentStatus || e.paymentStatus || "").toLowerCase();
+    const rejected = state === "rejected";
+    const cancelled = state === "cancelled";
+    const completed = state === "completed" || isEnrollmentReleased(e);
+    const superseded = !rejected && !cancelled && !completed && !winnerIds.has(e.id);
+    const row = document.createElement("tr");
+    if (rejected || cancelled || completed || superseded) row.classList.add("historical-enrollment-row");
+
+    const pendingRequest = currentCancellationRequests.find(r =>
+      r.enrollmentId === e.id && r.status === "pending"
+    );
+
+    let statusText = pendingRequest
+      ? "طلب إلغاء قيد المراجعة"
+      : rejected
+        ? `طلب سابق مرفوض${e.rejectionReason ? `: ${e.rejectionReason}` : ""}`
+        : cancelled
+          ? "اشتراك سابق ملغي"
+          : superseded
+            ? "سجل سابق مكرر — غير محتسب"
+            : completed
+              ? "برنامج مكتمل"
+              : formatStatus(e.enrollmentStatus || e.paymentStatus);
+
+    const values = [e.programName || "برنامج تدريبي", money(total), money(paid),
+      money(Math.max(0, total - paid)), statusText];
+    values.forEach(v => {
+      const td = document.createElement("td");
+      td.textContent = v;
+      row.append(td);
+    });
+
+    const action = document.createElement("td");
+    if (!rejected && !cancelled && !completed && !superseded && !pendingRequest) {
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "outline-link cancel-enrollment-btn";
+      cancel.textContent = "طلب إلغاء الاشتراك";
+      cancel.addEventListener("click", event => {
+        event.stopPropagation();
+        requestEnrollmentCancellation(e);
+      });
       action.append(cancel);
     } else {
-      const label=document.createElement("span");
-      label.className="cancellation-state";
-      label.textContent=String(e.enrollmentStatus||"").toLowerCase()==="cancelled"?"تم إلغاء الاشتراك":(isEnrollmentReleased(e)?"تم استكمال البرنامج":"قيد مراجعة الإلغاء");
+      const label = document.createElement("span");
+      label.className = "cancellation-state";
+      label.textContent = rejected ? "طلب مرفوض" :
+        cancelled ? "ملغي" :
+        superseded ? "سجل تاريخي" :
+        completed ? "مكتمل" : "قيد مراجعة الإلغاء";
       action.append(label);
     }
     row.append(action);
-    row.style.cursor="pointer";row.title="اضغط لعرض تفاصيل الرصيد";
-    row.addEventListener("click",()=>{if(String(e.enrollmentStatus||"").toLowerCase()!=="cancelled"){renderEnrollmentSummary(e);selectEnrollmentForPayment(e.id);}});
+
+    if (!rejected && !cancelled && !superseded) {
+      row.style.cursor = "pointer";
+      row.title = "اضغط لعرض تفاصيل الرصيد";
+      row.addEventListener("click", () => {
+        renderEnrollmentSummary(e);
+        selectEnrollmentForPayment(e.id);
+      });
+    }
     body.append(row);
   });
 }
@@ -361,8 +452,8 @@ async function loadTrainee(user) {
   if($("balance")) $("balance").textContent=fee?money(Math.max(0,fee-paidTotal)):"غير محدد";
   const paymentsSnap=await getDocs(query(collection(db,"paymentSubmissions"),where("uid","==",user.uid)));
   const payments=[]; paymentsSnap.forEach(s=>payments.push(s.data()));
-  const paymentsBody=$("payments"); paymentsBody.replaceChildren();
-  if(!payments.length) paymentsBody.innerHTML='<tr><td colspan="4">لا توجد مدفوعات مسجلة.</td></tr>';
+  const paymentsBody=$("payments"); if(paymentsBody) paymentsBody.replaceChildren();
+  if(paymentsBody && !payments.length) paymentsBody.innerHTML='<tr><td colspan="4">لا توجد مدفوعات مسجلة.</td></tr>';
   payments.forEach(p=>{
     const tr=document.createElement("tr");tr.className="payment-history-row";tr.tabIndex=0;tr.title="اضغط لعرض تفاصيل الدفعة";
     const date=p.paymentDate|| (p.createdAt?.toDate?p.createdAt.toDate().toLocaleDateString("ar-EG"):"—");
@@ -374,7 +465,7 @@ async function loadTrainee(user) {
     if(p.rejectionReason) lines.push(`سبب الرفض: ${p.rejectionReason}`);
     const detailBox=document.createElement("div");detailBox.className="payment-detail-box";detailBox.textContent=lines.join(" · ");cell.append(detailBox);detail.append(cell);
     const toggle=()=>detail.classList.toggle("hidden");tr.addEventListener("click",toggle);tr.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
-    paymentsBody.append(tr,detail);
+    if(paymentsBody) paymentsBody.append(tr,detail);
   });
   const progressSnap=await getDocs(query(collection(db,"trainingProgress"),where("uid","==",user.uid)));
   const progress=[]; progressSnap.forEach(s=>progress.push({id:s.id,...s.data()}));
@@ -383,10 +474,16 @@ async function loadTrainee(user) {
   currentEnrollments=[]; enrollmentSnap.forEach(s=>currentEnrollments.push({id:s.id,...s.data()}));
   const cancellationSnap=await getDocs(query(collection(db,"enrollmentCancellationRequests"),where("uid","==",user.uid)));
   currentCancellationRequests=[]; cancellationSnap.forEach(s=>currentCancellationRequests.push({id:s.id,...s.data()}));
-  const activeEnrollments=currentEnrollments.filter(e=>!["cancelled","rejected"].includes(String(e.enrollmentStatus||"").toLowerCase()));
-  const billableEnrollments=activeEnrollments.filter(e=>!isEnrollmentReleased(e));
-  const annualEnrollments=billableEnrollments.filter(e=>e.pathType==="annual");
-  const individualEnrollments=billableEnrollments.filter(e=>e.pathType==="individual");
+  // Raw records are retained. Only one live enrollment per path is used in current totals.
+  const activeEnrollments = getUniqueLiveEnrollments(currentEnrollments);
+  const completedEnrollments = currentEnrollments.filter(e => {
+    const state = String(e.enrollmentStatus || "").toLowerCase();
+    if (["rejected", "cancelled"].includes(state)) return false;
+    return state === "completed" || isEnrollmentReleased(e);
+  });
+  const billableEnrollments = activeEnrollments;
+  const annualEnrollments = billableEnrollments.filter(e => e.pathType === "annual" || String(e.programId) === "annual-medical-program");
+  const individualEnrollments = billableEnrollments.filter(e => e.pathType !== "annual" && String(e.programId) !== "annual-medical-program");
   const sumFinance=list=>({
     total:list.reduce((sum,e)=>sum+Number(e.totalFee||0),0),
     paid:list.reduce((sum,e)=>sum+Number(e.paidAmount||0),0)
@@ -403,37 +500,95 @@ async function loadTrainee(user) {
   renderEnrollmentsTable();populatePaymentEnrollmentSelect();populateIndividualPrograms();
   const latest=[...activeEnrollments].reverse()[0];
   if(latest) { renderEnrollmentSummary(latest);selectedEnrollmentId=latest.id; }
-  const body=$("progress"); body.replaceChildren();
-  const learningRows=[];
-  const progressByEnrollment=new Map();
-  progress.forEach(p=>{
-    if(p.enrollmentId) progressByEnrollment.set(p.enrollmentId,p);
-    else if(p.programId) progressByEnrollment.set(String(p.programId),p);
-  });
-  activeEnrollments.forEach(e=>{
-    const p=progressByEnrollment.get(e.id)||progressByEnrollment.get(String(e.programId))||{};
-    const state=p.status||e.enrollmentStatus||e.paymentStatus||"pending_payment";
-    const pct=Math.max(0,Math.min(100,Number(p.progressPercent||0)));
+  const body = $("progress");
+  if (body) body.replaceChildren();
+  const learningRows = [];
+  const displayedEnrollmentIds = new Set();
+  const displayedProgramKeys = new Set();
+
+  // Current live enrollments first.
+  activeEnrollments.forEach(e => {
+    const p = progress.find(item =>
+      item.enrollmentId === e.id ||
+      (!item.enrollmentId && String(item.programId || "") === String(e.programId || ""))
+    ) || {};
+    const state = p.status || e.enrollmentStatus || e.paymentStatus || "pending_payment";
+    const pct = Math.max(0, Math.min(100, Number(p.progressPercent || 0)));
     learningRows.push({
-      name:e.programName||"برنامج تدريبي",
-      type:e.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",
-      status:formatStatus(state),
-      pct:`${pct}%`
+      name: e.programName || "برنامج تدريبي",
+      type: e.pathType === "annual" ? "البرنامج السنوي" : "برنامج منفصل",
+      status: formatStatus(state),
+      pct: `${pct}%`
+    });
+    displayedEnrollmentIds.add(String(e.id));
+    displayedProgramKeys.add(enrollmentIdentity(e));
+  });
+
+  // Completed enrollments remain visible as achievements, but rejected/cancelled records do not.
+  completedEnrollments.forEach(e => {
+    if (displayedEnrollmentIds.has(String(e.id))) return;
+    const key = enrollmentIdentity(e);
+    const p = progress.find(item =>
+      item.enrollmentId === e.id ||
+      (!item.enrollmentId && String(item.programId || "") === String(e.programId || ""))
+    ) || {};
+    learningRows.push({
+      name: e.programName || "برنامج تدريبي",
+      type: e.pathType === "annual" ? "البرنامج السنوي" : "برنامج منفصل",
+      status: formatStatus(p.status || e.enrollmentStatus || "completed"),
+      pct: `${Math.max(0, Math.min(100, Number(p.progressPercent || 100)))}%`
+    });
+    displayedEnrollmentIds.add(String(e.id));
+    displayedProgramKeys.add(key);
+  });
+
+  const rejectedOrCancelledIds = new Set(currentEnrollments
+    .filter(e => ["rejected", "cancelled"].includes(String(e.enrollmentStatus || "").toLowerCase()))
+    .map(e => String(e.id)));
+
+  // Include standalone progress records only when they are not already represented by an enrollment.
+  const seenProgressKeys = new Set();
+  progress.forEach(p => {
+    if (p.enrollmentId && (displayedEnrollmentIds.has(String(p.enrollmentId)) ||
+        rejectedOrCancelledIds.has(String(p.enrollmentId)))) return;
+    const pName = normalizeProgramName(p.programName);
+    const matchedEnrollment = currentEnrollments.some(e =>
+      normalizeProgramName(e.programName) === pName &&
+      !["rejected", "cancelled"].includes(String(e.enrollmentStatus || "").toLowerCase())
+    );
+    if (matchedEnrollment) return;
+
+    const key = p.programId
+      ? `program:${String(p.programId)}`
+      : `name:${pName}`;
+    if (seenProgressKeys.has(key)) return;
+    seenProgressKeys.add(key);
+
+    const state = String(p.status || "").toLowerCase();
+    if (["rejected", "cancelled"].includes(state)) return;
+    learningRows.push({
+      name: p.programName || "برنامج تدريبي",
+      type: p.pathType === "annual" ? "البرنامج السنوي" : "برنامج منفصل",
+      status: formatStatus(p.status || "not_started"),
+      pct: `${Math.max(0, Math.min(100, Number(p.progressPercent || 0)))}%`
     });
   });
-  const enrollmentKeys=new Set(activeEnrollments.map(e=>String(e.id)));
-  progress.forEach(p=>{
-    if(p.enrollmentId&&enrollmentKeys.has(String(p.enrollmentId))) return;
-    if(!p.enrollmentId && activeEnrollments.some(e=>String(e.programId)===String(p.programId))) return;
-    learningRows.push({name:p.programName||"برنامج تدريبي",type:p.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",status:formatStatus(p.status||"not_started"),pct:`${Math.max(0,Math.min(100,Number(p.progressPercent||0)))}%`});
-  });
-  currentEnrollments.filter(e=>String(e.enrollmentStatus||"").toLowerCase()==="rejected").forEach(e=>learningRows.push({name:e.programName||"طلب التحاق",type:e.pathType==="annual"?"البرنامج السنوي":"برنامج منفصل",status:`مرفوض: ${e.rejectionReason||"يرجى التواصل مع الإدارة لمعرفة التفاصيل"}`,pct:"—"}));
-  if(!learningRows.length) body.innerHTML='<tr><td colspan="4">لم تسجل في أي برنامج بعد. اختر البرنامج السنوي أو استكشف البرامج المنفصلة أعلاه.</td></tr>';
-  learningRows.forEach(p=>{
-    const tr=document.createElement("tr");
-    [p.name,p.type,p.status,p.pct].forEach(value=>{const td=document.createElement("td");td.textContent=value;tr.append(td);});
-    body.append(tr);
-  });
+
+  if (body) {
+    if (!learningRows.length) {
+      body.innerHTML = '<tr><td colspan="4">لم تسجل في أي برنامج بعد. اختر البرنامج السنوي أو استكشف البرامج المنفصلة أعلاه.</td></tr>';
+    } else {
+      learningRows.forEach(p => {
+        const tr = document.createElement("tr");
+        [p.name, p.type, p.status, p.pct].forEach(value => {
+          const td = document.createElement("td");
+          td.textContent = value;
+          tr.append(td);
+        });
+        body.append(tr);
+      });
+    }
+  }
   setText("programCount", learningRows.length);
   setText("completedCount", learningRows.filter(p=>["مكتمل","تمت الموافقة","completed","passed","approved"].includes(String(p.status).toLowerCase())).length);
   if($("activeCount")) $("activeCount").textContent=billableEnrollments.length;
