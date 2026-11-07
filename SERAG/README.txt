@@ -1,13 +1,7 @@
-SERAG 2027 website update
+SERAG 2027 – Inline Registration Update
 
-Upload the complete folder contents to your hosting path. Keep index.html, agenda.html, cart.html, workshops/ and assets/ in their relative positions.
+The homepage now contains workshop selection, optional congress selection, automatic package pricing, and the registration form. The form submits directly to the existing Google Apps Script endpoint and does not require the cart page.
 
-Prices: workshop 2,500 EGP each; scientific congress 1,500 EGP.
+Pricing: 1 workshop 2,500 EGP; congress only 1,500 EGP; congress + 1 workshop 3,500 EGP; 2 workshops 5,000 EGP; congress + 2 workshops 5,500 EGP; 3 workshops 7,500 EGP; congress + 3 workshops 9,000 EGP; 4 or 5 workshops + congress 10,000 EGP.
 
-Cart functionality uses browser localStorage only. It does not process payments, reserve seats, or send registrations. Connect a backend and payment gateway before accepting real bookings.
-
-Package prices are intentionally marked as to be announced until approved package prices and exact inclusions are provided.
-
-Package prices: Congress + 1 Workshop = EGP 3,500; Congress + 2 Workshops = EGP 5,500; Congress + all 5 Workshops = EGP 10,000. Package buttons add a package to the cart and prompt for workshop selection where applicable. Countdown targets 1 February 2027 at 9:00 AM Cairo time.
-
-Homepage visuals: wide SERAG hero image and a Conference President section immediately below the hero featuring Prof. Dr. Mostafa Selim.
+Upload the contents of this folder to the existing SERAG/ directory. Do not replace the Highfield website root. Test a registration and verify the Registrations tab before public launch.
