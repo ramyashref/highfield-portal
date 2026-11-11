@@ -57,7 +57,7 @@
       if (!config.registrationApiUrl) {
         localStorage.setItem(`highfield-registration-${Date.now()}`, JSON.stringify(payload));
         const message = encodeURIComponent(
-          `Highfield Egypt Registration Request\nProgram: ${title}\nIntake: ${intake}\nName: ${payload.fullName}\nMobile: ${payload.mobileNumber}\nWhatsApp: ${payload.whatsappNumber}\nSpecialty: ${payload.specialty}\nAttendance: ${payload.attendanceMode}`
+          `Highfield Egypt Registration Request\nProgram: ${title}\nIntake: ${intake}\nName: ${payload.fullName}\nMobile: ${payload.mobileNumber}\nWhatsApp: ${payload.whatsappNumber}\nSpecialty: ${payload.specialty}`
         );
         setStatus("success", "Your form has been prepared. WhatsApp will open so the registration team can receive and confirm your request.");
         setTimeout(() => window.open(`https://wa.me/201101669115?text=${message}`, "_blank", "noopener"), 450);
