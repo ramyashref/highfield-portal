@@ -154,6 +154,16 @@
   document.getElementById("learningOutcomes").innerHTML = (isBLS ? blsObjectives : buildOutcomes()).map(item => `<li>${item}</li>`).join("");
 
   if (isBLS) {
+    // BLS is delivered on-site only.
+    const onlineBadge = document.getElementById("onlineDeliveryBadge");
+    if (onlineBadge) onlineBadge.hidden = true;
+    const onsiteBadge = document.getElementById("onsiteDeliveryBadge");
+    if (onsiteBadge) onsiteBadge.textContent = "⌂ On-site Only";
+    const availability = document.getElementById("deliveryAvailability");
+    if (availability) availability.textContent = "This program is delivered on-site only.";
+    const deliveryFact = document.getElementById("detailDelivery");
+    if (deliveryFact) deliveryFact.textContent = "On-site Only";
+
     document.getElementById("programOverviewTitle").textContent = "BLS Program Overview";
     document.getElementById("learningSectionTitle").textContent = "Learning Objectives";
     document.getElementById("blsCourseOutlineSection").hidden = false;
