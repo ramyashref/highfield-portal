@@ -50,8 +50,7 @@
     "Health Technology": "responsible use of digital tools, workflow improvement, data awareness, and practical healthcare innovation",
     "Administration": "professional communication, adult learning, facilitation, performance evaluation, and effective training delivery",
     "Medical Education": "critical appraisal, evidence application, structured clinical questions, and informed healthcare decision-making",
-    "Family Medicine": "comprehensive first-contact care, continuity, prevention, common clinical presentations, and appropriate referral",
-    "Pharmacy": "safe medication use, therapeutic review, monitoring, and collaborative pharmaceutical care"
+    "Family Medicine": "comprehensive first-contact care, continuity, prevention, common clinical presentations, and appropriate referral"
   };
 
   const focus = categoryFocus[category] || `the essential knowledge, practical framework, and professional standards relevant to ${title.toLowerCase()}`;
@@ -89,27 +88,109 @@
     return outcomes;
   }
 
+  const isBLS = programId === 2;
+  const blsSummary = "A two-day, hands-on Basic Life Support training program accredited by the Egyptian Health Council, awarding 8 CPD points. Limited to 10 participants.";
+  const blsOverview = "The Basic Life Support (BLS) Program is a practical, skills-focused training program designed to equip healthcare professionals with the essential knowledge and clinical skills required to recognize life-threatening emergencies and provide immediate, effective life support. The program covers cardiac and respiratory arrest recognition, CPR, AED use, BLS assessment, choking management, and team-based resuscitation practice.";
+  const blsObjectives = [
+    "Recognize or suspect sudden and secondary cardiac arrest.",
+    "Describe the Chain of Survival in in-hospital and out-of-hospital settings, including for children and infants.",
+    "Demonstrate high-quality CPR and chest compressions for adults, children, and infants.",
+    "Perform BLS assessment for an unresponsive person and identify when to call for help.",
+    "Demonstrate rescue breathing using appropriate airway positioning, CPR mask, and bag-mask techniques.",
+    "Describe and demonstrate the use of an Automated External Defibrillator (AED).",
+    "Demonstrate a multiple-provider approach to CPR and effective resuscitation team function.",
+    "Recognize and demonstrate the management of choking, including infant choking.",
+    "Explain and demonstrate the administration techniques covered in the course for naloxone devices."
+  ];
+
+  const courseOutline = [
+    { day: "DAY 1 – Basic Life Support Fundamentals", sessions: [
+      { title: "Initial Class Outline & Time Frame", duration: "30 min", type: "Theoretical", items: ["Initial class outline and time frame."] },
+      { title: "Program Introduction", duration: "15 min", type: "Theoretical", items: ["Describe the purpose of the program.", "Health and safety precautions.", "Conduct a warm-up exercise."] },
+      { title: "External Pre-Test", duration: "15 min", type: "Theoretical", items: ["External Pre-Test."] },
+      { title: "Sudden Cardiac Arrest", duration: "25 min", type: "Theoretical & Practical", items: ["Describe how to recognize or suspect and provide treatment for sudden cardiac arrest.", "Describe the links in the Chain of Survival for inside and outside the hospital, and for children and infants."] },
+      { title: "Secondary Cardiac Arrest", duration: "25 min", type: "Practical", items: ["Describe how to recognize and provide treatment for secondary cardiac arrest including opioid overdose."] },
+      { title: "High-Performance CPR", duration: "15 min", type: "Theoretical", items: ["Describe the qualities of high-performance CPR."] },
+      { title: "Protecting Yourself", duration: "15 min", type: "Theoretical", items: ["Describe the importance of personal safety, standard precautions, and using protective barriers."] },
+      { title: "Calling for Help", duration: "10 min", type: "Practical", items: ["Describe the steps of a BLS assessment for an unresponsive person."] },
+      { title: "BLS Skills – CPR Feedback Devices & AED Training", duration: "20 min", type: "Theoretical", items: ["Describe what a CPR feedback device is and how one is used."] },
+      { title: "BLS Skills – Chest Compressions", duration: "60 min", type: "Practical", items: ["Correctly demonstrate high-quality chest compressions on an adult, child, and infant."] },
+      { title: "BLS Skills – Rescue Breaths", duration: "90 min", type: "Practical", items: ["Correctly demonstrate high-quality rescue breaths using head tilt–chin lift and a CPR mask on an adult, child, and infant.", "Optional: jaw thrust.", "Also demonstrate using bag mask."] },
+      { title: "BLS Skills – Automated External Defibrillation", duration: "35 min", type: "Practical", items: ["Describe the steps to use an AED on an adult, child, and infant.", "Optional demonstration of AED use."] },
+      { title: "BLS Skills – BLS Assessment", duration: "35 min", type: "Practical", items: ["Describe the steps of a BLS assessment.", "Describe recovery position.", "Optional demonstration."] }
+    ]},
+    { day: "DAY 2 – BLS Care", sessions: [
+      { title: "Caring for Respiratory Arrest", duration: "60 min", type: "Practical", items: ["Correctly demonstrate how to determine respiratory arrest using BLS assessment and perform rescue breathing."] },
+      { title: "Caring for Cardiac Arrest", duration: "90 min", type: "Practical", items: ["Correctly demonstrate cardiac arrest response, CPR, and AED use for adult, child, infant."] },
+      { title: "Multiple Provider Approach to CPR", duration: "90 min", type: "Theoretical & Practical", items: ["Describe the qualities of high-performance CPR.", "Perform CPR with multiple providers and function in a resuscitation team."] },
+      { title: "Additional Consideration – Naloxone (Prefilled Syringe)", duration: "15 min", type: "Practical", items: ["Explain how to administer naloxone intranasally using prefilled syringe.", "Demonstrate administration."] },
+      { title: "Additional Consideration – Naloxone (Narcan Nasal Spray)", duration: "15 min", type: "Practical", items: ["Explain how to administer naloxone using Narcan spray.", "Demonstrate administration."] },
+      { title: "Additional Consideration – Naloxone (Evzio Auto-Injector)", duration: "15 min", type: "Practical", items: ["Explain how to administer naloxone using autoinjector.", "Demonstrate administration."] },
+      { title: "Additional Consideration – Choking", duration: "15 min", type: "Practical", items: ["Describe recognition and treatment of choking.", "Demonstrate treatment for choking infant."] },
+      { title: "Final Test", duration: "60 min", type: "Theoretical & Practical", items: ["Final theoretical and practical examination."] }
+    ]}
+  ];
+
   document.getElementById("pageTitle").textContent = `${title} | Highfield Egypt`;
-  document.getElementById("metaDescription").content = buildSummary();
-    const pageUrl = `${location.origin}${location.pathname}?id=${programId}`;
-
+  document.getElementById("metaDescription").content = isBLS ? blsSummary : buildSummary();
+  const pageUrl = `${location.origin}${location.pathname}?id=${programId}`;
   document.getElementById("canonicalUrl").href = pageUrl;
-
   document.getElementById("ogTitle").content = `${title} | Highfield Egypt`;
-  document.getElementById("ogDescription").content = buildSummary();
+  document.getElementById("ogDescription").content = isBLS ? blsSummary : buildSummary();
   document.getElementById("ogUrl").content = pageUrl;
-
   document.getElementById("twitterTitle").content = `${title} | Highfield Egypt`;
-  document.getElementById("twitterDescription").content = buildSummary();
+  document.getElementById("twitterDescription").content = isBLS ? blsSummary : buildSummary();
+
   document.getElementById("programCategory").textContent = category;
   document.getElementById("programTitle").textContent = title;
-  document.getElementById("programSummary").textContent = buildSummary();
+  document.getElementById("programSummary").textContent = isBLS ? blsSummary : buildSummary();
   document.getElementById("programDays").textContent = `${days} ${days === 1 ? "Training Day" : "Training Days"}`;
-  document.getElementById("programOverview").textContent = buildOverview();
-  document.getElementById("targetAudience").textContent = `${audience}. Admission remains subject to the announced professional requirements and the scope of practice applicable to each participant.`;
-  document.getElementById("detailSpecialty").textContent = category;
+  document.getElementById("programOverview").textContent = isBLS ? blsOverview : buildOverview();
+  document.getElementById("targetAudience").textContent = isBLS
+    ? audience
+    : `${audience}. Admission remains subject to the announced professional requirements and the scope of practice applicable to each participant.`;
+  document.getElementById("detailSpecialty").textContent = isBLS ? "Basic Life Support" : category;
   document.getElementById("detailDays").textContent = `${days} ${days === 1 ? "day" : "days"}`;
-  document.getElementById("learningOutcomes").innerHTML = buildOutcomes().map(item => `<li>${item}</li>`).join("");
+  document.getElementById("learningOutcomes").innerHTML = (isBLS ? blsObjectives : buildOutcomes()).map(item => `<li>${item}</li>`).join("");
+
+  if (isBLS) {
+    document.getElementById("programOverviewTitle").textContent = "BLS Program Overview";
+    document.getElementById("learningSectionTitle").textContent = "Learning Objectives";
+    document.getElementById("blsCourseOutlineSection").hidden = false;
+    document.getElementById("blsPracticalSection").hidden = false;
+    document.getElementById("blsAssessmentSection").hidden = false;
+    document.getElementById("blsExtraFacts").hidden = false;
+    document.getElementById("blsCapacityNote").hidden = false;
+
+    document.getElementById("blsCourseOutline").innerHTML = courseOutline.map(day => `
+      <section class="bls-day">
+        <h3>${day.day}</h3>
+        ${day.sessions.map(session => `
+          <article class="bls-session">
+            <div class="bls-session-heading">
+              <strong>${session.title}</strong>
+              <span>${session.duration} · ${session.type}</span>
+            </div>
+            <ul>${session.items.map(item => `<li>${item}</li>`).join("")}</ul>
+          </article>
+        `).join("")}
+      </section>
+    `).join("");
+
+    const practicalSkills = [
+      "High-quality chest compressions on adults, children, and infants.",
+      "Rescue breathing using head tilt–chin lift, CPR mask, and bag-mask ventilation.",
+      "Optional jaw-thrust technique demonstration.",
+      "AED use for adults, children, and infants.",
+      "BLS assessment and recovery position demonstration.",
+      "Respiratory arrest assessment and rescue breathing.",
+      "Cardiac arrest response, CPR, and AED use.",
+      "Multiple-provider CPR and resuscitation team practice.",
+      "Naloxone administration demonstrations using the listed delivery devices.",
+      "Recognition and treatment of choking, including infant choking."
+    ];
+    document.getElementById("blsPracticalSkills").innerHTML = practicalSkills.map(item => `<li>${item}</li>`).join("");
+  }
 
   const registrationUrl = `register.html?id=${programId}&program=${slugify(title)}`;
   document.getElementById("registerButton").href = registrationUrl;
