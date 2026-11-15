@@ -26,6 +26,32 @@
 .nh-booking-form .nh-consent input{width:auto!important;min-width:18px;height:18px;margin-top:4px}
 .nh-whatsapp-submit:disabled{opacity:.6;cursor:wait}
 @media(max-width:700px){.nh-leadership-grid{grid-template-columns:1fr}.nh-leader-photo{height:300px}}
+</style><style>
+html{scroll-behavior:smooth}body{font-size:16px}
+.nh-program-section{padding-top:65px;padding-bottom:70px}
+.nh-explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:34px}
+.nh-explore-link{display:flex;flex-direction:column;gap:18px;padding:32px;border:1px solid #b99b5b;background:#0b2336;text-decoration:none;color:#fff;min-height:195px;justify-content:center}
+.nh-explore-link span{font-size:13px;letter-spacing:2px;color:#e9bf73;font-weight:700}
+.nh-explore-link strong{font-size:clamp(24px,2.5vw,38px);line-height:1.2}
+.nh-explore-link small{font-size:14px;font-weight:700;color:#e9bf73}
+.nh-explore-link:hover{background:#12314a}
+.nh-workshop-list{display:grid;gap:14px;margin-top:30px}
+.nh-workshop-row{display:grid;grid-template-columns:minmax(0,1fr) 130px 155px;align-items:center;gap:22px;padding:22px 25px;background:#0b2336;border:1px solid rgba(255,255,255,.16)}
+.nh-workshop-title{display:flex;flex-direction:column;gap:7px}
+.nh-workshop-title strong{font-size:clamp(17px,1.5vw,22px);color:#fff;line-height:1.4}
+.nh-workshop-title span{font-size:15px;color:#cbd5df}
+.nh-workshop-row>b{color:#f3c67a;font-size:19px;white-space:nowrap}
+.nh-workshop-row button{font-size:14px;min-height:46px}
+.nh-agenda-details{margin-top:25px}
+.nh-agenda-details summary{cursor:pointer;list-style:none;border:1px solid #b99b5b;padding:20px 24px;color:#f3c67a;font-weight:700;font-size:17px;letter-spacing:.5px}
+.nh-agenda-details summary::after{content:' +';float:right;font-size:22px}
+.nh-agenda-details[open] summary::after{content:' −'}
+.nh-agenda-details .nh-table-wrap{margin-top:20px}
+.nh-agenda-book{display:inline-block;margin-top:25px;padding:17px 27px;background:#e9bf73;color:#07111f;text-decoration:none;font-size:16px;font-weight:800}
+.nh-detail-section .nh-section-heading p,.nh-booking-section p,.nh-booking-form label{font-size:16px;line-height:1.65}
+.nh-booking-form input{font-size:16px;min-height:46px}
+.nh-form-status{font-size:16px!important;line-height:1.7!important}
+@media(max-width:760px){.nh-explore-grid{grid-template-columns:1fr}.nh-workshop-row{grid-template-columns:1fr 1fr;gap:14px;padding:18px}.nh-workshop-title{grid-column:1/-1}.nh-workshop-row button{width:100%}.nh-detail-section{overflow-x:hidden}}
 </style></head>
 <body>
 <header class="nh-header">
@@ -40,7 +66,6 @@
 <a href="speakers.html">Speakers</a>
 <a href="abstracts.html">Abstracts</a>
 <a href="#strategic-day">Strategic Day</a>
-
 <a href="#venue">Venue</a>
 </nav>
 <a class="nh-register" href="#booking">BOOK YOUR PLACE <span>→</span></a>
@@ -89,43 +114,13 @@
 <article class="nh-leader-card"><div class="nh-leader-photo"><img alt="Prof. Dr. Hany Embaby" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('nh-photo-missing')" src="assets/hany-embaby-new.jpg"/><span class="nh-photo-placeholder">NEW PHOTO<br/>HANY EMBABY</span></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">CONFERENCE PRESIDENT</p><h3>Prof. Dr. Hany Embaby</h3><p>Consultant of Pediatric Surgery · MRCS</p></div></article>
 <article class="nh-leader-card"><div class="nh-leader-photo"><img alt="Prof. Dr. Ayman Baghdady" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('nh-photo-missing')" src="assets/ayman-baghdady.jpg"/><span class="nh-photo-placeholder">PHOTO REQUIRED<br/>AYMAN BAGHDADY</span></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">HONORARY PRESIDENT</p><h3>Prof. Dr. Ayman Baghdady</h3><p>Professor &amp; Head of Pediatric Surgery, Ain Shams University</p></div></article>
 </div></section>
-
-<section class="nh-program-section" id="program">
-<div class="nh-section-heading nh-program-heading">
-<div><p class="nh-premium-eyebrow">THREE PILLARS · ONE HORIZON</p><h2>Choose your <em>experience.</em></h2></div>
-<p>One conference. Three ways to move pediatric surgery forward.</p>
-</div>
-<div class="nh-program-grid">
-<a class="nh-program-card nh-program-workshops" href="workshops.html">
-<span class="nh-program-index">01</span><span class="nh-program-rule"></span>
-<div><p>HANDS-ON LEARNING</p><h3>Workshops</h3><span class="nh-program-link">EXPLORE WORKSHOPS <b>↗</b></span></div>
-</a>
-<a class="nh-program-card nh-program-science" href="agenda.html">
-<span class="nh-program-index">02</span><span class="nh-program-rule"></span>
-<div><p>CLINICAL EXCELLENCE</p><h3>Scientific Day</h3><span class="nh-program-link">EXPLORE THE PROGRAM <b>↗</b></span></div>
-</a>
-<a class="nh-program-card nh-program-strategy" href="strategic-day.html">
-<span class="nh-program-index">03</span><span class="nh-program-rule"></span>
-<div><p>LEADERSHIP &amp; FUTURE</p><h3>Strategic Day</h3><span class="nh-program-link">DISCOVER THE DAY <b>↗</b></span></div>
-</a>
-</div>
-</section>
+<section class="nh-program-section" id="program"><div class="nh-section-heading"><div><p class="nh-premium-eyebrow">NEW HORIZON 2027</p><h2>Explore the <em>conference.</em></h2></div><p>Discover the scientific programme and strategic discussions, then book your place below.</p></div><div class="nh-explore-grid"><a class="nh-explore-link" href="#scientific-day"><span>01 · SCIENTIFIC CONFERENCE</span><strong>Scientific Conference</strong><small>VIEW DETAILS ↓</small></a><a class="nh-explore-link" href="#strategic-day"><span>02 · LEADERSHIP &amp; GOVERNANCE</span><strong>Strategic Day</strong><small>VIEW DETAILS ↓</small></a></div></section>
 <section class="nh-detail-section" id="workshops">
 <div class="nh-section-heading">
 <div><p class="nh-premium-eyebrow">PRACTICAL LEARNING · JANUARY 2027</p><h2>Hands-on <em>workshops.</em></h2></div>
-<p>Select the workshops you wish to attend and add them to your booking.</p>
+<p>Choose the workshops you want to attend. Tap Add to Cart to include each workshop in your booking.</p>
 </div>
-<div class="nh-table-wrap">
-<table class="nh-data-table">
-<thead><tr><th>No.</th><th>Workshop Title</th><th>Date</th><th>Duration</th><th>Fee</th><th>Booking</th></tr></thead>
-<tbody>
-<tr><td>01</td><td>Laser Applications in Pediatric Surgery</td><td>10 Jan 2027</td><td>1 Day</td><td>1,500 EGP</td><td><button class="nh-add-cart" data-cart-id="laser" data-duration="1 Day" data-price="1500" data-title="Laser Applications in Pediatric Surgery" type="button">ADD TO CART</button></td></tr>
-<tr><td>02</td><td>Plastic Surgery in Pediatric Surgery</td><td>11 Jan 2027</td><td>1 Day</td><td>1,500 EGP</td><td><button class="nh-add-cart" data-cart-id="plastic" data-duration="1 Day" data-price="1500" data-title="Plastic Surgery in Pediatric Surgery" type="button">ADD TO CART</button></td></tr>
-<tr><td>03</td><td>Fundamentals of Laparoscopic Surgery</td><td>13–14 Jan 2027</td><td>2 Days</td><td>3,000 EGP</td><td><button class="nh-add-cart" data-cart-id="laparoscopic" data-duration="2 Days" data-price="3000" data-title="Fundamentals of Laparoscopic Surgery" type="button">ADD TO CART</button></td></tr>
-<tr><td>04</td><td>Ultrasound-Guided Procedures</td><td>17–18 Jan 2027</td><td>2 Days</td><td>3,000 EGP</td><td><button class="nh-add-cart" data-cart-id="ultrasound" data-duration="2 Days" data-price="3000" data-title="Ultrasound-Guided Procedures" type="button">ADD TO CART</button></td></tr>
-</tbody>
-</table>
-</div>
+<div class="nh-workshop-list"><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Laser Applications in Pediatric Surgery</strong><span>10 Jan 2027 · 1 Day</span></div><b>1,500 EGP</b><button class="nh-add-cart" data-cart-id="laser" data-duration="1 Day" data-price="1500" data-title="Laser Applications in Pediatric Surgery" type="button">ADD TO CART</button></div><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Plastic Surgery in Pediatric Surgery</strong><span>11 Jan 2027 · 1 Day</span></div><b>1,500 EGP</b><button class="nh-add-cart" data-cart-id="plastic" data-duration="1 Day" data-price="1500" data-title="Plastic Surgery in Pediatric Surgery" type="button">ADD TO CART</button></div><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Fundamentals of Laparoscopic Surgery</strong><span>13–14 Jan 2027 · 2 Days</span></div><b>3,000 EGP</b><button class="nh-add-cart" data-cart-id="laparoscopic" data-duration="2 Days" data-price="3000" data-title="Fundamentals of Laparoscopic Surgery" type="button">ADD TO CART</button></div><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Ultrasound-Guided Procedures</strong><span>17–18 Jan 2027 · 2 Days</span></div><b>3,000 EGP</b><button class="nh-add-cart" data-cart-id="ultrasound" data-duration="2 Days" data-price="3000" data-title="Ultrasound-Guided Procedures" type="button">ADD TO CART</button></div></div>
 <p class="nh-pricing-note">Workshop fees: 1-day workshop 1,500 EGP · 2-day workshop 3,000 EGP.</p>
 </section>
 <section class="nh-detail-section nh-detail-alt" id="scientific-day">
@@ -133,8 +128,9 @@
 <div><p class="nh-premium-eyebrow">TUESDAY · 19 JANUARY 2027</p><h2>Scientific <em>day.</em></h2></div>
 <p>A full day of scientific sessions, innovation, research and professional exchange.</p>
 </div>
-<div class="nh-day-banner"><span>19 JANUARY 2027</span><strong>SCIENTIFIC CONFERENCE DAY</strong><small>Tuesday · Cairo, Egypt</small></div>
-<div class="nh-table-wrap">
+
+
+<details class="nh-agenda-details"><summary>VIEW FULL SCIENTIFIC CONFERENCE PROGRAMME</summary><div class="nh-day-banner"><span>19 JANUARY 2027</span><strong>SCIENTIFIC CONFERENCE DAY</strong><small>Tuesday · Cairo, Egypt</small></div><div class="nh-table-wrap">
 <table class="nh-data-table nh-agenda-table">
 <thead><tr><th>Time</th><th>Scientific Session / Topic</th><th>Duration</th></tr></thead>
 <tbody>
@@ -157,15 +153,15 @@
 <tr><td>To Be Announced</td><td>Scientific Awards &amp; Closing Ceremony</td><td>—</td></tr>
 </tbody>
 </table>
-</div>
-</section>
+</div></details><a class="nh-agenda-book" href="#booking">BOOK SCIENTIFIC CONFERENCE →</a></section>
 <section class="nh-detail-section" id="strategic-day">
 <div class="nh-section-heading">
 <div><p class="nh-premium-eyebrow">WEDNESDAY · 20 JANUARY 2027</p><h2>Strategic <em>day.</em></h2></div>
 <p>Leadership dialogue and practical discussion on strengthening pediatric surgical services.</p>
 </div>
-<div class="nh-day-banner"><span>20 JANUARY 2027</span><strong>STRATEGIC CONFERENCE DAY</strong><small>Wednesday · Cairo, Egypt</small></div>
-<div class="nh-table-wrap">
+
+
+<details class="nh-agenda-details"><summary>VIEW FULL STRATEGIC DAY PROGRAMME</summary><div class="nh-day-banner"><span>20 JANUARY 2027</span><strong>STRATEGIC CONFERENCE DAY</strong><small>Wednesday · Cairo, Egypt</small></div><div class="nh-table-wrap">
 <table class="nh-data-table nh-strategic-table">
 <thead><tr><th>No.</th><th>Strategic Session</th><th>Main Discussion Topics</th><th>Duration</th></tr></thead>
 <tbody>
@@ -180,8 +176,7 @@
 <tr><td>09</td><td>Role of the General Medical Syndicate in Supporting the Specialty</td><td>Professional representation, ethical practice, public trust and protection of professional practice.</td><td>60 min</td></tr>
 </tbody>
 </table>
-</div>
-</section>
+</div></details><a class="nh-agenda-book" href="#booking">BOOK STRATEGIC DAY →</a></section>
 <section class="nh-abstract-callout">
 <div><p class="nh-premium-eyebrow">INNOVATIVE IDEAS · PRACTICAL IMPACT</p><h2>Call for <em>Abstracts.</em></h2>
 <p>Share research and practical ideas that can make a difference to pediatric surgical care, emerging techniques, service improvement and surgical education.</p></div>
@@ -191,7 +186,7 @@
 <div class="nh-booking-intro">
 <p class="nh-premium-eyebrow">YOUR NEW HORIZON EXPERIENCE</p>
 <h2>Build your <em>booking.</em></h2>
-<p>Select your conference package and workshops, then submit your booking request directly to the conference team.</p>
+<p>Choose your conference package and workshops, then send your booking request. The conference team will confirm availability and payment details.</p>
 <div class="nh-combo-package">
 <div><span class="nh-package-label">CONFERENCE PACKAGE</span><h3>Scientific Day + Strategic Day</h3><p>Access to both conference days · 19 &amp; 20 January 2027</p></div>
 <strong>1,500 <small>EGP</small></strong>
@@ -353,7 +348,7 @@
     clearTimeout(timeoutId);
   }
   window.addEventListener('message', event => {
-    if (!pending || event.source !== frame.contentWindow) return;
+    if (!pending) return;
     const data = event.data;
     if (!data || data.source !== 'NH_REGISTRATION' || typeof data.success !== 'boolean') return;
     finish();
@@ -386,7 +381,7 @@
     showStatus('Submitting your booking request…');
     timeoutId = setTimeout(() => {
       if (pending) { finish(); showStatus('No confirmation received. Please contact the conference team before submitting again to avoid a duplicate booking.'); }
-    }, 25000);
+    }, 40000);
     form.submit();
   });
   renderCart();
