@@ -48,7 +48,7 @@ body{background:var(--abs-navy);color:var(--abs-text);font-family:Poppins,sans-s
 .abs-setup{margin-top:26px;padding:20px;background:#061a2d;border:1px solid rgba(228,193,123,.25)}
 .abs-setup h4{margin:0 0 8px;color:var(--abs-gold);font-size:12px}.abs-setup p{margin:0;color:#bdc9d5;font-size:10px;line-height:1.8}
 .abs-setup code{color:#f1d99f;overflow-wrap:anywhere}
-.abs-footer{padding:26px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#020f1e;border-top:1px solid rgba(228,193,123,.35);color:#aebdca;font-size:9px;letter-spacing:1px}
+.abs-confirmation{display:none;text-align:center;padding:36px 18px}.abs-confirmation.is-visible{display:block}.abs-confirmation-icon{font-size:58px;color:#e4c17b;line-height:1}.abs-confirmation h3{font-size:clamp(23px,3vw,34px);color:#fff;margin:16px 0}.abs-confirmation p{font-size:13px;line-height:1.8;color:#bdc9d5}.abs-reference{display:inline-block;margin:15px 0;padding:17px 24px;border:1px solid #e4c17b;background:#031426;color:#e4c17b;font-size:clamp(19px,3vw,30px);font-weight:800;letter-spacing:1px;overflow-wrap:anywhere}.abs-confirmation-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:16px}.abs-confirmation-actions button{padding:13px 19px;cursor:pointer;border:1px solid #e4c17b;background:#e4c17b;color:#031426;font-weight:700}.abs-confirmation-actions .abs-again{background:transparent;color:#e4c17b}.abs-footer{padding:26px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#020f1e;border-top:1px solid rgba(228,193,123,.35);color:#aebdca;font-size:9px;letter-spacing:1px}
 .abs-footer a{color:var(--abs-gold);text-decoration:none}
 @media(max-width:760px){.abs-header{align-items:flex-start;flex-wrap:wrap}.abs-nav{order:3;width:100%;gap:14px}.abs-top-cta{margin-left:auto}.abs-hero{padding:70px 6% 55px;min-height:340px}.abs-content{padding:45px 4% 60px}.abs-fields{grid-template-columns:1fr}.abs-form-top{flex-direction:column}.abs-embed-wrap iframe{height:1450px}}
 </style>
@@ -91,6 +91,19 @@ body{background:var(--abs-navy);color:var(--abs-text);font-family:Poppins,sans-s
         <div class="abs-submit-row"><span class="abs-required">* All fields and both files are required.</span><button class="abs-submit" id="absSubmit" type="submit">SUBMIT ABSTRACT ↗</button></div>
         <p id="absStatus" role="status" aria-live="polite" style="margin-top:18px;color:#e4c17b;font-size:13px"></p>
       </form>
+      <section class="abs-confirmation" id="absConfirmation" aria-live="polite" aria-labelledby="absConfirmationTitle">
+        <div class="abs-confirmation-icon" aria-hidden="true">✓</div>
+        <h3 id="absConfirmationTitle">Abstract Submitted Successfully!</h3>
+        <p>Your abstract has been received by the NEW HORIZON 2027 Scientific Committee.</p>
+        <p>Your Submission Reference Number</p>
+        <div class="abs-reference" id="absReference"></div>
+        <p>Status: <strong>Pending Review</strong><br>Please save your reference number for future correspondence.</p>
+        <div class="abs-confirmation-actions">
+          <button type="button" id="absCopyReference">COPY REFERENCE NUMBER</button>
+          <button type="button" class="abs-again" id="absSubmitAnother">SUBMIT ANOTHER ABSTRACT</button>
+        </div>
+        <p id="absCopyStatus" role="status"></p>
+      </section>
       <form id="absTransport" method="POST" target="absResponseFrame" action="https://script.google.com/macros/s/AKfycbxQWekz5FUaUcepRuEjR7mnAAnbSgk4D7vUUCDsbOlLl9Xx3h10dxg6IC-YZbMTprzi/exec" style="display:none"><textarea name="payload" id="absPayload"></textarea></form>
       <iframe name="absResponseFrame" id="absResponseFrame" title="Submission response" style="display:none"></iframe>
     </div>
@@ -103,6 +116,9 @@ body{background:var(--abs-navy);color:var(--abs-text);font-family:Poppins,sans-s
   const status=document.getElementById('absStatus');
   const submit=document.getElementById('absSubmit');
   const frame=document.getElementById('absResponseFrame');
+  const confirmation=document.getElementById('absConfirmation');
+  const reference=document.getElementById('absReference');
+  const copyStatus=document.getElementById('absCopyStatus');
   let pending=false;
   const readFile=(file)=>new Promise((resolve,reject)=>{
     const reader=new FileReader();
