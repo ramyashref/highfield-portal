@@ -75,50 +75,73 @@ body{background:var(--abs-navy);color:var(--abs-text);font-family:Poppins,sans-s
     </div>
     <div class="abs-form-shell">
       <div class="abs-form-top"><div><div class="abs-eyebrow">ABSTRACT SUBMISSION</div><h3>Submission details</h3></div><div class="abs-required">* Required fields</div></div>
-      <div class="abs-fields">
-        <div class="abs-field"><label>Full Name in Arabic (Four Names) *</label><input type="text" autocomplete="name" placeholder="الاسم رباعي باللغة العربية" disabled></div>
-        <div class="abs-field"><label>Full Name in English (Four Names) *</label><input type="text" autocomplete="name" placeholder="Full name as shown on official documents" disabled></div>
-        <div class="abs-field"><label>WhatsApp Number *</label><input type="tel" autocomplete="tel" placeholder="Include country code" disabled></div>
-        <div class="abs-field"><label>Email Address *</label><input type="email" autocomplete="email" placeholder="name@example.com" disabled></div>
-        <div class="abs-field"><label>Workplace / Institution *</label><input type="text" placeholder="Hospital, university or organisation" disabled></div>
-        <div class="abs-field"><label>Faculty / College *</label><input type="text" placeholder="Faculty or college name" disabled></div>
-        <div class="abs-field"><label>Highest Academic Degree *</label><input type="text" placeholder="e.g. Bachelor's, Master's, MD, PhD" disabled></div>
-        <div class="abs-field abs-upload-card"><label>Upload Abstract (PDF) *</label><input type="file" accept="application/pdf" disabled><small>PDF file only. The final upload limit will be set in the Google Form.</small></div>
-        <div class="abs-field abs-upload-card"><label>Upload Presentation Video *</label><input type="file" accept="video/*" disabled><small>Video file. The accepted formats and maximum size will be set in the Google Form.</small></div>
-      </div>
-      <p class="abs-note">The fields above are the required submission structure. To ensure secure file uploads and direct collection in Google Drive, the live submission form will be embedded here once the Google Form is connected. Google may require submitters to sign in to upload files.</p>
-      <div class="abs-submit-row"><span class="abs-required">Submission link will be activated after Google Form connection.</span><button class="abs-submit" id="absOpenForm" type="button">OPEN SUBMISSION FORM ↗</button></div>
-      <div class="abs-embed-wrap" id="absEmbedWrap"><iframe id="absGoogleForm" title="NEW HORIZON Abstract Submission Form" loading="lazy" allow="camera; microphone"></iframe></div>
-    </div>
-    <div class="abs-setup">
-      <h4>Google Form connection</h4>
-      <p>After creating your Google Form with the same fields and two File upload questions (PDF and Video), paste its Embed URL in <code>assets/js/abstracts-config.js</code>. The form will then appear inside this page. The visible fields above are a preview only and do not submit data until the Google Form is connected.</p>
+      <form id="abstractSubmissionForm">
+        <div class="abs-fields">
+          <div class="abs-field"><label for="abs-arabicName">Full Name in Arabic (Four Names) *</label><input id="abs-arabicName" name="arabicName" type="text" placeholder="الاسم رباعي باللغة العربية" required maxlength="250"></div>
+          <div class="abs-field"><label for="abs-englishName">Full Name in English (Four Names) *</label><input id="abs-englishName" name="englishName" type="text" placeholder="Full name as shown on official documents" required maxlength="250"></div>
+          <div class="abs-field"><label for="abs-whatsapp">WhatsApp Number *</label><input id="abs-whatsapp" name="whatsapp" type="tel" placeholder="Include country code" required maxlength="250"></div>
+          <div class="abs-field"><label for="abs-email">Email Address *</label><input id="abs-email" name="email" type="email" placeholder="name@example.com" required maxlength="250"></div>
+          <div class="abs-field"><label for="abs-workplace">Workplace / Institution *</label><input id="abs-workplace" name="workplace" type="text" placeholder="Hospital, university or organisation" required maxlength="250"></div>
+          <div class="abs-field"><label for="abs-faculty">Faculty / College *</label><input id="abs-faculty" name="faculty" type="text" placeholder="Faculty or college name" required maxlength="250"></div>
+          <div class="abs-field"><label for="abs-degree">Highest Academic Degree *</label><input id="abs-degree" name="degree" type="text" placeholder="e.g. Bachelor's, Master's, MD, PhD" required maxlength="250"></div>
+          <div class="abs-field abs-upload-card"><label for="abs-pdf">Upload Abstract (PDF) *</label><input id="abs-pdf" type="file" accept=".pdf,application/pdf" required><small>PDF only, maximum 10 MB.</small></div>
+          <div class="abs-field abs-upload-card"><label for="abs-video">Upload Presentation Video *</label><input id="abs-video" type="file" accept=".mp4,.webm,.mov,video/mp4,video/webm,video/quicktime" required><small>MP4, WebM or MOV, maximum 20 MB. Larger videos cannot be submitted with this method.</small></div>
+        </div>
+        <p class="abs-note">Your submission will be stored securely for scientific committee review. Please keep this page open while the files are uploading.</p>
+        <div class="abs-submit-row"><span class="abs-required">* All fields and both files are required.</span><button class="abs-submit" id="absSubmit" type="submit">SUBMIT ABSTRACT ↗</button></div>
+        <p id="absStatus" role="status" aria-live="polite" style="margin-top:18px;color:#e4c17b;font-size:13px"></p>
+      </form>
+      <form id="absTransport" method="POST" target="absResponseFrame" action="https://script.google.com/macros/s/AKfycbxQWekz5FUaUcepRuEjR7mnAAnbSgk4D7vUUCDsbOlLl9Xx3h10dxg6IC-YZbMTprzi/exec" style="display:none"><textarea name="payload" id="absPayload"></textarea></form>
+      <iframe name="absResponseFrame" id="absResponseFrame" title="Submission response" style="display:none"></iframe>
     </div>
   </section>
 </main>
 <footer class="abs-footer"><span>NEW HORIZON 2027 · INTERNATIONAL CONFERENCE IN PEDIATRIC SURGERY</span><span>19–20 JANUARY 2027 · CAIRO, EGYPT</span><a href="index.html">BACK TO HOME ↑</a></footer>
-<script src="assets/js/abstracts-config.js"></script>
 <script>
 (function(){
-  const button=document.getElementById('absOpenForm');
-  const wrap=document.getElementById('absEmbedWrap');
-  const frame=document.getElementById('absGoogleForm');
-  const url=window.NH_GOOGLE_FORM_EMBED_URL||'';
-  if(url && url.startsWith('https://docs.google.com/forms/')){
-    button.textContent='OPEN / VIEW SUBMISSION FORM ↗';
-    button.addEventListener('click',function(){
-      frame.src=url;
-      wrap.classList.add('is-active');
-      wrap.scrollIntoView({behavior:'smooth',block:'start'});
-    });
-    frame.src=url;
-    wrap.classList.add('is-active');
-    button.style.display='none';
-  }else{
-    button.addEventListener('click',function(){
-      alert('The Google Form has not been connected yet. Add the Google Form Embed URL to assets/js/abstracts-config.js.');
-    });
-  }
+  const form=document.getElementById('abstractSubmissionForm');
+  const status=document.getElementById('absStatus');
+  const submit=document.getElementById('absSubmit');
+  const frame=document.getElementById('absResponseFrame');
+  let pending=false;
+  const readFile=(file)=>new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(String(reader.result).split(',')[1]);
+    reader.onerror=()=>reject(new Error('Could not read '+file.name));
+    reader.readAsDataURL(file);
+  });
+  window.addEventListener('message',function(event){
+    if(!pending || !event.data || event.data.source!=='NH_ABSTRACTS')return;
+    // The Apps Script response may be served from a Googleusercontent redirect.
+    if(!/^https:\/\/(?:[a-z0-9-]+\.)?(?:googleusercontent\.com|google\.com)$/.test(event.origin))return;
+    pending=false;submit.disabled=false;
+    if(event.data.success){
+      status.textContent='Submission received successfully. Your reference number: '+event.data.id;
+      form.reset();
+    }else{status.textContent='Submission failed: '+(event.data.message||'Please try again.');}
+  });
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();if(pending)return;
+    const pdf=document.getElementById('abs-pdf').files[0];
+    const video=document.getElementById('abs-video').files[0];
+    if(!pdf||!video)return;
+    if(pdf.size>10*1024*1024){status.textContent='PDF must be 10 MB or smaller.';return;}
+    if(video.size>20*1024*1024){status.textContent='Video must be 20 MB or smaller.';return;}
+    if(!/\.pdf$/i.test(pdf.name)){status.textContent='Please select a PDF.';return;}
+    if(!/\.(mp4|webm|mov)$/i.test(video.name)){status.textContent='Please select an MP4, WebM or MOV video.';return;}
+    submit.disabled=true;status.textContent='Preparing and uploading files. Please wait...';
+    try{
+      const data=Object.fromEntries(new FormData(form).entries());
+      data.website='new-horizon-abstracts-2027';data.hp_field='';
+      data.pdf={filename:pdf.name,mimeType:'application/pdf',base64:await readFile(pdf)};
+      const ext=video.name.split('.').pop().toLowerCase();
+      data.video={filename:video.name,mimeType:ext==='mov'?'video/quicktime':ext==='webm'?'video/webm':'video/mp4',base64:await readFile(video)};
+      document.getElementById('absPayload').value=JSON.stringify(data);
+      pending=true;
+      document.getElementById('absTransport').submit();
+      status.textContent='Uploading submission to Google Drive. Do not close this page...';
+    }catch(err){pending=false;submit.disabled=false;status.textContent=err.message;}
+  });
 })();
 </script>
 </body>
