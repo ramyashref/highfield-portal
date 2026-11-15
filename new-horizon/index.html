@@ -1,251 +1,236 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#07111f"><meta name="description" content="NEW HORIZON — International Conference on Pediatric Surgery.">
-  <title>NEW HORIZON — International Pediatric Surgery Conference</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css"><script src="assets/js/main.js" defer></script>
-</head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#07111f" name="theme-color"/><meta content="NEW HORIZON — International Conference on Pediatric Surgery." name="description"/>
+<title>NEW HORIZON — International Pediatric Surgery Conference</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="assets/css/style.css" rel="stylesheet"/><script defer="" src="assets/js/main.js"></script>
+<style>
+.nh-president-section{display:block!important;padding:70px max(5vw,20px)!important}
+.nh-leadership-heading{text-align:center;margin-bottom:32px}
+.nh-leadership-heading h2{font-size:clamp(30px,4vw,52px);color:#fff}
+.nh-leadership-heading em{color:#eac47c}
+.nh-leadership-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;max-width:1100px;margin:auto}
+.nh-leader-card{background:#0b2033;border:1px solid rgba(236,198,124,.24);overflow:hidden}
+.nh-leader-photo{height:360px;background:linear-gradient(135deg,#18334c,#081624);position:relative;display:flex;align-items:center;justify-content:center}
+.nh-leader-photo img{width:100%;height:100%;object-fit:contain;object-position:center}
+.nh-photo-placeholder{display:none;color:#eac47c;text-align:center;letter-spacing:2px;font-size:13px;line-height:2}
+.nh-photo-missing .nh-photo-placeholder{display:block}
+.nh-leader-info{padding:25px;color:#fff}
+.nh-leader-info h3{font-size:clamp(20px,2.5vw,30px);margin:10px 0}
+.nh-leader-info>p:last-child{color:#c6d0da;line-height:1.6}
+.nh-booking-form .nh-consent{display:flex;align-items:flex-start;gap:10px;line-height:1.6}
+.nh-booking-form .nh-consent input{width:auto!important;min-width:18px;height:18px;margin-top:4px}
+.nh-whatsapp-submit:disabled{opacity:.6;cursor:wait}
+@media(max-width:700px){.nh-leadership-grid{grid-template-columns:1fr}.nh-leader-photo{height:300px}}
+</style></head>
 <body>
-  <header class="nh-header">
-    <a class="nh-brand" href="#home" aria-label="NEW HORIZON Home">
-      <span class="nh-wordmark"><span>NEW <b>HORIZON</b></span><small>IN PEDIATRIC SURGERY <i>2027</i></small></span>
-    </a>
-    <nav class="nh-nav" id="nhNav" aria-label="Main navigation">
-      <a class="active" href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#scientific-day">Scientific Day</a>
-      <a href="#workshops">Workshops</a>
-      <a href="speakers.html">Speakers</a>
-      <a href="abstracts.html">Abstracts</a>
-      <a href="#strategic-day">Strategic Day</a>
-      <a href="sponsors.html">Sponsors</a>
-      <a href="#venue">Venue</a>
-    </nav>
-    <a class="nh-register" href="#booking">BOOK YOUR PLACE <span>→</span></a>
-    <button class="nh-menu" id="nhMenu" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </header>
-  <main>
-    <section class="nh-hero" id="home">
-      <img class="nh-hero-bg" src="assets/images/new-horizon-key-visual.png" alt="Pediatric surgeon and child framed by Egyptian heritage" fetchpriority="high">
-      <div class="nh-hero-overlay"></div>
-      <div class="nh-hero-content">
-        <p class="nh-kicker">INTERNATIONAL CONFERENCE<br>ON PEDIATRIC SURGERY</p>
-        <h1>NEW<br><span>HORIZON</span></h1>
-        <p class="nh-tagline">From Surgical Innovation<br><strong>to Healthcare Governance.</strong></p>
-        <p class="nh-description">Two complementary days connecting clinical progress with responsible healthcare governance, practical learning and sustainable services.</p>
-        <div class="nh-actions">
-          <a class="nh-primary-btn" href="register.html">REGISTER YOUR INTEREST <span>→</span></a>
-          <a class="nh-secondary-btn" href="#program">EXPLORE THE EXPERIENCE <span class="nh-play">↘</span></a>
-        </div>
-        <div class="nh-info">
-          <div class="nh-info-item"><span class="nh-info-icon" aria-hidden="true">▦</span><div><small>DATES</small><p>19–20 January 2027</p></div></div>
-          <div class="nh-info-item"><span class="nh-info-icon" aria-hidden="true">⌖</span><div><small>VENUE</small><p>Princess Fatma Academy, Cairo, Egypt</p></div></div>
-          <div class="nh-info-item"><span class="nh-info-icon" aria-hidden="true">♧</span><div><small>ATTENDEES</small><p>International<br>Experts &amp; Professionals</p></div></div>
-        </div>
-      </div>
-    </section>
-    <section class="nh-countdown-section" id="countdown" aria-label="Countdown to the conference">
-      <div class="nh-countdown-inner">
-        <div class="nh-countdown-heading">
-          <p class="nh-premium-eyebrow">THE COUNTDOWN BEGINS</p>
-          <h2>The next horizon is <em>closer than ever.</em></h2>
-          <p>19–20 January 2027 · Cairo, Egypt</p>
-        </div>
-        <div class="nh-countdown" id="nhCountdown" data-target="2027-01-19T09:00:00+02:00">
-          <div class="nh-time-unit"><strong id="cdDays">00</strong><span>DAYS</span></div>
-          <div class="nh-time-separator">:</div>
-          <div class="nh-time-unit"><strong id="cdHours">00</strong><span>HOURS</span></div>
-          <div class="nh-time-separator">:</div>
-          <div class="nh-time-unit"><strong id="cdMinutes">00</strong><span>MINUTES</span></div>
-          <div class="nh-time-separator">:</div>
-          <div class="nh-time-unit"><strong id="cdSeconds">00</strong><span>SECONDS</span></div>
-        </div>
-      </div>
-    </section>
+<header class="nh-header">
+<a aria-label="NEW HORIZON Home" class="nh-brand" href="#home">
+<span class="nh-wordmark"><span>NEW <b>HORIZON</b></span><small>IN PEDIATRIC SURGERY <i>2027</i></small></span>
+</a>
+<nav aria-label="Main navigation" class="nh-nav" id="nhNav">
+<a class="active" href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#scientific-day">Scientific Day</a>
+<a href="#workshops">Workshops</a>
+<a href="speakers.html">Speakers</a>
+<a href="abstracts.html">Abstracts</a>
+<a href="#strategic-day">Strategic Day</a>
 
-    <section class="nh-president-section" id="about">
-      <div class="nh-president-image-wrap">
-        <div class="nh-president-image-frame">
-          <img src="assets/hany-embaby.jpg" alt="Prof. Dr. Hany Embaby, Conference President" loading="lazy">
-        </div>
-        <div class="nh-president-image-caption"><span>CONFERENCE PRESIDENT</span><strong>NEW HORIZON 2027</strong></div>
-      </div>
-      <div class="nh-president-copy">
-        <p class="nh-premium-eyebrow">A MESSAGE OF PURPOSE</p>
-        <h2>Led by vision.<br><em>Driven by care.</em></h2>
-        <h3>Prof. Dr. Hany Embaby</h3>
-        <p class="nh-president-role">Conference President · Consultant of Pediatric Surgery · Member of the Royal College of Surgeons</p>
-        <p class="nh-president-message">NEW HORIZON brings the international pediatric surgery community together to share knowledge, strengthen collaboration, and explore the ideas shaping the future of surgical care for children. Through scientific exchange, practical learning, and strategic dialogue, we aim to turn collective expertise into better outcomes for every child.</p>
-        <a class="nh-text-link" href="speakers.html">MEET OUR INTERNATIONAL FACULTY <span>↗</span></a>
-      </div>
-    </section>
+<a href="#venue">Venue</a>
+</nav>
+<a class="nh-register" href="#booking">BOOK YOUR PLACE <span>→</span></a>
+<button aria-expanded="false" aria-label="Open menu" class="nh-menu" id="nhMenu" type="button"><span></span><span></span><span></span></button>
+</header>
+<main>
+<section class="nh-hero" id="home">
+<img alt="Pediatric surgeon and child framed by Egyptian heritage" class="nh-hero-bg" fetchpriority="high" src="assets/images/new-horizon-key-visual.png"/>
+<div class="nh-hero-overlay"></div>
+<div class="nh-hero-content">
+<p class="nh-kicker">INTERNATIONAL CONFERENCE<br/>ON PEDIATRIC SURGERY</p>
+<h1>NEW<br/><span>HORIZON</span></h1>
+<p class="nh-tagline">From Surgical Innovation<br/><strong>to Healthcare Governance.</strong></p>
+<p class="nh-description">Two complementary days connecting clinical progress with responsible healthcare governance, practical learning and sustainable services.</p>
+<div class="nh-actions">
+<a class="nh-primary-btn" href="#booking">REGISTER YOUR INTEREST <span>→</span></a>
+<a class="nh-secondary-btn" href="#program">EXPLORE THE EXPERIENCE <span class="nh-play">↘</span></a>
+</div>
+<div class="nh-info">
+<div class="nh-info-item"><span aria-hidden="true" class="nh-info-icon">▦</span><div><small>DATES</small><p>19–20 January 2027</p></div></div>
+<div class="nh-info-item"><span aria-hidden="true" class="nh-info-icon">⌖</span><div><small>VENUE</small><p>Princess Fatma Academy, Cairo, Egypt</p></div></div>
+<div class="nh-info-item"><span aria-hidden="true" class="nh-info-icon">♧</span><div><small>ATTENDEES</small><p>International<br/>Experts &amp; Professionals</p></div></div>
+</div>
+</div>
+</section>
+<section aria-label="Countdown to the conference" class="nh-countdown-section" id="countdown">
+<div class="nh-countdown-inner">
+<div class="nh-countdown-heading">
+<p class="nh-premium-eyebrow">THE COUNTDOWN BEGINS</p>
+<h2>The next horizon is <em>closer than ever.</em></h2>
+<p>19–20 January 2027 · Cairo, Egypt</p>
+</div>
+<div class="nh-countdown" data-target="2027-01-19T09:00:00+02:00" id="nhCountdown">
+<div class="nh-time-unit"><strong id="cdDays">00</strong><span>DAYS</span></div>
+<div class="nh-time-separator">:</div>
+<div class="nh-time-unit"><strong id="cdHours">00</strong><span>HOURS</span></div>
+<div class="nh-time-separator">:</div>
+<div class="nh-time-unit"><strong id="cdMinutes">00</strong><span>MINUTES</span></div>
+<div class="nh-time-separator">:</div>
+<div class="nh-time-unit"><strong id="cdSeconds">00</strong><span>SECONDS</span></div>
+</div>
+</div>
+</section>
+<section class="nh-president-section" id="about"><div class="nh-leadership-heading"><p class="nh-premium-eyebrow">CONFERENCE LEADERSHIP</p><h2>Led by vision. <em>Driven by care.</em></h2></div>
+<div class="nh-leadership-grid">
+<article class="nh-leader-card"><div class="nh-leader-photo"><img alt="Prof. Dr. Hany Embaby" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('nh-photo-missing')" src="assets/hany-embaby-new.jpg"/><span class="nh-photo-placeholder">NEW PHOTO<br/>HANY EMBABY</span></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">CONFERENCE PRESIDENT</p><h3>Prof. Dr. Hany Embaby</h3><p>Consultant of Pediatric Surgery · MRCS</p></div></article>
+<article class="nh-leader-card"><div class="nh-leader-photo"><img alt="Prof. Dr. Ayman Baghdady" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('nh-photo-missing')" src="assets/ayman-baghdady.jpg"/><span class="nh-photo-placeholder">PHOTO REQUIRED<br/>AYMAN BAGHDADY</span></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">HONORARY PRESIDENT</p><h3>Prof. Dr. Ayman Baghdady</h3><p>Professor &amp; Head of Pediatric Surgery, Ain Shams University</p></div></article>
+</div></section>
 
-    <section class="nh-sponsors-section" id="sponsors">
-      <div class="nh-section-heading">
-        <div><p class="nh-premium-eyebrow">PARTNERS IN PROGRESS</p><h2>Supported by <em>collaboration.</em></h2></div>
-        <a class="nh-text-link" href="sponsors.html">SPONSORSHIP & PARTNERSHIPS <span>↗</span></a>
-      </div>
-      <div class="nh-sponsor-marquee" aria-label="Sponsor logos">
-        <div class="nh-sponsor-track">
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>FOUNDING PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>PLATINUM PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>GOLD PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>SCIENTIFIC PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>EDUCATION PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>FOUNDING PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>PLATINUM PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>GOLD PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>SCIENTIFIC PARTNER</small></div>
-          <div class="nh-sponsor-logo"><span>YOUR<br>LOGO</span><small>EDUCATION PARTNER</small></div>
-        </div>
-      </div>
-      <p class="nh-sponsor-note">Sponsor logo placeholders — replace with the official partner logos when confirmed.</p>
-    </section>
-
-    <section class="nh-program-section" id="program">
-      <div class="nh-section-heading nh-program-heading">
-        <div><p class="nh-premium-eyebrow">THREE PILLARS · ONE HORIZON</p><h2>Choose your <em>experience.</em></h2></div>
-        <p>One conference. Three ways to move pediatric surgery forward.</p>
-      </div>
-      <div class="nh-program-grid">
-        <a class="nh-program-card nh-program-workshops" href="workshops.html">
-          <span class="nh-program-index">01</span><span class="nh-program-rule"></span>
-          <div><p>HANDS-ON LEARNING</p><h3>Workshops</h3><span class="nh-program-link">EXPLORE WORKSHOPS <b>↗</b></span></div>
-        </a>
-        <a class="nh-program-card nh-program-science" href="agenda.html">
-          <span class="nh-program-index">02</span><span class="nh-program-rule"></span>
-          <div><p>CLINICAL EXCELLENCE</p><h3>Scientific Day</h3><span class="nh-program-link">EXPLORE THE PROGRAM <b>↗</b></span></div>
-        </a>
-        <a class="nh-program-card nh-program-strategy" href="strategic-day.html">
-          <span class="nh-program-index">03</span><span class="nh-program-rule"></span>
-          <div><p>LEADERSHIP & FUTURE</p><h3>Strategic Day</h3><span class="nh-program-link">DISCOVER THE DAY <b>↗</b></span></div>
-        </a>
-      </div>
-    </section>
-
-    <section class="nh-detail-section" id="workshops">
-      <div class="nh-section-heading">
-        <div><p class="nh-premium-eyebrow">PRACTICAL LEARNING · JANUARY 2027</p><h2>Hands-on <em>workshops.</em></h2></div>
-        <p>Select the workshops you wish to attend and add them to your booking.</p>
-      </div>
-      <div class="nh-table-wrap">
-        <table class="nh-data-table">
-          <thead><tr><th>No.</th><th>Workshop Title</th><th>Date</th><th>Duration</th><th>Fee</th><th>Booking</th></tr></thead>
-          <tbody>
-            <tr><td>01</td><td>Laser Applications in Pediatric Surgery</td><td>10 Jan 2027</td><td>1 Day</td><td>1,500 EGP</td><td><button class="nh-add-cart" type="button" data-cart-id="laser" data-title="Laser Applications in Pediatric Surgery" data-price="1500" data-duration="1 Day">ADD TO CART</button></td></tr>
-            <tr><td>02</td><td>Plastic Surgery in Pediatric Surgery</td><td>11 Jan 2027</td><td>1 Day</td><td>1,500 EGP</td><td><button class="nh-add-cart" type="button" data-cart-id="plastic" data-title="Plastic Surgery in Pediatric Surgery" data-price="1500" data-duration="1 Day">ADD TO CART</button></td></tr>
-            <tr><td>03</td><td>Fundamentals of Laparoscopic Surgery</td><td>13–14 Jan 2027</td><td>2 Days</td><td>2,500 EGP</td><td><button class="nh-add-cart" type="button" data-cart-id="laparoscopic" data-title="Fundamentals of Laparoscopic Surgery" data-price="2500" data-duration="2 Days">ADD TO CART</button></td></tr>
-            <tr><td>04</td><td>Ultrasound-Guided Procedures</td><td>17–18 Jan 2027</td><td>2 Days</td><td>2,500 EGP</td><td><button class="nh-add-cart" type="button" data-cart-id="ultrasound" data-title="Ultrasound-Guided Procedures" data-price="2500" data-duration="2 Days">ADD TO CART</button></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="nh-pricing-note">Workshop fees: 1-day workshop 1,500 EGP · 2-day workshop 2,500 EGP.</p>
-    </section>
-
-    <section class="nh-detail-section nh-detail-alt" id="scientific-day">
-      <div class="nh-section-heading">
-        <div><p class="nh-premium-eyebrow">TUESDAY · 19 JANUARY 2027</p><h2>Scientific <em>day.</em></h2></div>
-        <p>A full day of scientific sessions, innovation, research and professional exchange.</p>
-      </div>
-      <div class="nh-day-banner"><span>19 JANUARY 2027</span><strong>SCIENTIFIC CONFERENCE DAY</strong><small>Tuesday · Cairo, Egypt</small></div>
-      <div class="nh-table-wrap">
-        <table class="nh-data-table nh-agenda-table">
-          <thead><tr><th>Time</th><th>Scientific Session / Topic</th><th>Duration</th></tr></thead>
-          <tbody>
-            <tr><td>09:00 – 09:20</td><td>The Future of Pediatric Surgery</td><td>20 min</td></tr>
-            <tr><td>09:20 – 09:40</td><td>Artificial Intelligence in Pediatric Surgery</td><td>20 min</td></tr>
-            <tr><td>09:40 – 10:00</td><td>From Innovation to Clinical Impact</td><td>20 min</td></tr>
-            <tr class="nh-break-row"><td>10:00 – 11:00</td><td>Coffee Break &amp; Networking</td><td>60 min</td></tr>
-            <tr><td>11:00 – 11:20</td><td>Minimally Invasive Innovations</td><td>20 min</td></tr>
-            <tr><td>11:20 – 11:40</td><td>Hybrid Techniques in Pediatric Surgery</td><td>20 min</td></tr>
-            <tr><td>11:40 – 12:00</td><td>Artificial Intelligence in Pediatric Surgical Research</td><td>20 min</td></tr>
-            <tr><td>12:00 – 12:20</td><td>Innovative Procedures in Pediatric Surgery</td><td>20 min</td></tr>
-            <tr class="nh-break-row"><td>12:20 – 12:30</td><td>Scientific Break</td><td>10 min</td></tr>
-            <tr><td>12:30 – 12:45</td><td>Laser Applications in Pediatric Surgery</td><td>15 min</td></tr>
-            <tr><td>12:45 – 13:00</td><td>Ultrasound-Guided Interventions and Procedures</td><td>15 min</td></tr>
-            <tr><td>13:00 – 13:15</td><td>Innovations in Pediatric Endoscopy</td><td>15 min</td></tr>
-            <tr class="nh-break-row"><td>13:15 – 14:00</td><td>Lunch Break</td><td>45 min</td></tr>
-            <tr><td>14:00 – 15:50</td><td>Research Innovation and Surgical Video Presentations</td><td>110 min</td></tr>
-            <tr><td>15:50 – 16:00</td><td>Scientific Wrap-up and Session Transition</td><td>10 min</td></tr>
-            <tr><td>16:00 – 17:00</td><td>Global Opportunities in Pediatric Surgery</td><td>60 min</td></tr>
-            <tr><td>To Be Announced</td><td>Scientific Awards &amp; Closing Ceremony</td><td>—</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="nh-detail-section" id="strategic-day">
-      <div class="nh-section-heading">
-        <div><p class="nh-premium-eyebrow">WEDNESDAY · 20 JANUARY 2027</p><h2>Strategic <em>day.</em></h2></div>
-        <p>Leadership dialogue and practical discussion on strengthening pediatric surgical services.</p>
-      </div>
-      <div class="nh-day-banner"><span>20 JANUARY 2027</span><strong>STRATEGIC CONFERENCE DAY</strong><small>Wednesday · Cairo, Egypt</small></div>
-      <div class="nh-table-wrap">
-        <table class="nh-data-table nh-strategic-table">
-          <thead><tr><th>No.</th><th>Strategic Session</th><th>Main Discussion Topics</th><th>Duration</th></tr></thead>
-          <tbody>
-            <tr><td>01</td><td>Governance in Pediatric Surgery</td><td>Service accountability, decision-making, multidisciplinary coordination, quality review and continuous improvement.</td><td>60 min</td></tr>
-            <tr><td>02</td><td>Clinical Guidelines in Pediatric Surgery</td><td>Clinical pathways, evidence-based practice, local resources, implementation and clinical audit.</td><td>60 min</td></tr>
-            <tr><td>03</td><td>Sustainable Financing for Pediatric Surgery</td><td>Care pathway costs, sustainable funding, resource allocation and family financial protection.</td><td>60 min</td></tr>
-            <tr><td>04</td><td>Investment Opportunities and Partnerships in Pediatric Surgery</td><td>Healthcare infrastructure, equipment investment, public-private partnerships and institutional collaboration.</td><td>60 min</td></tr>
-            <tr><td>05</td><td>Prevention, Infection Control and Workforce Competence</td><td>Patient safety, infection prevention, healthcare workforce training and professional competence.</td><td>60 min</td></tr>
-            <tr><td>06</td><td>A Safe Start for Every Child: Integrating Pediatric Surgery with Maternal and Child Health</td><td>Early detection of congenital anomalies, antenatal and postnatal referral, nutrition and family support.</td><td>60 min</td></tr>
-            <tr><td>07</td><td>Building Trust and Digital Presence in Pediatric Surgery</td><td>Patient communication, medical content creation, digital presence, responsible marketing and child privacy.</td><td>60 min</td></tr>
-            <tr><td>08</td><td>National Pediatric Surgery Network: From Proposal to Implementation</td><td>National referral network, service coordination, shared information and implementation roadmap.</td><td>60 min</td></tr>
-            <tr><td>09</td><td>Role of the General Medical Syndicate in Supporting the Specialty</td><td>Professional representation, ethical practice, public trust and protection of professional practice.</td><td>60 min</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="nh-abstract-callout">
-      <div><p class="nh-premium-eyebrow">INNOVATIVE IDEAS · PRACTICAL IMPACT</p><h2>Call for <em>Abstracts.</em></h2>
-      <p>Share research and practical ideas that can make a difference to pediatric surgical care, emerging techniques, service improvement and surgical education.</p></div>
-      <a class="nh-primary-btn" href="abstracts.html">SUBMIT AN ABSTRACT <span>↗</span></a>
-    </section>
-
-    <section class="nh-booking-section" id="booking">
-      <div class="nh-booking-intro">
-        <p class="nh-premium-eyebrow">YOUR NEW HORIZON EXPERIENCE</p>
-        <h2>Build your <em>booking.</em></h2>
-        <p>Add the workshops you want, then complete your details. Your booking summary will open directly in WhatsApp for confirmation.</p>
-        <div class="nh-combo-package">
-          <div><span class="nh-package-label">CONFERENCE PACKAGE</span><h3>Scientific Day + Strategic Day</h3><p>Access to both conference days · 19 &amp; 20 January 2027</p></div>
-          <strong>1,500 <small>EGP</small></strong>
-          <button class="nh-add-cart" type="button" data-cart-id="conference-days" data-title="Scientific Day + Strategic Day Package" data-price="1500" data-duration="2 Conference Days">ADD PACKAGE TO CART</button>
-        </div>
-      </div>
-      <div class="nh-checkout-card">
-        <div class="nh-cart-head"><div><p class="nh-premium-eyebrow">BOOKING SUMMARY</p><h3>Your selected items</h3></div><span class="nh-cart-count" id="nhCartCount">0 ITEMS</span></div>
-        <div id="nhCartItems" class="nh-cart-items"><p class="nh-cart-empty">Your cart is empty. Add a workshop or the conference package to continue.</p></div>
-        <div class="nh-cart-total"><span>Total amount</span><strong id="nhCartTotal">0 EGP</strong></div>
-        <form id="nhBookingForm" class="nh-booking-form">
-          <label>Full name *<input name="fullName" required autocomplete="name" placeholder="Enter your full name"></label>
-          <label>Mobile / WhatsApp number *<input name="phone" type="tel" required autocomplete="tel" placeholder="Your mobile number"></label>
-          <label>Email address<input name="email" type="email" autocomplete="email" placeholder="name@example.com"></label>
-          <label>Profession / Specialty<input name="profession" placeholder="e.g. Pediatric Surgeon"></label>
-          <button class="nh-whatsapp-submit" type="submit">COMPLETE BOOKING VIA WHATSAPP <span>↗</span></button>
-          <p class="nh-whatsapp-note">You will be redirected to WhatsApp with your booking details and total. Please press Send in WhatsApp to submit your request.</p>
-          <p class="nh-form-status" id="nhBookingStatus" role="status" aria-live="polite"></p>
-        </form>
-      </div>
-    </section>
-
-    <section class="nh-home-registration" id="register">
-      <div class="nh-registration-copy">
-        <p class="nh-premium-eyebrow">QUESTIONS ABOUT REGISTRATION?</p>
-        <h2>Our team is<br><em>here to help.</em></h2>
-        <p>For group bookings, institutional participation or sponsorship enquiries, contact the NEW HORIZON team directly.</p>
-        <div class="nh-registration-meta"><span>19–20 JANUARY 2027</span><span>CAIRO, EGYPT</span></div>
-      </div>
-      <a class="nh-primary-btn nh-contact-whatsapp" href="https://wa.me/201101669115?text=Hello%20NEW%20HORIZON%20team%2C%20I%20would%20like%20to%20ask%20about%20conference%20registration." target="_blank" rel="noopener">CONTACT US ON WHATSAPP <span>↗</span></a>
-    </section>
-  </main>
-  <footer class="footer"><a class="wordmark footer-mark nh-wordmark" href="#home"><span>NEW <b>HORIZON</b></span><small>IN PEDIATRIC SURGERY <i>2027</i></small></a><span>ADVANCING THE FUTURE OF PEDIATRIC SURGERY</span><a href="#home">BACK TO TOP ↑</a></footer>
-
+<section class="nh-program-section" id="program">
+<div class="nh-section-heading nh-program-heading">
+<div><p class="nh-premium-eyebrow">THREE PILLARS · ONE HORIZON</p><h2>Choose your <em>experience.</em></h2></div>
+<p>One conference. Three ways to move pediatric surgery forward.</p>
+</div>
+<div class="nh-program-grid">
+<a class="nh-program-card nh-program-workshops" href="workshops.html">
+<span class="nh-program-index">01</span><span class="nh-program-rule"></span>
+<div><p>HANDS-ON LEARNING</p><h3>Workshops</h3><span class="nh-program-link">EXPLORE WORKSHOPS <b>↗</b></span></div>
+</a>
+<a class="nh-program-card nh-program-science" href="agenda.html">
+<span class="nh-program-index">02</span><span class="nh-program-rule"></span>
+<div><p>CLINICAL EXCELLENCE</p><h3>Scientific Day</h3><span class="nh-program-link">EXPLORE THE PROGRAM <b>↗</b></span></div>
+</a>
+<a class="nh-program-card nh-program-strategy" href="strategic-day.html">
+<span class="nh-program-index">03</span><span class="nh-program-rule"></span>
+<div><p>LEADERSHIP &amp; FUTURE</p><h3>Strategic Day</h3><span class="nh-program-link">DISCOVER THE DAY <b>↗</b></span></div>
+</a>
+</div>
+</section>
+<section class="nh-detail-section" id="workshops">
+<div class="nh-section-heading">
+<div><p class="nh-premium-eyebrow">PRACTICAL LEARNING · JANUARY 2027</p><h2>Hands-on <em>workshops.</em></h2></div>
+<p>Select the workshops you wish to attend and add them to your booking.</p>
+</div>
+<div class="nh-table-wrap">
+<table class="nh-data-table">
+<thead><tr><th>No.</th><th>Workshop Title</th><th>Date</th><th>Duration</th><th>Fee</th><th>Booking</th></tr></thead>
+<tbody>
+<tr><td>01</td><td>Laser Applications in Pediatric Surgery</td><td>10 Jan 2027</td><td>1 Day</td><td>1,500 EGP</td><td><button class="nh-add-cart" data-cart-id="laser" data-duration="1 Day" data-price="1500" data-title="Laser Applications in Pediatric Surgery" type="button">ADD TO CART</button></td></tr>
+<tr><td>02</td><td>Plastic Surgery in Pediatric Surgery</td><td>11 Jan 2027</td><td>1 Day</td><td>1,500 EGP</td><td><button class="nh-add-cart" data-cart-id="plastic" data-duration="1 Day" data-price="1500" data-title="Plastic Surgery in Pediatric Surgery" type="button">ADD TO CART</button></td></tr>
+<tr><td>03</td><td>Fundamentals of Laparoscopic Surgery</td><td>13–14 Jan 2027</td><td>2 Days</td><td>3,000 EGP</td><td><button class="nh-add-cart" data-cart-id="laparoscopic" data-duration="2 Days" data-price="3000" data-title="Fundamentals of Laparoscopic Surgery" type="button">ADD TO CART</button></td></tr>
+<tr><td>04</td><td>Ultrasound-Guided Procedures</td><td>17–18 Jan 2027</td><td>2 Days</td><td>3,000 EGP</td><td><button class="nh-add-cart" data-cart-id="ultrasound" data-duration="2 Days" data-price="3000" data-title="Ultrasound-Guided Procedures" type="button">ADD TO CART</button></td></tr>
+</tbody>
+</table>
+</div>
+<p class="nh-pricing-note">Workshop fees: 1-day workshop 1,500 EGP · 2-day workshop 3,000 EGP.</p>
+</section>
+<section class="nh-detail-section nh-detail-alt" id="scientific-day">
+<div class="nh-section-heading">
+<div><p class="nh-premium-eyebrow">TUESDAY · 19 JANUARY 2027</p><h2>Scientific <em>day.</em></h2></div>
+<p>A full day of scientific sessions, innovation, research and professional exchange.</p>
+</div>
+<div class="nh-day-banner"><span>19 JANUARY 2027</span><strong>SCIENTIFIC CONFERENCE DAY</strong><small>Tuesday · Cairo, Egypt</small></div>
+<div class="nh-table-wrap">
+<table class="nh-data-table nh-agenda-table">
+<thead><tr><th>Time</th><th>Scientific Session / Topic</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td>09:00 – 09:20</td><td>The Future of Pediatric Surgery</td><td>20 min</td></tr>
+<tr><td>09:20 – 09:40</td><td>Artificial Intelligence in Pediatric Surgery</td><td>20 min</td></tr>
+<tr><td>09:40 – 10:00</td><td>From Innovation to Clinical Impact</td><td>20 min</td></tr>
+<tr class="nh-break-row"><td>10:00 – 11:00</td><td>Coffee Break &amp; Networking</td><td>60 min</td></tr>
+<tr><td>11:00 – 11:20</td><td>Minimally Invasive Innovations</td><td>20 min</td></tr>
+<tr><td>11:20 – 11:40</td><td>Hybrid Techniques in Pediatric Surgery</td><td>20 min</td></tr>
+<tr><td>11:40 – 12:00</td><td>Artificial Intelligence in Pediatric Surgical Research</td><td>20 min</td></tr>
+<tr><td>12:00 – 12:20</td><td>Innovative Procedures in Pediatric Surgery</td><td>20 min</td></tr>
+<tr class="nh-break-row"><td>12:20 – 12:30</td><td>Scientific Break</td><td>10 min</td></tr>
+<tr><td>12:30 – 12:45</td><td>Laser Applications in Pediatric Surgery</td><td>15 min</td></tr>
+<tr><td>12:45 – 13:00</td><td>Ultrasound-Guided Interventions and Procedures</td><td>15 min</td></tr>
+<tr><td>13:00 – 13:15</td><td>Innovations in Pediatric Endoscopy</td><td>15 min</td></tr>
+<tr class="nh-break-row"><td>13:15 – 14:00</td><td>Lunch Break</td><td>45 min</td></tr>
+<tr><td>14:00 – 15:50</td><td>Research Innovation and Surgical Video Presentations</td><td>110 min</td></tr>
+<tr><td>15:50 – 16:00</td><td>Scientific Wrap-up and Session Transition</td><td>10 min</td></tr>
+<tr><td>16:00 – 17:00</td><td>Global Opportunities in Pediatric Surgery</td><td>60 min</td></tr>
+<tr><td>To Be Announced</td><td>Scientific Awards &amp; Closing Ceremony</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="nh-detail-section" id="strategic-day">
+<div class="nh-section-heading">
+<div><p class="nh-premium-eyebrow">WEDNESDAY · 20 JANUARY 2027</p><h2>Strategic <em>day.</em></h2></div>
+<p>Leadership dialogue and practical discussion on strengthening pediatric surgical services.</p>
+</div>
+<div class="nh-day-banner"><span>20 JANUARY 2027</span><strong>STRATEGIC CONFERENCE DAY</strong><small>Wednesday · Cairo, Egypt</small></div>
+<div class="nh-table-wrap">
+<table class="nh-data-table nh-strategic-table">
+<thead><tr><th>No.</th><th>Strategic Session</th><th>Main Discussion Topics</th><th>Duration</th></tr></thead>
+<tbody>
+<tr><td>01</td><td>Governance in Pediatric Surgery</td><td>Service accountability, decision-making, multidisciplinary coordination, quality review and continuous improvement.</td><td>60 min</td></tr>
+<tr><td>02</td><td>Clinical Guidelines in Pediatric Surgery</td><td>Clinical pathways, evidence-based practice, local resources, implementation and clinical audit.</td><td>60 min</td></tr>
+<tr><td>03</td><td>Sustainable Financing for Pediatric Surgery</td><td>Care pathway costs, sustainable funding, resource allocation and family financial protection.</td><td>60 min</td></tr>
+<tr><td>04</td><td>Investment Opportunities and Partnerships in Pediatric Surgery</td><td>Healthcare infrastructure, equipment investment, public-private partnerships and institutional collaboration.</td><td>60 min</td></tr>
+<tr><td>05</td><td>Prevention, Infection Control and Workforce Competence</td><td>Patient safety, infection prevention, healthcare workforce training and professional competence.</td><td>60 min</td></tr>
+<tr><td>06</td><td>A Safe Start for Every Child: Integrating Pediatric Surgery with Maternal and Child Health</td><td>Early detection of congenital anomalies, antenatal and postnatal referral, nutrition and family support.</td><td>60 min</td></tr>
+<tr><td>07</td><td>Building Trust and Digital Presence in Pediatric Surgery</td><td>Patient communication, medical content creation, digital presence, responsible marketing and child privacy.</td><td>60 min</td></tr>
+<tr><td>08</td><td>National Pediatric Surgery Network: From Proposal to Implementation</td><td>National referral network, service coordination, shared information and implementation roadmap.</td><td>60 min</td></tr>
+<tr><td>09</td><td>Role of the General Medical Syndicate in Supporting the Specialty</td><td>Professional representation, ethical practice, public trust and protection of professional practice.</td><td>60 min</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+<section class="nh-abstract-callout">
+<div><p class="nh-premium-eyebrow">INNOVATIVE IDEAS · PRACTICAL IMPACT</p><h2>Call for <em>Abstracts.</em></h2>
+<p>Share research and practical ideas that can make a difference to pediatric surgical care, emerging techniques, service improvement and surgical education.</p></div>
+<a class="nh-primary-btn" href="abstracts.html">SUBMIT AN ABSTRACT <span>↗</span></a>
+</section>
+<section class="nh-booking-section" id="booking">
+<div class="nh-booking-intro">
+<p class="nh-premium-eyebrow">YOUR NEW HORIZON EXPERIENCE</p>
+<h2>Build your <em>booking.</em></h2>
+<p>Select your conference package and workshops, then submit your booking request directly to the conference team.</p>
+<div class="nh-combo-package">
+<div><span class="nh-package-label">CONFERENCE PACKAGE</span><h3>Scientific Day + Strategic Day</h3><p>Access to both conference days · 19 &amp; 20 January 2027</p></div>
+<strong>1,500 <small>EGP</small></strong>
+<button class="nh-add-cart" data-cart-id="conference-days" data-duration="2 Conference Days" data-price="1500" data-title="Scientific Day + Strategic Day Package" type="button">ADD PACKAGE TO CART</button>
+</div>
+</div>
+<div class="nh-checkout-card">
+<div class="nh-cart-head"><div><p class="nh-premium-eyebrow">BOOKING SUMMARY</p><h3>Your selected items</h3></div><span class="nh-cart-count" id="nhCartCount">0 ITEMS</span></div>
+<div class="nh-cart-items" id="nhCartItems"><p class="nh-cart-empty">Your cart is empty. Add a workshop or the conference package to continue.</p></div>
+<div class="nh-cart-total"><span>Total amount</span><strong id="nhCartTotal">0 EGP</strong></div>
+<form action="https://script.google.com/macros/s/AKfycbyYHTtzA5FXXdwTSzZXRwKKQ0emhC2NkTxRD07maMYL2o5egR4SLe_epFH3r6EhjEIDUw/exec" class="nh-booking-form" id="nhBookingForm" method="POST" target="nhSubmissionFrame">
+<label>Full name *<input autocomplete="name" name="fullName" placeholder="Enter your full name" required=""/></label>
+<label>Mobile / WhatsApp number *<input autocomplete="tel" name="phone" placeholder="Your mobile number" required="" type="tel"/></label>
+<label>Email address *<input autocomplete="email" name="email" placeholder="name@example.com" required="" type="email"/></label>
+<label>Profession / Specialty *<input name="profession" placeholder="e.g. Pediatric Surgeon" required=""/></label>
+<label>Country *<input autocomplete="country-name" name="country" placeholder="Country of residence" required=""/></label>
+<label>Institution / Workplace<input name="institution" placeholder="Hospital, university or institution"/></label>
+<label class="nh-consent"><input name="consent" required="" type="checkbox" value="yes"/> I agree to be contacted about my registration and understand this is a booking request, not a confirmed place.</label>
+<input name="website" type="hidden" value="new-horizon-2027"/>
+<input name="interest" type="hidden" value="Conference &amp; Workshops Booking"/>
+<input id="nhBookingDetails" name="message" type="hidden"/>
+<input aria-hidden="true" autocomplete="off" name="hp_field" style="position:absolute;left:-9999px;width:1px;height:1px" tabindex="-1" type="text"/>
+<iframe id="nhSubmissionFrame" name="nhSubmissionFrame" style="display:none" title="Registration submission"></iframe><button class="nh-whatsapp-submit" type="submit">SUBMIT BOOKING REQUEST ↗</button>
+<p class="nh-whatsapp-note">Your request will be saved for review. No online payment is taken; confirmation will be sent by the conference team.</p>
+<p aria-live="polite" class="nh-form-status" id="nhBookingStatus" role="status"></p>
+</form>
+</div>
+</section>
+<section class="nh-home-registration" id="register">
+<div class="nh-registration-copy">
+<p class="nh-premium-eyebrow">QUESTIONS ABOUT REGISTRATION?</p>
+<h2>Our team is<br/><em>here to help.</em></h2>
+<p>For group bookings, institutional participation or sponsorship enquiries, contact the NEW HORIZON team directly.</p>
+<div class="nh-registration-meta"><span>19–20 JANUARY 2027</span><span>CAIRO, EGYPT</span></div>
+</div>
+<a class="nh-primary-btn nh-contact-whatsapp" href="https://wa.me/201101669115?text=Hello%20NEW%20HORIZON%20team%2C%20I%20would%20like%20to%20ask%20about%20conference%20registration." rel="noopener" target="_blank">CONTACT US ON WHATSAPP <span>↗</span></a>
+</section>
+</main>
+<footer class="footer"><a class="wordmark footer-mark nh-wordmark" href="#home"><span>NEW <b>HORIZON</b></span><small>IN PEDIATRIC SURGERY <i>2027</i></small></a><span>ADVANCING THE FUTURE OF PEDIATRIC SURGERY</span><a href="#home">BACK TO TOP ↑</a></footer>
 <script>
   (function () {
     const button = document.getElementById('nhMenu');
@@ -264,7 +249,6 @@
     });
   })();
 </script>
-
 <script>
   (function () {
     const root = document.getElementById('nhCountdown');
@@ -297,8 +281,6 @@
 
   })();
 </script>
-
-
 <script>
 (function () {
   const cart = new Map();
@@ -307,102 +289,107 @@
   const totalEl = document.getElementById('nhCartTotal');
   const form = document.getElementById('nhBookingForm');
   const status = document.getElementById('nhBookingStatus');
-  const phoneNumber = '201101669115';
-  const money = value => new Intl.NumberFormat('en-US').format(value) + ' EGP';
-
+  const submitButton = form.querySelector('[type="submit"]');
+  const frame = document.getElementById('nhSubmissionFrame');
+  const money = n => new Intl.NumberFormat('en-US').format(n) + ' EGP';
+  let pending = false;
+  let timeoutId;
   function renderCart() {
-    if (!itemsEl) return;
-    const items = Array.from(cart.values());
-    const count = items.reduce((sum, item) => sum + item.quantity, 0);
-    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    countEl.textContent = count + (count === 1 ? ' ITEM' : ' ITEMS');
-    totalEl.textContent = money(total);
+    const items = [...cart.values()];
+    countEl.textContent = items.length + (items.length === 1 ? ' ITEM' : ' ITEMS');
+    totalEl.textContent = money(items.reduce((sum, item) => sum + item.price, 0));
+    itemsEl.replaceChildren();
     if (!items.length) {
-      itemsEl.innerHTML = '<p class="nh-cart-empty">Your cart is empty. Add a workshop or the conference package to continue.</p>';
+      const empty = document.createElement('p');
+      empty.className = 'nh-cart-empty';
+      empty.textContent = 'Your cart is empty. Add a workshop or conference package to continue.';
+      itemsEl.appendChild(empty);
       return;
     }
-    itemsEl.innerHTML = items.map(item => `
-      <div class="nh-cart-line">
-        <div class="nh-cart-line-copy"><strong>${item.title}</strong><small>${item.duration} · ${money(item.price)}</small></div>
-        <div class="nh-cart-controls">
-          <button type="button" data-cart-action="minus" data-cart-id="${item.id}" aria-label="Remove one ${item.title}">−</button>
-          <span>${item.quantity}</span>
-          <button type="button" data-cart-action="plus" data-cart-id="${item.id}" aria-label="Add one ${item.title}">+</button>
-          <button type="button" class="nh-cart-remove" data-cart-action="remove" data-cart-id="${item.id}" aria-label="Remove ${item.title}">×</button>
-        </div>
-      </div>`).join('');
+    items.forEach(item => {
+      const line = document.createElement('div');
+      line.className = 'nh-cart-line';
+      const copy = document.createElement('div');
+      copy.className = 'nh-cart-line-copy';
+      const title = document.createElement('strong');
+      title.textContent = item.title;
+      const detail = document.createElement('small');
+      detail.textContent = item.duration + ' · ' + money(item.price);
+      copy.append(title, detail);
+      const controls = document.createElement('div');
+      controls.className = 'nh-cart-controls';
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = '×';
+      remove.className = 'nh-cart-remove';
+      remove.setAttribute('aria-label', 'Remove ' + item.title);
+      remove.addEventListener('click', () => { cart.delete(item.id); renderCart(); });
+      controls.appendChild(remove);
+      line.append(copy, controls);
+      itemsEl.appendChild(line);
+    });
   }
-
   document.querySelectorAll('.nh-add-cart').forEach(button => {
     button.addEventListener('click', () => {
       const id = button.dataset.cartId;
-      const existing = cart.get(id);
-      if (existing) existing.quantity += 1;
+      if (cart.has(id)) cart.delete(id);
       else cart.set(id, {
-        id,
-        title: button.dataset.title,
-        price: Number(button.dataset.price),
-        duration: button.dataset.duration,
-        quantity: 1
+        id, title: button.dataset.title,
+        price: Number(button.dataset.price), duration: button.dataset.duration
       });
+      button.textContent = cart.has(id) ? 'REMOVE ✓' : (id === 'conference-days' ? 'ADD PACKAGE TO CART' : 'ADD TO CART');
+      button.classList.toggle('is-added', cart.has(id));
       renderCart();
-      const original = button.textContent;
-      button.textContent = 'ADDED ✓';
-      button.classList.add('is-added');
-      window.setTimeout(() => {
-        button.textContent = original;
-        button.classList.remove('is-added');
-      }, 1300);
     });
   });
-
-  if (itemsEl) {
-    itemsEl.addEventListener('click', event => {
-      const button = event.target.closest('[data-cart-action]');
-      if (!button) return;
-      const item = cart.get(button.dataset.cartId);
-      if (!item) return;
-      if (button.dataset.cartAction === 'plus') item.quantity += 1;
-      if (button.dataset.cartAction === 'minus') item.quantity -= 1;
-      if (button.dataset.cartAction === 'remove' || item.quantity <= 0) cart.delete(item.id);
-      renderCart();
-    });
+  function showStatus(message) {
+    status.textContent = message;
+    status.classList.add('is-visible');
   }
-
-  if (form) {
-    form.addEventListener('submit', event => {
-      event.preventDefault();
-      if (!cart.size) {
-        status.textContent = 'Please add at least one workshop or conference package to your booking.';
-        status.classList.add('is-visible');
-        return;
-      }
-      if (!form.reportValidity()) return;
-      const data = new FormData(form);
-      const items = Array.from(cart.values());
-      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const lines = [
-        'NEW HORIZON 2027 — BOOKING REQUEST',
-        '',
-        'Attendee: ' + data.get('fullName'),
-        'Mobile: ' + data.get('phone'),
-        'Email: ' + (data.get('email') || 'Not provided'),
-        'Profession / Specialty: ' + (data.get('profession') || 'Not provided'),
-        '',
-        'SELECTED ITEMS:'
-      ];
-      items.forEach((item, index) => {
-        lines.push((index + 1) + '. ' + item.title + ' — ' + item.quantity + ' × ' + money(item.price) + ' (' + item.duration + ') = ' + money(item.price * item.quantity));
+  function finish() {
+    pending = false;
+    submitButton.disabled = false;
+    submitButton.textContent = 'SUBMIT BOOKING REQUEST ↗';
+    clearTimeout(timeoutId);
+  }
+  window.addEventListener('message', event => {
+    if (!pending || event.source !== frame.contentWindow) return;
+    const data = event.data;
+    if (!data || data.source !== 'NH_REGISTRATION' || typeof data.success !== 'boolean') return;
+    finish();
+    if (data.success && /^NH27-[A-Z0-9]{8}$/.test(data.id || '')) {
+      showStatus('Your booking request was saved successfully. Registration ID: ' + data.id + '. Our team will contact you to confirm availability and payment.');
+      form.reset();
+      cart.clear();
+      document.querySelectorAll('.nh-add-cart').forEach(button => {
+        button.classList.remove('is-added');
+        button.textContent = button.dataset.cartId === 'conference-days' ? 'ADD PACKAGE TO CART' : 'ADD TO CART';
       });
-      lines.push('', 'TOTAL: ' + money(total), '', 'Please confirm my booking. Thank you.');
-      const url = 'https://wa.me/' + phoneNumber + '?text=' + encodeURIComponent(lines.join('\n'));
-      status.textContent = 'Opening WhatsApp with your booking details…';
-      status.classList.add('is-visible');
-      window.open(url, '_blank', 'noopener');
-    });
-  }
+      renderCart();
+    } else {
+      showStatus('Unable to save the request. Please try again or contact the conference team.');
+    }
+  });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (pending) return;
+    if (!cart.size) { showStatus('Please select at least one conference package or workshop.'); return; }
+    if (!form.reportValidity()) return;
+    const items = [...cart.values()];
+    const total = items.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('nhBookingDetails').value =
+      'BOOKING ITEMS:\n' + items.map(item => item.title + ' (' + item.duration + '): ' + money(item.price)).join('\n') +
+      '\nTOTAL: ' + money(total) + '\nSTATUS: Pending Review';
+    pending = true;
+    submitButton.disabled = true;
+    submitButton.textContent = 'SUBMITTING…';
+    showStatus('Submitting your booking request…');
+    timeoutId = setTimeout(() => {
+      if (pending) { finish(); showStatus('No confirmation received. Please contact the conference team before submitting again to avoid a duplicate booking.'); }
+    }, 25000);
+    form.submit();
+  });
   renderCart();
 })();
 </script>
-
 </body></html>
