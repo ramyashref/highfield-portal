@@ -229,7 +229,7 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
 <label class="nh-consent"><input name="consent" required="" type="checkbox" value="yes"/> I agree to be contacted regarding my registration. Submission is subject to confirmation.</label>
 <input name="website" type="hidden" value="new-horizon-2027"/>
 <input name="interest" type="hidden" value="Conference &amp; Workshops Booking"/>
-<input id="nhBookingDetails" name="message" type="hidden"/>
+<input id="nhBookingDetails" name="message" type="hidden"/><input id="nhSubmissionToken" name="submissionToken" type="hidden"/>
 <input aria-hidden="true" autocomplete="off" name="hp_field" style="position:absolute;left:-9999px;width:1px;height:1px" tabindex="-1" type="text"/>
 <iframe id="nhSubmissionFrame" name="nhSubmissionFrame" style="display:none" title="Registration submission"></iframe><button class="nh-whatsapp-submit" type="submit">REGISTER NOW ↗</button>
 <p class="nh-whatsapp-note">Registration is open without selecting any workshop. No online payment is collected. Your reference code appears after successful submission.</p>
@@ -318,6 +318,11 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
   });
   let pending = false;
   let timeoutId;
+  let pollTimer;
+  let activeToken = "";
+  const endpoint = form.action;
+  const callbackPrefix = "nhStatusCallback_";
+  let pollNumber = 0;
   function renderCart() {
     const items = [...cart.values()];
     countEl.textContent = items.length + (items.length === 1 ? ' ITEM' : ' ITEMS');
@@ -375,14 +380,14 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
     submitButton.disabled = false;
     submitButton.textContent = 'REGISTER NOW ↗';
     clearTimeout(timeoutId);
+    clearInterval(pollTimer);
   }
-  window.addEventListener('message', event => {
-    if (!pending) return;
-    const data = event.data;
-    if (!data || data.source !== 'NH_REGISTRATION' || typeof data.success !== 'boolean') return;
+  function handleResult(data) {
+    if (!pending || !data || data.source !== 'NH_REGISTRATION' || typeof data.success !== 'boolean') return;
+    if (data.success && !/^NH27-[A-Z0-9]{8}$/.test(data.id || '')) return;
     finish();
-    if (data.success && /^NH27-[A-Z0-9]{8}$/.test(data.id || '')) {
-      showStatus('Your booking request was saved successfully. Keep your registration code below.');
+    if (data.success) {
+      showStatus('Your registration was saved successfully. Keep your reference code below.');
       registrationCode.textContent = data.id;
       document.getElementById('nhCopyRegistrationFeedback').textContent = '';
       successPanel.hidden = false;
@@ -395,8 +400,27 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
       });
       renderCart();
     } else {
-      showStatus('Unable to save the request. Please try again or contact the conference team.');
+      showStatus(data.message || 'Unable to save your request. Please contact the conference team.');
     }
+  }
+  function checkSavedRegistration() {
+    if (!pending || !activeToken) return;
+    const callback = callbackPrefix + (++pollNumber);
+    const script = document.createElement('script');
+    let cleaned = false;
+    function cleanup() { if (cleaned) return; cleaned = true; delete window[callback]; script.remove(); }
+    window[callback] = function (result) {
+      cleanup();
+      if (result && result.found && result.id) handleResult({source:'NH_REGISTRATION',success:true,id:result.id});
+    };
+    script.onerror = cleanup;
+    script.src = endpoint + '?mode=status&token=' + encodeURIComponent(activeToken) + '&callback=' + callback + '&t=' + Date.now();
+    document.head.appendChild(script);
+    setTimeout(cleanup, 9000);
+  }
+  window.addEventListener('message', event => {
+    if (event.source !== frame.contentWindow) return;
+    handleResult(event.data);
   });
   form.addEventListener('submit', event => {
     event.preventDefault();
@@ -409,13 +433,16 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
       'REGISTRATION TYPE: ' + (items.length ? 'Conference registration with selected items' : 'Conference registration only') + '\nBOOKING ITEMS:\n' + (items.length ? items.map(item => item.title + ' (' + item.duration + ')' + (item.id === 'conference-days' ? '' : ': ' + money(item.price))).join('\n') : 'Conference registration only') +
       '\nWORKSHOP FEES TOTAL: ' + money(total) + '\nTOTAL: ' + money(total) + '\nSTATUS: Pending Review';
     successPanel.hidden = true;
+    activeToken = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + '-' + Math.random().toString(36).slice(2);
+    document.getElementById('nhSubmissionToken').value = activeToken;
     pending = true;
     submitButton.disabled = true;
     submitButton.textContent = 'SUBMITTING…';
     showStatus('Submitting your booking request…');
+    pollTimer = setInterval(checkSavedRegistration, 3500);
     timeoutId = setTimeout(() => {
-      if (pending) { finish(); showStatus('No confirmation received. Please contact the conference team before submitting again to avoid a duplicate booking.'); }
-    }, 40000);
+      if (pending) { finish(); showStatus('We could not verify the registration result. Please check with the conference team before trying again to avoid duplicates.'); }
+    }, 45000);
     form.submit();
   });
   renderCart();
