@@ -55,6 +55,49 @@ html{scroll-behavior:smooth}body{font-size:16px}
 .nh-form-status{font-size:16px!important;line-height:1.7!important}
 @media(max-width:760px){.nh-explore-grid{grid-template-columns:1fr}.nh-workshop-row{grid-template-columns:1fr 1fr;gap:14px;padding:18px}.nh-workshop-title{grid-column:1/-1}.nh-workshop-row button{width:100%}.nh-detail-section{overflow-x:hidden}}
 .nh-registration-success{margin-top:22px;padding:26px;border:1px solid #e9bf73;background:#0b2336;color:#fff;text-align:center}.nh-registration-success[hidden]{display:none}.nh-registration-success h3{margin:12px 0}.nh-registration-success strong{display:block;color:#e9bf73;font-size:clamp(22px,4vw,36px);letter-spacing:2px;overflow-wrap:anywhere}.nh-registration-success button{margin:14px 8px;padding:12px 22px;background:#e9bf73;color:#07111f;border:0;font-weight:700;cursor:pointer}.nh-registration-success p{line-height:1.6}
+
+/* NEW HORIZON refined premium system */
+:root{--nh-gold:#e8c58a;--nh-ink:#061626;--nh-muted:#aebdcb}
+body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;line-height:1.65;letter-spacing:0}
+.nh-section-heading h2,.nh-leadership-heading h2,.nh-booking-intro h2{font-size:clamp(28px,3.1vw,44px)!important;line-height:1.18!important;letter-spacing:-.035em}
+.nh-section-heading p,.nh-booking-section p,.nh-booking-form label,.nh-booking-form input{font-size:14px!important;line-height:1.55!important}
+.nh-premium-eyebrow{font-size:11px!important;letter-spacing:.17em!important}
+.nh-workshop-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:28px}
+.nh-workshop-card{border:1px solid rgba(232,197,138,.24);background:linear-gradient(140deg,#0c2940,#071a2d 72%);border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(0,0,0,.14);transition:transform .2s,border-color .2s}
+.nh-workshop-card:hover{transform:translateY(-3px);border-color:rgba(232,197,138,.65)}
+.nh-workshop-top{padding:26px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-height:260px}
+.nh-workshop-tag{font-size:10px!important;letter-spacing:.14em;color:var(--nh-gold)!important;font-weight:700}
+.nh-workshop-card h3{font-size:clamp(19px,2vw,25px)!important;line-height:1.28;margin:12px 0;color:#fff}
+.nh-workshop-date{font-size:13px!important;color:#c1cedb!important;margin:0}
+.nh-workshop-side{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.nh-workshop-side strong{font-size:18px;color:var(--nh-gold)}
+.nh-workshop-side button{min-height:43px;padding:10px 16px;border-radius:8px;font-size:11px!important;font-weight:800;letter-spacing:.03em}
+.nh-workshop-details{border-top:1px solid rgba(255,255,255,.12)}
+.nh-workshop-details summary{display:flex;justify-content:space-between;align-items:center;padding:17px 26px;cursor:pointer;color:var(--nh-gold);font-size:11px;font-weight:800;letter-spacing:.08em;list-style:none}
+.nh-workshop-details summary::-webkit-details-marker{display:none}
+.nh-workshop-details[open] summary span{transform:rotate(45deg)}
+.nh-workshop-body{padding:0 26px 24px;color:#d1dce7;font-size:13px;line-height:1.8}
+.nh-workshop-body h4{font-size:13px;color:#fff;margin:16px 0 6px}
+.nh-workshop-body ul{margin:8px 0;padding-left:20px}.nh-workshop-body li{margin-bottom:6px}
+.nh-workshop-disclaimer{font-size:11px!important;color:#aebdcb!important;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.nh-booking-section{align-items:start;gap:clamp(22px,4vw,60px)}
+.nh-booking-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 16px}
+.nh-booking-form>label{display:flex;flex-direction:column;gap:7px;min-width:0;font-weight:600!important;color:#263d50!important}
+.nh-booking-form input:not([type=checkbox]):not([type=hidden]){width:100%;box-sizing:border-box;min-height:48px!important;font-size:14px!important;padding:12px 14px!important;border-radius:8px!important}
+.nh-booking-form .nh-consent{grid-column:1/-1;display:flex!important;flex-direction:row!important;align-items:flex-start!important;gap:12px!important;margin:8px 0!important;font-size:12px!important;font-weight:500!important;line-height:1.55!important}
+.nh-booking-form .nh-consent input{flex:0 0 18px;width:18px!important;min-width:18px!important;height:18px!important;min-height:18px!important;margin:1px 0 0!important;accent-color:#b99250}
+.nh-booking-form>.nh-whatsapp-submit,.nh-booking-form>.nh-whatsapp-note,.nh-booking-form>.nh-form-status,.nh-booking-form>.nh-registration-success{grid-column:1/-1}
+.nh-booking-form>.nh-whatsapp-submit{min-height:54px!important;border-radius:9px!important;font-size:13px!important;letter-spacing:.08em}
+.nh-booking-form>.nh-whatsapp-note{font-size:12px!important;color:#6a7f91!important;margin:0}
+.nh-form-status{font-size:13px!important}
+.nh-combo-package{border-radius:14px;border-color:rgba(232,197,138,.35)!important}
+.nh-combo-package h3{font-size:20px!important}
+.nh-combo-package p{font-size:13px!important}
+.nh-checkout-card{border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.17)}
+.nh-cart-total strong{font-size:19px!important}
+.nh-registration-success{border-radius:12px}
+@media(max-width:850px){.nh-workshop-list{grid-template-columns:1fr}}
+@media(max-width:580px){.nh-booking-form{grid-template-columns:1fr}.nh-workshop-top{min-height:0}.nh-workshop-side{align-items:flex-start}.nh-booking-section{padding-left:18px!important;padding-right:18px!important}}
 </style></head>
 <body>
 <header class="nh-header">
@@ -114,15 +157,15 @@ html{scroll-behavior:smooth}body{font-size:16px}
 <section class="nh-president-section" id="about"><div class="nh-leadership-heading"><p class="nh-premium-eyebrow">CONFERENCE LEADERSHIP</p><h2>Led by vision. <em>Driven by care.</em></h2></div>
 <div class="nh-leadership-grid">
 <article class="nh-leader-card"><div class="nh-leader-photo"><img src="assets/images/hany-embaby.jpg" alt="Prof. Dr. Hany Embaby" loading="lazy"></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">CONFERENCE PRESIDENT</p><h3>Prof. Dr. Hany Embaby</h3><p>Consultant of Pediatric Surgery · MRCS</p></div></article>
-<article class="nh-leader-card"><div class="nh-leader-photo"><img src="assets/images/ayman-baghdady.jpg" alt="Prof. Dr. Ayman Baghdady" loading="lazy"></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">HONORARY PRESIDENT</p><h3>Prof. Dr. Ayman Baghdady</h3><p>Professor &amp; Head of Pediatric Surgery, Ain Shams University</p></div></article>
+<article class="nh-leader-card"><div class="nh-leader-photo"><img src="assets/images/ayman-baghdady.jpg" alt="Prof. Dr. Ayman Baghdady" loading="lazy"></div><div class="nh-leader-info"><p class="nh-premium-eyebrow">HONORARY PRESIDENT</p><h3>Prof. Dr. Ayman Baghdady</h3><p>Professor &amp; Head of Pediatric Surgery</p></div></article>
 </div></section>
 <section class="nh-program-section" id="program"><div class="nh-section-heading"><div><p class="nh-premium-eyebrow">NEW HORIZON 2027</p><h2>Explore the <em>conference.</em></h2></div><p>Discover the scientific programme and strategic discussions, then book your place below.</p></div><div class="nh-explore-grid"><a class="nh-explore-link" href="#scientific-day"><span>01 · SCIENTIFIC CONFERENCE</span><strong>Scientific Conference</strong><small>VIEW DETAILS ↓</small></a><a class="nh-explore-link" href="#strategic-day"><span>02 · LEADERSHIP &amp; GOVERNANCE</span><strong>Strategic Day</strong><small>VIEW DETAILS ↓</small></a></div></section>
 <section class="nh-detail-section" id="workshops">
 <div class="nh-section-heading">
 <div><p class="nh-premium-eyebrow">PRACTICAL LEARNING · JANUARY 2027</p><h2>Hands-on <em>workshops.</em></h2></div>
-<p>Choose the workshops you want to attend. Tap Add to Cart to include each workshop in your booking.</p>
+<p>Explore each workshop, review its focus areas, and add it to your registration if you wish.</p>
 </div>
-<div class="nh-workshop-list"><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Laser Applications in Pediatric Surgery</strong><span>10 Jan 2027 · 1 Day</span></div><b>1,500 EGP</b><button class="nh-add-cart" data-cart-id="laser" data-duration="1 Day" data-price="1500" data-title="Laser Applications in Pediatric Surgery" type="button">ADD TO CART</button></div><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Plastic Surgery in Pediatric Surgery</strong><span>11 Jan 2027 · 1 Day</span></div><b>1,500 EGP</b><button class="nh-add-cart" data-cart-id="plastic" data-duration="1 Day" data-price="1500" data-title="Plastic Surgery in Pediatric Surgery" type="button">ADD TO CART</button></div><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Fundamentals of Laparoscopic Surgery</strong><span>18–19 Jan 2027 · 2 Days</span></div><b>3,000 EGP</b><button class="nh-add-cart" data-cart-id="laparoscopic" data-duration="2 Days" data-price="3000" data-title="Fundamentals of Laparoscopic Surgery" type="button">ADD TO CART</button></div><div class="nh-workshop-row"><div class="nh-workshop-title"><strong>Ultrasound-Guided Procedures</strong><span>23–24 Jan 2027 · 2 Days</span></div><b>3,000 EGP</b><button class="nh-add-cart" data-cart-id="ultrasound" data-duration="2 Days" data-price="3000" data-title="Ultrasound-Guided Procedures" type="button">ADD TO CART</button></div></div>
+<div class="nh-workshop-list"><article class="nh-workshop-card"><div class="nh-workshop-top"><div class="nh-workshop-title"><span class="nh-workshop-tag">PRACTICAL WORKSHOP · 1 DAY</span><h3>Laser Applications in Pediatric Surgery</h3><p class="nh-workshop-date">10 January 2027</p></div><div class="nh-workshop-side"><strong>1,500 EGP</strong><button class="nh-add-cart" data-cart-id="laser" data-duration="1 Day" data-price="1500" data-title="Laser Applications in Pediatric Surgery" type="button">ADD TO BOOKING</button></div></div><details class="nh-workshop-details"><summary>EXPLORE WORKSHOP DETAILS <span>↗</span></summary><div class="nh-workshop-body"><p>Explore selected laser applications in pediatric surgery, clinical indications, technical considerations and safe use.</p><h4>Indicative learning topics</h4><ul><li>Clinical indications and case selection</li><li>Laser technology and basic principles</li><li>Safety precautions and procedural considerations</li><li>Clinical case discussion</li></ul><p class="nh-workshop-disclaimer">Detailed hands-on agenda and faculty will be confirmed by the organizing team.</p></div></details></article><article class="nh-workshop-card"><div class="nh-workshop-top"><div class="nh-workshop-title"><span class="nh-workshop-tag">PRACTICAL WORKSHOP · 1 DAY</span><h3>Plastic Surgery in Pediatric Surgery</h3><p class="nh-workshop-date">11 January 2027</p></div><div class="nh-workshop-side"><strong>1,500 EGP</strong><button class="nh-add-cart" data-cart-id="plastic" data-duration="1 Day" data-price="1500" data-title="Plastic Surgery in Pediatric Surgery" type="button">ADD TO BOOKING</button></div></div><details class="nh-workshop-details"><summary>EXPLORE WORKSHOP DETAILS <span>↗</span></summary><div class="nh-workshop-body"><p>An introduction to reconstructive principles and plastic surgery approaches relevant to pediatric surgical practice.</p><h4>Indicative learning topics</h4><ul><li>Pediatric tissue handling and wound planning</li><li>Reconstructive options and basic principles</li><li>Scar management and aesthetic considerations</li><li>Clinical case discussion</li></ul><p class="nh-workshop-disclaimer">Detailed hands-on agenda and faculty will be confirmed by the organizing team.</p></div></details></article><article class="nh-workshop-card"><div class="nh-workshop-top"><div class="nh-workshop-title"><span class="nh-workshop-tag">PRACTICAL WORKSHOP · 2 DAYS</span><h3>Fundamentals of Laparoscopic Surgery</h3><p class="nh-workshop-date">18–19 January 2027</p></div><div class="nh-workshop-side"><strong>3,000 EGP</strong><button class="nh-add-cart" data-cart-id="laparoscopic" data-duration="2 Days" data-price="3000" data-title="Fundamentals of Laparoscopic Surgery" type="button">ADD TO BOOKING</button></div></div><details class="nh-workshop-details"><summary>EXPLORE WORKSHOP DETAILS <span>↗</span></summary><div class="nh-workshop-body"><p>A practical introduction to essential laparoscopic concepts and skills for pediatric surgery.</p><h4>Indicative learning topics</h4><ul><li>Equipment, instruments and operating-room setup</li><li>Camera navigation and hand–eye coordination</li><li>Basic laparoscopic instrument handling</li><li>Fundamental procedural skills and safety</li></ul><p class="nh-workshop-disclaimer">Detailed hands-on agenda and faculty will be confirmed by the organizing team.</p></div></details></article><article class="nh-workshop-card"><div class="nh-workshop-top"><div class="nh-workshop-title"><span class="nh-workshop-tag">PRACTICAL WORKSHOP · 2 DAYS</span><h3>Ultrasound-Guided Procedures</h3><p class="nh-workshop-date">23–24 January 2027</p></div><div class="nh-workshop-side"><strong>3,000 EGP</strong><button class="nh-add-cart" data-cart-id="ultrasound" data-duration="2 Days" data-price="3000" data-title="Ultrasound-Guided Procedures" type="button">ADD TO BOOKING</button></div></div><details class="nh-workshop-details"><summary>EXPLORE WORKSHOP DETAILS <span>↗</span></summary><div class="nh-workshop-body"><p>Explore ultrasound guidance for targeted access and procedural applications in pediatric surgical care.</p><h4>Indicative learning topics</h4><ul><li>Ultrasound orientation and image interpretation</li><li>Probe handling and procedural planning</li><li>Needle visualization and image-guided access</li><li>Safety, limitations and case discussion</li></ul><p class="nh-workshop-disclaimer">Detailed hands-on agenda and faculty will be confirmed by the organizing team.</p></div></details></article></div>
 <p class="nh-pricing-note">Workshop fees: 1-day workshop 1,500 EGP · 2-day workshop 3,000 EGP.</p>
 </section>
 <section class="nh-detail-section nh-detail-alt" id="scientific-day">
@@ -166,16 +209,16 @@ html{scroll-behavior:smooth}body{font-size:16px}
 <div class="nh-booking-intro">
 <p class="nh-premium-eyebrow">YOUR NEW HORIZON EXPERIENCE</p>
 <h2>Build your <em>booking.</em></h2>
-<p>Choose your conference package and workshops, then send your booking request. The conference team will confirm availability and payment details.</p>
+<p>Register for the conference directly, or optionally add workshops to your request. Our team will confirm the details.</p>
 <div class="nh-combo-package">
 <div><span class="nh-package-label">CONFERENCE PACKAGE</span><h3>Scientific Day + Strategic Day</h3><p>Access to both conference days · 14 &amp; 15 January 2027</p></div>
 <button class="nh-add-cart" data-cart-id="conference-days" data-duration="2 Conference Days" data-price="0" data-title="Scientific Day + Strategic Day Package" type="button">ADD PACKAGE TO CART</button>
 </div>
 </div>
 <div class="nh-checkout-card">
-<div class="nh-cart-head"><div><p class="nh-premium-eyebrow">BOOKING SUMMARY</p><h3>Your selected items</h3></div><span class="nh-cart-count" id="nhCartCount">0 ITEMS</span></div>
-<div class="nh-cart-items" id="nhCartItems"><p class="nh-cart-empty">Your cart is empty. Add a workshop or the conference package to continue.</p></div>
-<div class="nh-cart-total"><span>Workshop fees total</span><strong id="nhCartTotal">0 EGP</strong></div>
+<div class="nh-cart-head"><div><p class="nh-premium-eyebrow">BOOKING SUMMARY</p><h3>Your registration</h3></div><span class="nh-cart-count" id="nhCartCount">0 ITEMS</span></div>
+<div class="nh-cart-items" id="nhCartItems"><p class="nh-cart-empty">No workshops selected. You can still register for the conference.</p></div>
+<div class="nh-cart-total"><span>Selected workshop fees</span><strong id="nhCartTotal">0 EGP</strong></div>
 <form action="https://script.google.com/macros/s/AKfycbyYHTtzA5FXXdwTSzZXRwKKQ0emhC2NkTxRD07maMYL2o5egR4SLe_epFH3r6EhjEIDUw/exec" class="nh-booking-form" id="nhBookingForm" method="POST" target="nhSubmissionFrame">
 <label>Full name *<input autocomplete="name" name="fullName" placeholder="Enter your full name" required=""/></label>
 <label>Mobile / WhatsApp number *<input autocomplete="tel" name="phone" placeholder="Your mobile number" required="" type="tel"/></label>
@@ -183,13 +226,13 @@ html{scroll-behavior:smooth}body{font-size:16px}
 <label>Profession / Specialty *<input name="profession" placeholder="e.g. Pediatric Surgeon" required=""/></label>
 <label>Country *<input autocomplete="country-name" name="country" placeholder="Country of residence" required=""/></label>
 <label>Institution / Workplace<input name="institution" placeholder="Hospital, university or institution"/></label>
-<label class="nh-consent"><input name="consent" required="" type="checkbox" value="yes"/> I agree to be contacted about my registration and understand this is a booking request, not a confirmed place.</label>
+<label class="nh-consent"><input name="consent" required="" type="checkbox" value="yes"/> I agree to be contacted regarding my registration. Submission is subject to confirmation.</label>
 <input name="website" type="hidden" value="new-horizon-2027"/>
 <input name="interest" type="hidden" value="Conference &amp; Workshops Booking"/>
 <input id="nhBookingDetails" name="message" type="hidden"/>
 <input aria-hidden="true" autocomplete="off" name="hp_field" style="position:absolute;left:-9999px;width:1px;height:1px" tabindex="-1" type="text"/>
-<iframe id="nhSubmissionFrame" name="nhSubmissionFrame" style="display:none" title="Registration submission"></iframe><button class="nh-whatsapp-submit" type="submit">SUBMIT BOOKING REQUEST ↗</button>
-<p class="nh-whatsapp-note">Your request will be saved for review. No online payment is taken; confirmation will be sent by the conference team.</p>
+<iframe id="nhSubmissionFrame" name="nhSubmissionFrame" style="display:none" title="Registration submission"></iframe><button class="nh-whatsapp-submit" type="submit">REGISTER NOW ↗</button>
+<p class="nh-whatsapp-note">Registration is open without selecting any workshop. No online payment is collected. Your reference code appears after successful submission.</p>
 <p aria-live="polite" class="nh-form-status" id="nhBookingStatus" role="status"></p>
 <div id="nhRegistrationSuccess" class="nh-registration-success" hidden><p class="nh-premium-eyebrow">REGISTRATION RECEIVED</p><h3>Your Registration Code</h3><strong id="nhRegistrationCode"></strong><p>Keep this code for follow-up. Your request is pending review.</p><button type="button" id="nhCopyRegistrationCode">COPY CODE</button><span id="nhCopyRegistrationFeedback" aria-live="polite"></span></div>
 </form>
@@ -283,7 +326,7 @@ html{scroll-behavior:smooth}body{font-size:16px}
     if (!items.length) {
       const empty = document.createElement('p');
       empty.className = 'nh-cart-empty';
-      empty.textContent = 'Your cart is empty. Add a workshop or conference package to continue.';
+      empty.textContent = 'No workshops selected. You can still register for the conference.';
       itemsEl.appendChild(empty);
       return;
     }
@@ -330,7 +373,7 @@ html{scroll-behavior:smooth}body{font-size:16px}
   function finish() {
     pending = false;
     submitButton.disabled = false;
-    submitButton.textContent = 'SUBMIT BOOKING REQUEST ↗';
+    submitButton.textContent = 'REGISTER NOW ↗';
     clearTimeout(timeoutId);
   }
   window.addEventListener('message', event => {
@@ -358,12 +401,12 @@ html{scroll-behavior:smooth}body{font-size:16px}
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (pending) return;
-    if (!cart.size) { showStatus('Please select at least one conference package or workshop.'); return; }
+    
     if (!form.reportValidity()) return;
     const items = [...cart.values()];
     const total = items.reduce((sum, item) => sum + item.price, 0);
     document.getElementById('nhBookingDetails').value =
-      'BOOKING ITEMS:\n' + items.map(item => item.title + ' (' + item.duration + ')' + (item.id === 'conference-days' ? '' : ': ' + money(item.price))).join('\n') +
+      'REGISTRATION TYPE: ' + (items.length ? 'Conference registration with selected items' : 'Conference registration only') + '\nBOOKING ITEMS:\n' + (items.length ? items.map(item => item.title + ' (' + item.duration + ')' + (item.id === 'conference-days' ? '' : ': ' + money(item.price))).join('\n') : 'Conference registration only') +
       '\nWORKSHOP FEES TOTAL: ' + money(total) + '\nSTATUS: Pending Review';
     successPanel.hidden = true;
     pending = true;
