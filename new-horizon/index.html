@@ -219,7 +219,7 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
 <div class="nh-cart-head"><div><p class="nh-premium-eyebrow">BOOKING SUMMARY</p><h3>Your registration</h3></div><span class="nh-cart-count" id="nhCartCount">0 ITEMS</span></div>
 <div class="nh-cart-items" id="nhCartItems"><p class="nh-cart-empty">No workshops selected. You can still register for the conference.</p></div>
 <div class="nh-cart-total"><span>Selected workshop fees</span><strong id="nhCartTotal">0 EGP</strong></div>
-<form action="https://script.google.com/macros/s/AKfycbyYHTtzA5FXXdwTSzZXRwKKQ0emhC2NkTxRD07maMYL2o5egR4SLe_epFH3r6EhjEIDUw/exec" class="nh-booking-form" id="nhBookingForm" method="POST" target="nhSubmissionFrame">
+<form action="https://script.google.com/macros/s/AKfycbzD8SRkmTovJMK0PIRKBeKcPwwbPRUCb58MMtmuWOIZEqwESHMn0mAE8PSRFouoQlDCtw/exec" class="nh-booking-form" id="nhBookingForm" method="POST" target="nhSubmissionFrame">
 <label>Full name *<input autocomplete="name" name="fullName" placeholder="Enter your full name" required=""/></label>
 <label>Mobile / WhatsApp number *<input autocomplete="tel" name="phone" placeholder="Your mobile number" required="" type="tel"/></label>
 <label>Email address *<input autocomplete="email" name="email" placeholder="name@example.com" required="" type="email"/></label>
@@ -407,7 +407,7 @@ body{font-family:Poppins,Arial,sans-serif!important;font-size:15px!important;lin
     const total = items.reduce((sum, item) => sum + item.price, 0);
     document.getElementById('nhBookingDetails').value =
       'REGISTRATION TYPE: ' + (items.length ? 'Conference registration with selected items' : 'Conference registration only') + '\nBOOKING ITEMS:\n' + (items.length ? items.map(item => item.title + ' (' + item.duration + ')' + (item.id === 'conference-days' ? '' : ': ' + money(item.price))).join('\n') : 'Conference registration only') +
-      '\nWORKSHOP FEES TOTAL: ' + money(total) + '\nSTATUS: Pending Review';
+      '\nWORKSHOP FEES TOTAL: ' + money(total) + '\nTOTAL: ' + money(total) + '\nSTATUS: Pending Review';
     successPanel.hidden = true;
     pending = true;
     submitButton.disabled = true;
