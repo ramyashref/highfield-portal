@@ -1,0 +1,16 @@
+NEW HORIZON 2027 — Abstract uploads
+
+1. In the existing abstract Apps Script project, keep a copy of the old source.
+   Replace its Code.gs with this Code.gs. Enable the Google Drive API through
+   Services > Add a service > Drive API. If the script uses a standard Google
+   Cloud project, also enable Google Drive API in that project.
+2. Run preparePdfUploads once from the editor, authorize the requested scopes,
+   and confirm the execution succeeds. It uses the existing script properties
+   and verifies access to the current sheet and Drive folder.
+3. Edit the existing web app deployment using New version. Keep its existing
+   execute-as and access settings and retain its /exec URL.
+4. Deploy abstracts.html at new-horizon/abstracts.html in highfield-portal.
+   Coordinate steps 3 and 4 closely because the old form uses a different protocol.
+5. Verify a small PDF and a 100 MB PDF against the deployed app. Compare the
+   confirmation code to the Google Sheets row and verify the Drive file size.
+   Confirm that files over the limit and non-PDF files are rejected.
